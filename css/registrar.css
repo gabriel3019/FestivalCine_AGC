@@ -1,0 +1,103 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+
+/* Fondo */
+body {
+    height: 100vh;
+    background: url("imagenes/fondo.png") no-repeat center center/cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+/* Contenedor */
+.register-container {
+    background: rgba(0, 0, 0, 0.6);
+    padding: 40px;
+    border-radius: 12px;
+    width: 380px;
+}
+
+
+/* Tarjeta */
+.register-card {
+    text-align: center;
+}
+
+
+/* Logo */
+.logo {
+    width: 120px;
+    margin-bottom: 20px;
+}
+
+
+/* Formulario */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+
+label {
+    color: #fff;
+    font-size: 14px;
+    text-align: left;
+}
+
+
+input {
+    padding: 10px;
+    border-radius: 6px;
+    border: none;
+    outline: none;
+}
+
+
+/* Botones */
+.btn {
+    margin-top: 15px;
+    padding: 10px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    display: block;
+    color: #fff;
+}
+
+
+.primary {
+    background: #f30000;
+}
+
+
+.login-link {
+    margin-top: 15px;
+    color: #fff;
+    font-size: 14px;
+}
+
+
+.login-link a {
+    color: #f30000;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+
+.login-link a:hover {
+    text-decoration: underline;
+}
+
+
+.btn:hover {
+    opacity: 0.85;
+}
