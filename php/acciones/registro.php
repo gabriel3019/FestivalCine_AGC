@@ -1,68 +1,58 @@
 <?php
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
 header('Content-Type: application/json');
 
 $host = "localhost";
 $user = "root";
 $pass = "";
-$db   = "tu_base_de_datos";
+$db   = "festivalcine";
 
 $conn = new mysqli($host, $user, $pass, $db);
-
 if ($conn->connect_error) {
-    echo json_encode([
-        "success" => false,
-        "message" => "Error de conexión"
-    ]);
+    echo json_encode(["success"=>false,"message"=>"Error de conexión"]);
     exit;
 }
 
+// Recibir campos
 $nombre    = $_POST['nombre'] ?? '';
 $apellidos = $_POST['apellidos'] ?? '';
 $email     = $_POST['email'] ?? '';
 $password  = $_POST['password'] ?? '';
 
-if (empty($nombre) || empty($apellidos) || empty($email) || empty($password)) {
-    echo json_encode([
-        "success" => false,
-        "message" => "Todos los campos son obligatorios"
-    ]);
+// Validar campos
+if (!$nombre || !$apellidos || !$email || !$password) {
+    echo json_encode(["success"=>false,"message"=>"Todos los campos son obligatorios"]);
     exit;
 }
 
-// Comprobar si el email ya existe
-$check = $conn->prepare("SELECT id FROM usuarios WHERE email = ?");
+// Verificar si el correo ya existe
+$check = $conn->prepare("SELECT id_usuario FROM usuarios WHERE correo = ?");
 $check->bind_param("s", $email);
 $check->execute();
 $check->store_result();
-
 if ($check->num_rows > 0) {
-    echo json_encode([
-        "success" => false,
-        "message" => "El correo ya está registrado"
-    ]);
+    echo json_encode(["success"=>false,"message"=>"El correo ya está registrado"]);
     exit;
 }
-
 $check->close();
 
-// Encriptar contraseña
+// Hash de la contraseña
 $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-// Insertar usuario
+// Insertar usuario con rol "usuario" y fecha actual
+$fecha = date('Y-m-d');
 $stmt = $conn->prepare(
-    "INSERT INTO usuarios (nombre, apellidos, correo, contrasena) VALUES (?, ?, ?, ?)"
+    "INSERT INTO usuarios (nombre, apellidos, correo, contrasena, rol, fecha_registro) 
+     VALUES (?, ?, ?, ?, 'usuario', ?)"
 );
-$stmt->bind_param("ssss", $nombre, $apellidos, $email, $hashedPassword);
+$stmt->bind_param("sssss", $nombre, $apellidos, $email, $hashedPassword, $fecha);
 
 if ($stmt->execute()) {
-    echo json_encode([
-        "success" => true
-    ]);
+    echo json_encode(["success"=>true]);
 } else {
-    echo json_encode([
-        "success" => false,
-        "message" => "Error al registrar usuario"
-    ]);
+    echo json_encode(["success"=>false,"message"=>"Error al registrar usuario"]);
 }
 
 $stmt->close();
