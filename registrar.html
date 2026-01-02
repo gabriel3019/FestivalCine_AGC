@@ -21,19 +21,27 @@
 
             <form id="registerForm">
                 <label>Nombre del alumno</label>
-                <input type="text" placeholder="Nombre" required>
+                <input type="text"  name="nombre"  placeholder="Nombre" required>
 
 
                 <label>Apellidos del alumno</label>
-                <input type="text" placeholder="Apellidos" required>
+                <input type="text" name="apellidos"  placeholder="Apellidos" required>
 
 
                 <label>Correo electrónico</label>
-                <input type="email" placeholder="Correo electrónico" required>
+                <input type="email"  name="email" placeholder="Correo electrónico" required>
 
 
                 <label>Contraseña</label>
-                <input type="password" placeholder="Contraseña" required>
+                <input type="password" name="password"  placeholder="Contraseña" required>
+
+                <label>Rol</label>
+                <select name="rol" required>
+                    <option value="">Selecciona tu rol</option>
+                    <option value="usuario">Alumno</option>
+                    <option value="alumni">Alumni</option>
+                    <option value="organizador">Organizador</option>
+                </select>
 
 
                 <button type="submit" class="btn primary">
@@ -51,6 +59,7 @@
         </div>
     </div>
 
-<script src="js/registro.js"></script>
+    <script src="js/registro.js"></script>
 </body>
+
 </html>

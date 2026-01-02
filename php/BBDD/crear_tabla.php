@@ -43,13 +43,15 @@ if ($comprobar->num_rows <= 0) {
         apellidos VARCHAR(100) NOT NULL,
         correo VARCHAR(100) NOT NULL UNIQUE,
         contrasena VARCHAR(255) NOT NULL,
-        rol ENUM('usuario','organizador') NOT NULL,
+        rol ENUM('usuario','alumni','organizador') NOT NULL,
         fecha_registro DATE NOT NULL
     );
 
     CREATE TABLE organizador (
         id_organizador INT AUTO_INCREMENT PRIMARY KEY,
-        nombre VARCHAR(100) NOT NULL
+        nombre VARCHAR(100) NOT NULL,
+        correo VARCHAR(100) NOT NULL UNIQUE,
+        contrasena VARCHAR(255) NOT NULL
     );
 
     CREATE TABLE eventos (
