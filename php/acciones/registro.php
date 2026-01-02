@@ -1,20 +1,7 @@
 <?php
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
-
 header('Content-Type: application/json');
 
-$host = "localhost";
-$user = "root";
-$pass = "";
-$db   = "festivalcine";
-
-$conn = new mysqli($host, $user, $pass, $db);
-if ($conn->connect_error) {
-    echo json_encode(["success"=>false,"message"=>"Error de conexión"]);
-    exit;
-}
-
+require "../BBDD/conecta.php";
 // Recibir campos
 $nombre    = $_POST['nombre'] ?? '';
 $apellidos = $_POST['apellidos'] ?? '';
