@@ -3,5 +3,5 @@ document.getElementById("login-btn").addEventListener("click", () => {
 });
 
 document.getElementById("register-btn").addEventListener("click", () => {
-    window.location.href = "registrar.html";
+    window.location.href = "registro.html";
 });

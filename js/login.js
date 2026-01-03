@@ -1,14 +1,27 @@
 document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById("loginForm");
-    if (!form) return;
+    if (!form) return; // Si no existe el formulario, no hace nada
 
-    form.addEventListener("submit", function(e){
+    form.addEventListener("submit", function (e) {
         e.preventDefault();
 
         // Tomamos los valores del formulario
-        const email = document.querySelector("input[placeholder='Introduce tu correo']").value;
-        const password = document.querySelector("input[placeholder='Introduce tu contraseña']").value;
+           const emailInput = document.querySelector("input[name='email']");
+        const passwordInput = document.querySelector("input[name='password']");
 
+        if (!emailInput || !passwordInput) {
+            console.error("No se encontraron los inputs de email o contraseña");
+            return;
+        }
+
+        const email = emailInput.value.trim();
+        const password = passwordInput.value;
+
+        // Validación simple
+        if (email === "" || password === "") {
+            alert("Por favor completa todos los campos");
+            return;
+        }
         // Creamos FormData igual que en registro.js
         const formData = new FormData();
         formData.append("email", email);
@@ -19,24 +32,27 @@ document.addEventListener("DOMContentLoaded", function () {
             method: "POST",
             body: formData
         })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert("Login correcto");
+            .then(response => response.json())
+            .then(data => {
+                console.log("Respuesta login:", data);
+                if (data.success) {
+                    console.log("Rol del usuario:", data.rol);
+                    // alert("Login correcto");
 
-                // Redirigir según rol si lo necesitas
-                if (data.rol === "organizador") {
-                    window.location.href = "organizador/dashboard.html";
+                    // Redirigir según rol si lo necesitas
+                    if (data.rol.toLowerCase() === "organizador") {
+                        console.log("Redirigiendo al home de organizador");
+                        window.location.href = "home_organizador.html";
+                    } else {
+                        window.location.href = "home.html"; // usuario normal
+                    }
                 } else {
-                    window.location.href = "home.html"; // usuario normal
+                    alert(data.message);
                 }
-            } else {
-                alert(data.message);
-            }
-        })
-        .catch(error => {
-            console.error("Error:", error);
-            alert("Error en el servidor");
-        });
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("Error en el servidor");
+            });
     });
 });
