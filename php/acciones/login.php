@@ -17,7 +17,6 @@ if (empty($email) || empty($password)) {
     exit;
 }
 
-// Consulta
 $stmt = $conn->prepare(
     "SELECT id_usuario AS id, nombre, contrasena, rol 
      FROM usuarios 
@@ -28,7 +27,7 @@ $stmt->execute();
 $result = $stmt->get_result();
 
 if ($result->num_rows === 0) {
-    // Si no está, buscar en organizadores
+    
     $stmt = $conn->prepare(
         "SELECT id_organizador AS id, nombre, contrasena, 'organizador' AS rol 
         FROM organizador 
@@ -46,7 +45,7 @@ if ($result->num_rows === 0) {
 
 $user = $result->fetch_assoc();
 
-// Verificar contraseña
+
 if (!password_verify($password, $user['contrasena'])) {
     echo json_encode([
         "success" => false,
@@ -55,14 +54,14 @@ if (!password_verify($password, $user['contrasena'])) {
     exit;
 }
 
-// Crear sesión correctamente
+
 $_SESSION['usuario'] = [
     "id" => $user['id'],
     "nombre" => $user['nombre'],
     "rol" => $user['rol']
 ];
 
-// Respuesta
+
 echo json_encode([
     "success" => true,
     "rol" => $user['rol']

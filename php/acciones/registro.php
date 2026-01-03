@@ -1,6 +1,6 @@
 <?php
 header('Content-Type: application/json');
-require "../BBDD/conecta.php"; // aquí pones tu conexión
+require "../BBDD/conecta.php"; 
 
 $nombre    = $_POST['nombre'] ?? '';
 $apellidos = $_POST['apellidos'] ?? '';
@@ -13,12 +13,11 @@ if (!$nombre || !$email || !$password || !$rol || ($rol != "organizador" && !$ap
     exit;
 }
 
-// Hash de la contraseña
+
 $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-// Alumno o Alumni → tabla usuarios
+
 if ($rol === "usuario" || $rol === "alumni") {
-    // Comprobar si el correo ya existe
     $check = $conn->prepare("SELECT id_usuario FROM usuarios WHERE correo = ?");
     $check->bind_param("s", $email);
     $check->execute();
@@ -37,7 +36,6 @@ if ($rol === "usuario" || $rol === "alumni") {
     $stmt->bind_param("ssssss", $nombre, $apellidos, $email, $hashedPassword, $rol, $fecha);
 
 } elseif ($rol === "organizador") {
-    // Comprobar si el correo ya existe en organizador
     $check = $conn->prepare("SELECT id_organizador FROM organizador WHERE correo = ?");
     $check->bind_param("s", $email);
     $check->execute();
