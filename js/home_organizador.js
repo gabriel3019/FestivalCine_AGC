@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 if (authButtons) authButtons.style.display = "block";
                 profileIcon.style.display = "none";
-                window.location.href = "../login.html";
+                window.location.href = "../html/login.html";
             }
 
         })
@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", function () {
     volver_home.addEventListener("click", function () {
         fetch("php/acciones/home.php")
             .then(() => {
-                window.location.href = "home.html";
+                window.location.href = "html/home.html";
             });
     });
 
@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", function () {
     logoutBtn.addEventListener("click", function () {
         fetch("php/acciones/cerrar_sesion.php")
             .then(() => {
-                window.location.href = "login.html";
+                window.location.href = "html/login.html";
             });
     });
 

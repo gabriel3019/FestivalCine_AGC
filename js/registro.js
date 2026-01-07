@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(data => {
             if (data.success) {
                 alert("Usuario registrado correctamente");
-                window.location.href = "login.html";
+                window.location.href = "html/login.html";
             } else {
                 alert(data.message);
             }
