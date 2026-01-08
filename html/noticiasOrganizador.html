@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>Noticias</title>
     <link rel="stylesheet" href="../css/noticiasOrganizador.css">
 </head>
+
 <body>
 
     <header>
@@ -22,9 +24,10 @@
 
         <div class="auth">
             <!-- Icono perfil -->
-            <div id="icono_persona" class="icono_persona" style="display: none;">
+            <div id="icono_persona" class="icono_persona">
                 👤
                 <div id="menu" class="menu">
+                    <a href="#" id="cerrar_sesion">Crear nueva cuenta</a>
                     <a href="#" id="volver_home">Volver a home</a>
                     <a href="#" id="cerrar_sesion">Cerrar sesión</a>
                 </div>
@@ -33,45 +36,18 @@
 
         </div>
     </header>
-    
+    <br>
     <h2>Noticias</h2>
 
-    <div class="noticias-container">
 
-        <div class="noticia">
-            <h3 class="titulo">Nueva web del concurso</h3>
-            <p class="descripcion">
-                Se ha lanzado la nueva plataforma web para el concurso de cortometrajes con mejoras visuales y técnicas.
-            </p>
-            <div class="info">
-                <span class="fecha">05/01/2026</span>
-                <span class="estado publicada">Publicada</span>
-            </div>
-        </div>
-
-        <div class="noticia">
-            <h3 class="titulo">Apertura de inscripciones</h3>
-            <p class="descripcion">
-                Ya están abiertas las inscripciones para participar en la edición 2026 del certamen.
-            </p>
-            <div class="info">
-                <span class="fecha">02/01/2026</span>
-                <span class="estado publicada">Publicada</span>
-            </div>
-        </div>
-
-        <div class="noticia">
-            <h3 class="titulo">Confirmación del jurado</h3>
-            <p class="descripcion">
-                Se está cerrando la lista definitiva de profesionales que formarán parte del jurado.
-            </p>
-            <div class="info">
-                <span class="fecha">30/12/2025</span>
-                <span class="estado proceso">En proceso</span>
-            </div>
+    <div class="noticias-container" id="noticias-container">
+        
+        <div class="acciones-generales">
+            <button id="btnAnadir" class="btn-anadir" name="anadir">+ Añadir noticia</button>
         </div>
 
     </div>
-
+    <script src="../js/noticiasOrganizador.js"></script>
 </body>
+
 </html>
