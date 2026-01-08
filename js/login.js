@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
         e.preventDefault();
 
         // Tomamos los valores del formulario
-           const emailInput = document.querySelector("input[name='email']");
+        const emailInput = document.querySelector("input[name='email']");
         const passwordInput = document.querySelector("input[name='password']");
 
         if (!emailInput || !passwordInput) {
