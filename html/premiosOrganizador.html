@@ -10,19 +10,35 @@
 
 <body>
 
-    <header>
-        <h1>Gestión de Premios</h1>
+  <!-- HEADER PRINCIPAL -->
+    <header class="header">
+        <div class="logo">
+            <img src="../css/imagenes/Universidad-europea-logo_poc9mEM.2e16d0ba.fill-767x384.png" alt="Logo">
+        </div>
+
+        <nav>
+            <a href="#">Noticias</a>
+            <a href="#">Eventos</a>
+            <a href="premiosOrganizador.html">Premios</a>
+            <a href="#">Gala</a>
+        </nav>
+
+        <span id="nombreUsuario"></span>
+
+        <div class="auth">
+            <div id="icono_persona" class="icono_persona" style="display: none;">
+                👤
+                <div id="menu" class="menu">
+                    <a href="#" id="volver_home">Volver a home</a>
+                    <a href="#" id="cerrar_sesion">Cerrar sesión</a>
+                </div>
+            </div>
+        </div>
     </header>
 
     <main class="container">
-
-        <!-- ===================== -->
-        <!-- PARTE 1: CATEGORÍAS Y PREMIOS -->
-        <!-- ===================== -->
         <section class="categorias-premios">
-            <h2>Categorías y Premios</h2>
-
-            <!-- Categoría: Alumnos -->
+            <h2>PREMIOS</h2>
             <div class="categoria">
                 <h3>Alumnos</h3>
                 <ul>
@@ -35,8 +51,6 @@
                     <button>Eliminar categoría</button>
                 </div>
             </div>
-
-            <!-- Categoría: Alumni -->
             <div class="categoria">
                 <h3>Alumni</h3>
                 <ul>
@@ -48,8 +62,6 @@
                     <button>Eliminar categoría</button>
                 </div>
             </div>
-
-            <!-- Categoría: Carrera Profesional -->
             <div class="categoria">
                 <h3>Carrera Profesional</h3>
                 <ul>
@@ -60,8 +72,6 @@
                     <button>Eliminar categoría</button>
                 </div>
             </div>
-
-            <!-- Añadir nueva categoría -->
             <div class="nueva-categoria">
                 <h3>Añadir nueva categoría</h3>
                 <form>
@@ -73,20 +83,15 @@
             </div>
         </section>
 
-        <!-- ===================== -->
-        <!-- PARTE 2: GANADORES -->
-        <!-- ===================== -->
         <section class="ganadores">
             <h2>Asignar Ganadores</h2>
 
-            <!-- Ganadores Alumnos -->
             <div class="ganador-categoria">
                 <h3>Ganadores - Alumnos</h3>
 
                 <label for="alumnos_primer">Primer Premio</label>
                 <select id="alumnos_primer">
                     <option value="">Seleccionar participante</option>
-                    <!-- Participantes desde BD -->
                 </select>
 
                 <label for="alumnos_segundo">Segundo Premio</label>
@@ -100,7 +105,6 @@
                 </select>
             </div>
 
-            <!-- Ganadores Alumni -->
             <div class="ganador-categoria">
                 <h3>Ganadores - Alumni</h3>
 
@@ -114,8 +118,6 @@
                     <option value="">Seleccionar participante</option>
                 </select>
             </div>
-
-            <!-- Carrera Profesional -->
             <div class="ganador-categoria">
                 <h3>Premio a la Carrera Profesional</h3>
 
