@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function () {
         formData.append("password", password);
 
         // Petición AJAX
-        fetch("php/acciones/login.php", {
+        fetch("../php/acciones/login.php", {
             method: "POST",
             body: formData
         })
@@ -42,9 +42,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     // Redirigir según rol si lo necesitas
                     if (data.rol.toLowerCase() === "organizador") {
                         console.log("Redirigiendo al home de organizador");
-                        window.location.href = "html/home_organizador.html";
+                        window.location.href = "../html/home_organizador.html";
                     } else {
-                        window.location.href = "html/home.html"; // usuario normal
+                        window.location.href = "../html/home.html"; // usuario normal
                     }
                 } else {
                     alert(data.message);

@@ -1,0 +1,210 @@
+/* Reset y estilos básicos */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    background: #fff;
+    color: #111;
+}
+
+/* Cabecera */
+header {
+    padding: 16px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #f5f5f5;
+    border-bottom: 1px solid #ddd;
+}
+
+.logo img {
+    height: 60px;
+    width: auto;
+}
+
+header nav {
+    display: flex;
+    gap: 15px;
+}
+
+header nav a {
+    text-decoration: none;
+    color: #111;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+header nav a:hover {
+    color: #007BFF;
+}
+
+.auth {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.icono_persona {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #333;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+    font-size: 18px;
+}
+
+.menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 50px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    min-width: 140px;
+    overflow: hidden;
+    z-index: 10;
+}
+
+.menu a {
+    display: block;
+    padding: 10px;
+    color: #333;
+}
+
+.menu a:hover {
+    background-color: #f0f0f0;
+}
+
+h2 {
+    text-align: center;
+    margin: 25px 0;
+}
+
+/* Botón anadir noticia */
+.acciones-generales {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.btn-anadir {
+    background-color: #116ba7;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    font-size: 14px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.btn-anadir:hover {
+    background-color: #3191d1;
+}
+
+/* Contenedor principal */
+.container {
+    padding: 20px 40px;
+}
+.eventos-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 0 40px 40px;
+}
+
+.evento {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    position: relative;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+.evento img {
+    width: 90px;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 8px;
+    flex-shrink: 0;
+}
+
+.contenido {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+    font-size: 14px;
+}
+
+.estado {
+    margin-left: auto;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+.publicada {
+    background-color: #d1fae5;
+    color: #065f46;
+}
+
+.proceso {
+    background-color: #fef3c7;
+    color: #92400e;
+}
+
+.acciones {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+}
+
+.acciones button {
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    margin-left: 6px;
+}
+
+.btn-editar:hover {
+    color: #007BFF;
+}
+
+.btn-eliminar:hover {
+    color: #c0392b;
+}
+
+.titulo {
+    margin: 0 0 10px 0;
+    color: #1f2937;
+}
+
+.descripcion {
+    color: #4b5563;
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+
+.fecha {
+    color: #6b7280;
+}

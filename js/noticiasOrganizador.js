@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const contenedor = document.querySelector(".noticias-container");
     const btnAnadir = document.querySelector(".btn-anadir");
+    const accionesGenerales = btnAnadir.parentElement; // guardamos el div que contiene el botón
 
     // ------------------ FUNCIONES ------------------
     async function enviarNoticia(data) {
@@ -16,8 +17,8 @@ document.addEventListener("DOMContentLoaded", () => {
             });
 
             const text = await res.text();
-            console.log("Respuesta del servidor:", text); // 👈 ver qué devuelve realmente
-            return JSON.parse(text); // convertir a JSON
+            console.log("Respuesta del servidor:", text);
+            return JSON.parse(text);
         } catch (error) {
             console.error("Error en la petición:", error);
             alert("Error en el servidor");
@@ -26,12 +27,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // ------------------ CARGAR NOTICIAS ------------------
     async function cargarNoticias() {
-        const res = await fetch("../php/acciones/noticiasOrganizador.php?action=listar");
+        const formData = new FormData();
+        formData.append("action", "listar");
+
+        const res = await fetch("../php/acciones/noticiasOrganizador.php", {
+            method: "POST",
+            body: formData
+        });
+
         const data = await res.json();
 
         if (!data.success) return;
 
         contenedor.innerHTML = "";
+        contenedor.appendChild(accionesGenerales);
 
         data.noticias.forEach(noticia => {
             const div = document.createElement("div");
@@ -39,19 +48,19 @@ document.addEventListener("DOMContentLoaded", () => {
             div.dataset.id = noticia.id;
 
             div.innerHTML = `
-                <div class="acciones">
-                    <button class="btn-editar">✏️</button>
-                    <button class="btn-eliminar">🗑️</button>
+            <div class="acciones">
+                <button class="btn-editar">✏️</button>
+                <button class="btn-eliminar">🗑️</button>
+            </div>
+            <img src="../css/imagenes/fondo.png">
+            <div class="contenido">
+                <h3 class="titulo">${noticia.titulo}</h3>
+                <p class="contenido">${noticia.contenido}</p>
+                <div class="info">
+                    <span class="fecha">${new Date(noticia.fecha_publicacion).toLocaleDateString("es-ES")}</span>
                 </div>
-                <img src="../css/imagenes/fondo.png">
-                <div class="contenido">
-                    <h3 class="titulo">${noticia.titulo}</h3>
-                    <p class="contenido">${noticia.contenido}</p>
-                    <div class="info">
-                        <span class="fecha">${new Date(noticia.fecha).toLocaleDateString("es-ES")}</span>
-                    </div>
-                </div>
-            `;
+            </div>
+        `;
 
             contenedor.appendChild(div);
         });

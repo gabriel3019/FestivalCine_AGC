@@ -18,37 +18,45 @@ try {
 
         case "listar":
             $result = $conn->query(
-                "SELECT id_noticia, titulo, contenido, fecha_publicacion
-         FROM noticias 
-         ORDER BY fecha_publicacion DESC"
+                "SELECT id_evento, nombre, descripcion, fecha, lugar, tipo_evento
+         FROM eventos 
+         ORDER BY fecha DESC"
             );
 
-            $noticias = [];
+            $eventos = [];
             while ($row = $result->fetch_assoc()) {
-                $noticias[] = $row;
+                $eventos[] = $row;
             }
 
             echo json_encode([
                 "success" => true,
-                "noticias" => $noticias
+                "eventos" => $eventos
             ]);
             break;
 
         case "anadir":
-            $titulo = $_POST['titulo'] ?? '';
-            $contenido = $_POST['contenido'] ?? '';
+            $nombre = $_POST['nombre'] ?? '';
+            $descripcion = $_POST['descripcion'] ?? '';
+            $fecha = $_POST['fecha'] ?? '';
+            $lugar = $_POST['lugar'] ?? '';
+            $tipo_evento = $_POST['tipo_evento'] ?? '';
 
             if ($idOrganizador === 0) {
                 echo json_encode([
                     "success" => false,
-                    "message" => "Organizador no valido"
+                    "message" => "Organizador no válido"
                 ]);
                 exit;
             }
 
+            // Validar fecha
+            if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $fecha)) {
+                $fecha = date('Y-m-d'); // fecha actual si no es válida
+            }
+
             $stmt = $conn->prepare(
-                "INSERT INTO noticias (id_organizador, titulo, contenido, fecha_publicacion) 
-                VALUES (?, ?, ?, NOW())"
+                "INSERT INTO eventos (id_organizador, nombre, descripcion, fecha, lugar, tipo_evento) 
+         VALUES (?, ?, ?, ?, ?, ?)"
             );
 
             if (!$stmt) {
@@ -59,7 +67,7 @@ try {
                 exit;
             }
 
-            $stmt->bind_param("iss", $idOrganizador, $titulo, $contenido);
+            $stmt->bind_param("isssss", $idOrganizador, $nombre, $descripcion, $fecha, $lugar, $tipo_evento);
 
             if ($stmt->execute()) {
                 echo json_encode(["success" => true]);
@@ -72,21 +80,24 @@ try {
             break;
 
         case "editar":
-            $id = $_SESSION['id'] ?? 0;
-            $titulo = $_POST['titulo'] ?? '';
-            $contenido = $_POST['contenido'] ?? '';
+            $id =  $_POST['id'] ?? 0;
+            $nombre = $_POST['nombre'] ?? '';
+            $descripcion = $_POST['descripcion'] ?? '';
+            $fecha = $_POST['fecha'] ?? '';
+            $lugar = $_POST['lugar'] ?? '';
+            $tipo_evento = $_POST['tipo_evento'] ?? '';
 
             if ($id === 0) {
                 throw new Exception("ID inválido");
             }
 
             $stmt = $conn->prepare(
-                "UPDATE noticias 
-             SET titulo=?, contenido=?
-             WHERE id_noticia=?"
+                "UPDATE eventos 
+             SET nombre=?, descripcion=?, fecha=?, lugar=?, tipo_evento=?
+             WHERE id_evento=?"
             );
 
-            $stmt->bind_param("ssi", $titulo, $contenido, $id);
+            $stmt->bind_param("sssssi", $nombre, $descripcion, $fecha, $lugar, $tipo_evento, $id);
             $stmt->execute();
 
             echo json_encode(["success" => true]);
@@ -99,10 +110,17 @@ try {
                 throw new Exception("ID inválido");
             }
 
+            $stmt = $conn->prepare("DELETE FROM galas WHERE id_evento=?");
+            $stmt->bind_param("i", $id);
+            $stmt->execute();
+
+
             $stmt = $conn->prepare(
-                "DELETE FROM noticias WHERE id_noticia=?"
+                "DELETE FROM eventos WHERE id_evento=?"
             );
             $stmt->bind_param("i", $id);
+
+            $stmt->execute();
 
             echo json_encode(["success" => $stmt->execute()]);
             break;

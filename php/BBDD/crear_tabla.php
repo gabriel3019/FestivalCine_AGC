@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <title>Crear BBDD Festival Cine</title>
 </head>
+
 <body>
 
 <?php
@@ -14,7 +16,6 @@ $db = "FestivalCine";
 
 // Conectar sin seleccionar base de datos
 $conexion = new mysqli($servidor, $usuario, $password);
-
 if ($conexion->connect_error) {
     die("Conexión fallida: " . $conexion->connect_error);
 }
@@ -36,6 +37,12 @@ $comprobar = $conexion->query($comprobar_tabla);
 
 if ($comprobar->num_rows <= 0) {
 
+    // ------------------ HASH DE CONTRASEÑAS ------------------
+    $hashUsuario = password_hash("1234", PASSWORD_DEFAULT);
+    $hashAlumni  = password_hash("1234", PASSWORD_DEFAULT);
+    $hashOrganizador = password_hash("1234", PASSWORD_DEFAULT);
+
+    // ------------------ SQL ------------------
     $sql = "
     CREATE TABLE usuarios (
         id_usuario INT AUTO_INCREMENT PRIMARY KEY,
@@ -137,13 +144,54 @@ if ($comprobar->num_rows <= 0) {
     ";
 
     if ($conexion->multi_query($sql)) {
-        do {
-            // Limpiar resultados para la siguiente consulta
-        } while ($conexion->more_results() && $conexion->next_result());
+        do { } while ($conexion->more_results() && $conexion->next_result());
         echo "<p>Tablas creadas correctamente.</p>";
     } else {
         echo "<p>Error al crear las tablas: {$conexion->error}</p>";
     }
+
+    // ------------------ INSERTS ------------------
+    $inserts = "
+    INSERT INTO usuarios (nombre, apellidos, correo, contrasena, rol, fecha_registro) VALUES
+    ('Juan', 'Pérez', 'juan@mail.com', '$hashUsuario', 'usuario', now()),
+    ('Ana', 'Gómez', 'ana@mail.com', '$hashAlumni', 'alumni', now()),
+    ('Laura', 'Martínez', 'laura@festival.com', '$hashOrganizador', 'organizador', now());
+
+    INSERT INTO organizador (nombre, correo, contrasena) VALUES
+    ('Festival Cine Madrid', 'organizador@festival.com', '$hashOrganizador');
+
+    INSERT INTO eventos (id_organizador, nombre, descripcion, fecha, lugar, tipo_evento) VALUES
+    (1, 'Festival de Cine 2026', 'Evento principal del festival', '2026-06-15', 'Madrid', 'Festival');
+
+    INSERT INTO galas (id_evento, nombre, descripcion, fecha, lugar, imagen) VALUES
+    (1, 'Gala Inaugural', 'Inicio del festival', '2026-06-15', 'Teatro Principal', 'gala1.jpg');
+
+    INSERT INTO cortometrajes (id_usuario, titulo, descripcion, archivo_video, duracion, categoria, estado, fecha_subida) VALUES
+    (1, 'La Última Escena', 'Drama intenso', 'ultima_escena.mp4', 15, 'Drama', 'Aceptado', now());
+
+    INSERT INTO premios (nombre_premio, descripcion, categoria) VALUES
+    ('Mejor Corto', 'Premio al mejor cortometraje', 'General');
+
+    INSERT INTO candidaturas (id_corto, id_premio, estado_candidatura) VALUES
+    (1, 1, 'Pendiente');
+
+    INSERT INTO premios_otorgados (id_premio, id_corto, id_gala, fecha_otorgado) VALUES
+    (1, 1, 1, now());
+
+    INSERT INTO votos (id_organizador, id_corto, puntuacion, fecha_voto) VALUES
+    (1, 1, 9, now());
+
+    INSERT INTO noticias (id_organizador, titulo, contenido, fecha_publicacion) VALUES
+    (1, 'Arranca el Festival de Cine 2026', 'Ya está todo preparado para el festival.', now());
+    ";
+
+    if ($conexion->multi_query($inserts)) {
+        do { } while ($conexion->more_results() && $conexion->next_result());
+        echo "<p>Datos insertados correctamente con contraseñas hasheadas.</p>";
+    } else {
+        echo "<p>Error al insertar los datos: {$conexion->error}</p>";
+    }
+
 } else {
     echo "<p>La tabla 'usuarios' ya existe.</p>";
 }
