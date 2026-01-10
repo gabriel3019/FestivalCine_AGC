@@ -97,6 +97,43 @@ h2 {
     margin-bottom: 25px;
 }
 
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 10;
+    display: block;
+}
+
+/* Formulario centrado */
+.formulario-noticia {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 420px;
+    max-width: 90%;
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 20px;
+    z-index: 101;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+/* Ocultar */
+.oculto {
+    display: none;
+}
+
+
+.botones-form button {
+    margin-right: 10px;
+    padding: 5px 10px;
+}
+
 .btn-anadir {
     background-color: #116ba7;
     color: white;
@@ -122,14 +159,14 @@ h2 {
 }
 
 .noticia {
-   display: flex;
+    display: flex;
     gap: 20px;
     align-items: flex-start;
     position: relative;
     background: white;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
 }
 
 .noticia img {
@@ -146,6 +183,7 @@ h2 {
     flex-direction: column;
     width: 100%;
 }
+
 /* Info: fecha + estado */
 .info {
     display: flex;
@@ -161,9 +199,7 @@ h2 {
 }
 
 
-/* =========================
-   Botones editar / borrar
-========================= */
+/* Botones editar / borrar */
 .acciones {
     position: absolute;
     top: 15px;
@@ -186,9 +222,7 @@ h2 {
     color: #c0392b;
 }
 
-/* =========================
-   Contenido noticia
-========================= */
+/* Contenido noticia */
 .titulo {
     margin: 0 0 10px 0;
     color: #1f2937;
@@ -211,9 +245,7 @@ h2 {
     color: #6b7280;
 }
 
-/* =========================
-   Estados
-========================= */
+/* Estados */
 .estado {
     padding: 5px 12px;
     border-radius: 20px;
@@ -229,4 +261,20 @@ h2 {
 .proceso {
     background-color: #fef3c7;
     color: #92400e;
+}
+
+/* Botones de error */
+
+.error {
+    color: red;
+    font-size: 0.9em;
+    margin-top: 4px;
+    margin-bottom: 10px;
+    line-height: 1.2;
+    padding-left: 2px;
+    /* pequeño indent */
+}
+
+.input-error {
+    border: 1px solid red;
 }

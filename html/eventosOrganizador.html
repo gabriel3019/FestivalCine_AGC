@@ -16,9 +16,9 @@
         <nav>
             <a href="noticiasOrganizador.html">Noticias</a>
             <a href="eventosOrganizador.html">Eventos</a>
-            <a href="#">Votos</a>
             <a href="#">Premios</a>
-            <a href="#">Mensajes</a>
+            <a href="#">Patrocinadores</a>
+            <a href="#">Gala</a>
         </nav>
         <span id="nombreUsuario"></span>
 
@@ -40,13 +40,42 @@
     <h2>Eventos</h2>
 
 
-    <div class="eventos-container" id="eventos-container">
 
-        <div class="acciones-generales">
-            <button id="btnAnadir" class="btn-anadir" name="anadir">+ Añadir evento</button>
-        </div>
 
+    <div class="acciones-generales">
+        <button id="btnAnadir" class="btn-anadir" name="anadir">+ Añadir evento</button>
     </div>
+
+    <div id="formulario-evento" class="formulario-evento oculto">
+        <h3>Añadir evento</h3>
+        <br>
+        <form id="form-evento">
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" name="nombre" required>
+
+            <label for="descripcion">Descripcion:</label>
+            <textarea id="descripcion" name="descripcion" required></textarea>
+
+            <label for="fecha">Fecha:</label>
+            <input type="date" id="fecha" name="fecha" required>
+
+            <label for="lugar">Lugar:</label>
+            <input type="text" id="lugar" name="lugar" required>
+
+            <label for="tipo_evento">Tipo de evento:</label>
+            <input type="text" id="tipo_evento" name="tipo_evento" required>
+
+            <div class="botones-form">
+                <button type="submit">Guardar</button>
+                <button type="button" id="cancelar">Cancelar</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="eventos-container" id="eventos-container"></div>
+
+    <div id="overlay" class="overlay oculto"></div> 
+
     <script src="../js/eventosOrganizador.js"></script>
 </body>
 

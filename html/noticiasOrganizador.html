@@ -16,9 +16,9 @@
         <nav>
             <a href="noticiasOrganizador.html">Noticias</a>
             <a href="eventosOrganizador.html">Eventos</a>
-            <a href="#">Votos</a>
             <a href="#">Premios</a>
-            <a href="#">Mensajes</a>
+            <a href="#">Patrocinadores</a>
+            <a href="#">Gala</a>
         </nav>
         <span id="nombreUsuario"></span>
 
@@ -40,13 +40,34 @@
     <h2>Noticias</h2>
 
 
-    <div class="noticias-container" id="noticias-container">
 
-        <div class="acciones-generales">
-            <button id="btnAnadir" class="btn-anadir" name="anadir">+ Añadir noticia</button>
-        </div>
 
+    <div class="acciones-generales">
+        <button id="btnAnadir" class="btn-anadir" name="anadir">+ Añadir noticia</button>
     </div>
+
+    <div id="formulario-noticia" class="formulario-noticia oculto">
+        <h3>Añadir noticia</h3>
+        <br>
+        <form id="form-noticia">
+            <label for="titulo">Título:</label>
+            <input type="text" id="titulo" name="titulo" required>
+
+            <label for="contenido">Contenido:</label>
+            <textarea id="contenido" name="contenido" rows="4" required></textarea>
+
+            <div class="botones-form">
+                <button type="submit">Guardar</button>
+                <button type="button" id="cancelar">Cancelar</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="noticias-container" id="noticias-container"></div>
+
+
+    <div id="overlay" class="overlay oculto"></div>
+    
     <script src="../js/noticiasOrganizador.js"></script>
 </body>
 

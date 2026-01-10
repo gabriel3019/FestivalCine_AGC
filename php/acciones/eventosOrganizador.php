@@ -7,7 +7,7 @@ session_start();
 require "../BBDD/conecta.php";
 
 if (!isset($_SESSION['id_organizador'])) {
-    $_SESSION['id_organizador'] = 2; // ID de organizador de prueba
+    $_SESSION['id_organizador'] = 1; // ID de organizador de prueba
 }
 
 $idOrganizador = $_SESSION['id_organizador'];
@@ -35,19 +35,31 @@ try {
             break;
 
         case "anadir":
+
+            $idOrganizador = $_SESSION['id_organizador'] ?? 0;
+            error_log("ID organizador en sesión: $idOrganizador");
+
+            // Validar que el ID exista en la base de datos
+            $stmtCheck = $conn->prepare("SELECT COUNT(*) FROM organizador WHERE id_organizador = ?");
+            $stmtCheck->bind_param("i", $idOrganizador);
+            $stmtCheck->execute();
+            $stmtCheck->bind_result($count);
+            $stmtCheck->fetch();
+            $stmtCheck->close();
+
+            if ($count == 0) {
+                echo json_encode([
+                    "success" => false,
+                    "message" => "El organizador con ID $idOrganizador no existe en la base de datos."
+                ]);
+                exit;
+            }
+
             $nombre = $_POST['nombre'] ?? '';
             $descripcion = $_POST['descripcion'] ?? '';
             $fecha = $_POST['fecha'] ?? '';
             $lugar = $_POST['lugar'] ?? '';
             $tipo_evento = $_POST['tipo_evento'] ?? '';
-
-            if ($idOrganizador === 0) {
-                echo json_encode([
-                    "success" => false,
-                    "message" => "Organizador no válido"
-                ]);
-                exit;
-            }
 
             // Validar fecha
             if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $fecha)) {
@@ -80,14 +92,14 @@ try {
             break;
 
         case "editar":
-            $id =  $_POST['id'] ?? 0;
+            $id =  intval($_POST['id'] ?? 0);
             $nombre = $_POST['nombre'] ?? '';
             $descripcion = $_POST['descripcion'] ?? '';
             $fecha = $_POST['fecha'] ?? '';
             $lugar = $_POST['lugar'] ?? '';
             $tipo_evento = $_POST['tipo_evento'] ?? '';
 
-            if ($id === 0) {
+            if ($id <= 0) {
                 throw new Exception("ID inválido");
             }
 
@@ -98,38 +110,46 @@ try {
             );
 
             $stmt->bind_param("sssssi", $nombre, $descripcion, $fecha, $lugar, $tipo_evento, $id);
-            $stmt->execute();
 
-            echo json_encode(["success" => true]);
+
+            if ($stmt->execute()) {
+                echo json_encode(["success" => true]);
+            } else {
+                echo json_encode([
+                    "success" => false,
+                    "message" => $stmt->error
+                ]);
+            }
             break;
 
         case "borrar":
-            $id = $_POST['id'] ?? 0;
+            $id = intval($_POST['id'] ?? 0);
 
-            if ($id === 0) {
-                throw new Exception("ID inválido");
+            if ($id == 0) {
+                echo json_encode([
+                    "success" => false,
+                    "message" => "ID no recibido"
+                ]);
+                exit;
             }
 
-            $stmt = $conn->prepare("DELETE FROM galas WHERE id_evento=?");
+            $sql = "DELETE FROM eventos WHERE id_evento = ?";
+            $stmt = $conn->prepare($sql);
             $stmt->bind_param("i", $id);
             $stmt->execute();
 
-
-            $stmt = $conn->prepare(
-                "DELETE FROM eventos WHERE id_evento=?"
-            );
-            $stmt->bind_param("i", $id);
-
-            $stmt->execute();
-
-            echo json_encode(["success" => $stmt->execute()]);
-            break;
-
-        default:
-            echo json_encode([
-                "success" => false,
-                "message" => "Acción no válida"
-            ]);
+            if ($stmt->affected_rows > 0) {
+                echo json_encode([
+                    "success" => true,
+                    "message" => "Evento eliminado correctamente"
+                ]);
+            } else {
+                echo json_encode([
+                    "success" => false,
+                    "message" => "No se pudo eliminar el evento"
+                ]);
+            }
+            exit;
     }
 } catch (Throwable $e) {
 

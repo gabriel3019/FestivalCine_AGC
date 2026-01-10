@@ -2,8 +2,20 @@ document.addEventListener("DOMContentLoaded", () => {
     cargarNoticias();
 
     const contenedor = document.querySelector(".noticias-container");
-    const btnAnadir = document.querySelector(".btn-anadir");
-    const accionesGenerales = btnAnadir.parentElement; // guardamos el div que contiene el botón
+    const accionesGenerales = document.querySelector(".acciones-generales");
+
+    const btnAnadir = document.querySelector("#btnAnadir");
+    const formularioNoticia = document.querySelector("#formulario-noticia");
+    const overlay = document.getElementById("overlay");
+    const formNoticia = document.querySelector("#form-noticia");
+    const btnCancelar = document.querySelector("#cancelar");
+
+    const titulo = document.getElementById("titulo");
+    const contenido = document.getElementById("contenido");
+    const form = document.getElementById("form-noticia");
+
+    console.log("btnAnadir:", btnAnadir);
+    console.log("formularioNoticia:", formularioNoticia);
 
     // ------------------ FUNCIONES ------------------
     async function enviarNoticia(data) {
@@ -36,7 +48,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         const data = await res.json();
-
         if (!data.success) return;
 
         contenedor.innerHTML = "";
@@ -45,7 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
         data.noticias.forEach(noticia => {
             const div = document.createElement("div");
             div.classList.add("noticia");
-            div.dataset.id = noticia.id;
+            div.dataset.id = noticia.id_noticia;
 
             div.innerHTML = `
             <div class="acciones">
@@ -55,36 +66,104 @@ document.addEventListener("DOMContentLoaded", () => {
             <img src="../css/imagenes/fondo.png">
             <div class="contenido">
                 <h3 class="titulo">${noticia.titulo}</h3>
-                <p class="contenido">${noticia.contenido}</p>
+                <p class="texto">${noticia.contenido}</p>
                 <div class="info">
                     <span class="fecha">${new Date(noticia.fecha_publicacion).toLocaleDateString("es-ES")}</span>
                 </div>
             </div>
         `;
-
             contenedor.appendChild(div);
         });
     }
 
-    // ------------------ EVENTO CLICK ------------------
+    // Mostrar formulario
+    btnAnadir.addEventListener("click", () => {
+        formularioNoticia.classList.remove("oculto");
+        overlay.classList.remove("oculto");
+    });
+
+    // Cancelar formulario
+    btnCancelar.addEventListener("click", () => {
+        formularioNoticia.classList.add("oculto");
+        overlay.classList.add("oculto");
+    });
+
+
+    /* Cerrar si se pulsa fuera */
+    overlay.addEventListener("click", () => {
+        formularioNoticia.classList.add("oculto");
+        overlay.classList.add("oculto");
+    });
+
+    // Enviar formulario
+    formNoticia.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const tituloInput = formNoticia.titulo;
+        const contenidoInput = formNoticia.contenido;
+        const titulo = tituloInput.value.trim();
+        const contenido = contenidoInput.value.trim();
+
+        let valido = true;
+
+        // Validación con mensajes debajo de los campos
+        if (!titulo) {
+            mostrarError(tituloInput, "Debes escribir un título");
+            valido = false;
+        } else {
+            quitarError(tituloInput);
+        }
+
+        if (!contenido) {
+            mostrarError(contenidoInput, "Debes escribir contenido");
+            valido = false;
+        } else {
+            quitarError(contenidoInput);
+        }
+
+        if (!valido) return; // si hay errores, no continuamos
+
+        // Llamada al servidor
+        const data = await enviarNoticia({
+            action: "anadir",
+            titulo,
+            contenido
+        });
+
+        if (data.success) {
+            cargarNoticias();
+
+            // Cierra el formulario y el overlay automáticamente
+            formularioNoticia.classList.add("oculto");
+            overlay.classList.add("oculto");
+
+            // Limpiar el formulario y errores
+            formNoticia.reset();
+            quitarError(tituloInput);
+            quitarError(contenidoInput);
+        } else {
+            alert(data.message || "Error al añadir noticia");
+        }
+    });
+
+    // Editar y borrar
     contenedor.addEventListener("click", async (e) => {
         const noticia = e.target.closest(".noticia");
         if (!noticia) return;
 
         const id = noticia.dataset.id;
 
-        // ---- BORRAR ----
         if (e.target.classList.contains("btn-eliminar")) {
             if (!confirm("¿Eliminar noticia?")) return;
+
             const data = await enviarNoticia({ action: "borrar", id });
             if (data.success) noticia.remove();
-            else alert(data.message || "Error al borrar noticia");
+            else alert(data.message || "No se pudo borrar la noticia");
         }
 
-        // ---- EDITAR ----
         if (e.target.classList.contains("btn-editar")) {
             const titulo = noticia.querySelector(".titulo").textContent;
-            const contenido = noticia.querySelector(".contenido").textContent;
+            const contenido = noticia.querySelector(".texto").textContent;
 
             const nuevoTitulo = prompt("Nuevo título", titulo);
             if (!nuevoTitulo) return;
@@ -96,37 +175,78 @@ document.addEventListener("DOMContentLoaded", () => {
                 action: "editar",
                 id,
                 titulo: nuevoTitulo,
-                contenido: nuevoContenido,
-                id_organizador: 1
+                contenido: nuevoContenido
             });
 
             if (data.success) {
                 noticia.querySelector(".titulo").textContent = nuevoTitulo;
-                noticia.querySelector(".contenido").textContent = nuevoContenido;
+                noticia.querySelector(".texto").textContent = nuevoContenido;
             } else {
                 alert(data.message || "Error al editar noticia");
             }
         }
     });
 
-    // ------------------ AÑADIR ------------------
-    btnAnadir.addEventListener("click", async () => {
-        const titulo = prompt("Título de la noticia");
-        if (!titulo) return;
-
-        const contenido = prompt("Contenido de la noticia");
-        if (!contenido) return;
-
-        const data = await enviarNoticia({
-            action: "anadir",
-            titulo: titulo,
-            contenido: contenido
-        });
-
-        if (data.success) {
-            cargarNoticias();
+    // Función para mostrar mensaje de error
+    function mostrarError(input, mensaje) {
+        // Elimina error anterior si existe
+        let error = input.nextElementSibling;
+        if (error && error.classList.contains("error")) {
+            error.textContent = mensaje;
         } else {
-            alert(data.message || "Error al añadir noticia");
+            error = document.createElement("div");
+            error.classList.add("error");
+            error.textContent = mensaje;
+            input.parentNode.insertBefore(error, input.nextSibling);
+        }
+        input.classList.add("input-error");
+    }
+
+    function quitarError(input) {
+        let error = input.nextElementSibling;
+        if (error && error.classList.contains("error")) {
+            error.remove();
+        }
+        input.classList.remove("input-error");
+    }
+
+    // Validación en blur (cuando se sale del campo)
+    titulo.addEventListener("blur", () => {
+        if (titulo.value.trim() === "") {
+            mostrarError(titulo, "Debes escribir un título");
+        } else {
+            quitarError(titulo);
+        }
+    });
+
+    contenido.addEventListener("blur", () => {
+        if (contenido.value.trim() === "") {
+            mostrarError(contenido, "Debes escribir contenido");
+        } else {
+            quitarError(contenido);
+        }
+    });
+
+    // Validación al enviar el formulario
+    form.addEventListener("submit", (e) => {
+        let valido = true;
+
+        if (titulo.value.trim() === "") {
+            mostrarError(titulo, "Debes escribir un título");
+            valido = false;
+        } else {
+            quitarError(titulo);
+        }
+
+        if (contenido.value.trim() === "") {
+            mostrarError(contenido, "Debes escribir contenido");
+            valido = false;
+        } else {
+            quitarError(contenido);
+        }
+
+        if (!valido) {
+            e.preventDefault(); // Evita enviar si hay errores
         }
     });
 });

@@ -6,10 +6,7 @@ header('Content-Type: application/json');
 session_start();
 require "../BBDD/conecta.php";
 
-if (!isset($_SESSION['id_organizador'])) {
-    $_SESSION['id_organizador'] = 2; // ID de organizador de prueba
-}
-
+$_SESSION['id_organizador'] = 1; 
 $idOrganizador = $_SESSION['id_organizador'];
 
 $action = $_POST['action'] ?? '';
@@ -35,20 +32,32 @@ try {
             break;
 
         case "anadir":
-            $titulo = $_POST['titulo'] ?? '';
-            $contenido = $_POST['contenido'] ?? '';
 
-            if ($idOrganizador === 0) {
+            $idOrganizador = $_SESSION['id_organizador'] ?? 0;
+            error_log("ID organizador en sesión: $idOrganizador");
+
+            // Validar que el ID exista en la base de datos
+            $stmtCheck = $conn->prepare("SELECT COUNT(*) FROM organizador WHERE id_organizador = ?");
+            $stmtCheck->bind_param("i", $idOrganizador);
+            $stmtCheck->execute();
+            $stmtCheck->bind_result($count);
+            $stmtCheck->fetch();
+            $stmtCheck->close();
+
+            if ($count == 0) {
                 echo json_encode([
                     "success" => false,
-                    "message" => "Organizador no valido"
+                    "message" => "El organizador con ID $idOrganizador no existe en la base de datos."
                 ]);
                 exit;
             }
 
+            $titulo = $_POST['titulo'] ?? '';
+            $contenido = $_POST['contenido'] ?? '';
+
             $stmt = $conn->prepare(
                 "INSERT INTO noticias (id_organizador, titulo, contenido, fecha_publicacion) 
-                VALUES (?, ?, ?, NOW())"
+         VALUES (?, ?, ?, NOW())"
             );
 
             if (!$stmt) {
@@ -69,14 +78,15 @@ try {
                     "message" => $stmt->error
                 ]);
             }
+
             break;
 
         case "editar":
-            $id = $_SESSION['id'] ?? 0;
+            $id = intval($_POST['id'] ?? 0);
             $titulo = $_POST['titulo'] ?? '';
             $contenido = $_POST['contenido'] ?? '';
 
-            if ($id === 0) {
+            if ($id <= 0) {
                 throw new Exception("ID inválido");
             }
 
@@ -87,31 +97,45 @@ try {
             );
 
             $stmt->bind_param("ssi", $titulo, $contenido, $id);
-            $stmt->execute();
 
-            echo json_encode(["success" => true]);
+            if ($stmt->execute()) {
+                echo json_encode(["success" => true]);
+            } else {
+                echo json_encode([
+                    "success" => false,
+                    "message" => $stmt->error
+                ]);
+            }
             break;
 
         case "borrar":
-            $id = $_POST['id'] ?? 0;
+            $id = intval($_POST['id'] ?? 0);
 
-            if ($id === 0) {
-                throw new Exception("ID inválido");
+            if ($id == 0) {
+                echo json_encode([
+                    "success" => false,
+                    "message" => "ID no recibido"
+                ]);
+                exit;
             }
 
-            $stmt = $conn->prepare(
-                "DELETE FROM noticias WHERE id_noticia=?"
-            );
+            $sql = "DELETE FROM noticias WHERE id_noticia = ?";
+            $stmt = $conn->prepare($sql);
             $stmt->bind_param("i", $id);
+            $stmt->execute();
 
-            echo json_encode(["success" => $stmt->execute()]);
-            break;
-
-        default:
-            echo json_encode([
-                "success" => false,
-                "message" => "Acción no válida"
-            ]);
+            if ($stmt->affected_rows > 0) {
+                echo json_encode([
+                    "success" => true,
+                    "message" => "Noticia eliminada correctamente"
+                ]);
+            } else {
+                echo json_encode([
+                    "success" => false,
+                    "message" => "No se pudo eliminar la noticia"
+                ]);
+            }
+            exit;
     }
 } catch (Throwable $e) {
 
