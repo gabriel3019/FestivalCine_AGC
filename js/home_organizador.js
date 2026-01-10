@@ -76,4 +76,53 @@ document.addEventListener("DOMContentLoaded", function () {
             profileMenu.style.display = "none";
         }
     });
+
+    fetch("../php/acciones/home_organizador.php")
+        .then(res => res.json())
+        .then(data => {
+
+            // NOTICIAS
+            let html = "<tr><th>Título</th><th>Contenido</th></tr>";
+            data.noticias.forEach(n => {
+                html += `<tr><td>${n.titulo}</td><td>${n.contenido}</td></tr>`;
+            });
+            noticias.innerHTML = html;
+
+            // EVENTOS
+            html = "<tr><th>Nombre</th><th>Fecha</th></tr>";
+            data.eventos.forEach(e => {
+                html += `<tr><td>${e.nombre}</td><td>${e.fecha}</td></tr>`;
+            });
+            eventos.innerHTML = html;
+
+            // PREMIOS
+            html = "<tr><th>Premio</th><th>Ganador</th></tr>";
+            data.premios.forEach(p => {
+                html += `<tr><td>${p.nombre}</td><td>${p.ganador}</td></tr>`;
+            });
+            premios.innerHTML = html;
+
+            // PATROCINADORES
+            html = "<tr><th>Logo</th><th>Nombre</th></tr>";
+            data.patrocinadores.forEach(p => {
+                html += `<tr><td>${p.logo}</td><td>${p.nombre}</td></tr>`;
+            });
+            patrocinadores.innerHTML = html;
+
+            // GALA
+            html = "<tr><th>Fecha</th><th>Hora</th><th>Lugar</th><th>Evento</th></tr>";
+            data.gala.forEach(g => {
+                html += `
+        <tr>
+            <td>${g.fecha}</td>
+            <td>${g.hora}</td>
+            <td>${g.lugar}</td>
+            <td>${g.evento}</td>
+        </tr>`;
+            });
+            gala.innerHTML=html;
+
+        });
+
 });
+

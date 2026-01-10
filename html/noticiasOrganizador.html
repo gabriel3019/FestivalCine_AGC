@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Noticias</title>
+    <link rel="stylesheet" href="../css/noticiasOrganizador.css">
+</head>
+
+<body>
+
+    <header>
+        <div class="logo">
+            <img src="../css/imagenes/Universidad-europea-logo_poc9mEM.2e16d0ba.fill-767x384.png" alt="Logo ">
+        </div>
+        <nav>
+            <a href="noticiasOrganizador.html">Noticias</a>
+            <a href="eventosOrganizador.html">Eventos</a>
+            <a href="#">Premios</a>
+            <a href="#">Patrocinadores</a>
+            <a href="#">Gala</a>
+        </nav>
+        <span id="nombreUsuario"></span>
+
+        <div class="auth">
+            <!-- Icono perfil -->
+            <div id="icono_persona" class="icono_persona">
+                👤
+                <div id="menu" class="menu">
+                    <a href="#" id="cerrar_sesion">Crear nueva cuenta</a>
+                    <a href="#" id="volver_home">Volver a home</a>
+                    <a href="#" id="cerrar_sesion">Cerrar sesión</a>
+                </div>
+            </div>
+
+
+        </div>
+    </header>
+    <br>
+    <h2>Noticias</h2>
+
+
+
+
+    <div class="acciones-generales">
+        <button id="btnAnadir" class="btn-anadir" name="anadir">+ Añadir noticia</button>
+    </div>
+
+    <div id="formulario-noticia" class="formulario-noticia oculto">
+        <h3>Añadir noticia</h3>
+        <br>
+        <form id="form-noticia">
+            <label for="titulo">Título:</label>
+            <input type="text" id="titulo" name="titulo" required>
+
+            <label for="contenido">Contenido:</label>
+            <textarea id="contenido" name="contenido" rows="4" required></textarea>
+
+            <div class="botones-form">
+                <button type="submit">Guardar</button>
+                <button type="button" id="cancelar">Cancelar</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="noticias-container" id="noticias-container"></div>
+
+
+    <div id="overlay" class="overlay oculto"></div>
+    
+    <script src="../js/noticiasOrganizador.js"></script>
+</body>
+
+</html>
