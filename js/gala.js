@@ -49,9 +49,84 @@ function listarGanadoresGala() {
 listarGanadoresGala();
 
 // Funciones pre gala
-function listarSecciones() {
+function cargarSecciones() {
+    var formData = new FormData();
 
+    formData.append("funcion", "cargarSecciones");
+    fetch("../php/acciones/gala.php", {
+        method: "POST",
+        body: formData
+    })
+        .then(r => r.json())
+        .then(data => {
+            lista.innerHTML = "";
+            data.forEach(elemnto => {
+                lista.innerHTML += `
+                <div class="evento">
+                    <b>${elemnto.nombre}</b><br>
+                    ${elemnto.hora} - ${elemnto.lugar}<br>
+                    <button onclick="editar(${elemnto.id},'${elemnto.nombre}','${elemnto.hora}','${elemnto.lugar}')">Editar</button>
+                    <button onclick="borrar(${elemnto.id})">Borrar</button>
+                </div>`;
+            });
+        });
 }
+
+function editar(i, n, h, l) {
+    id.value = i;
+    nombre.value = n;
+    hora.value = h;
+    lugar.value = l;
+}
+
+$btnGuardarSeccion = document.getElementById("guardarSecciones");
+$btnGuardarSeccion.addEventListener("click", () => {
+    var formData = new FormData();
+
+    // Decidir función según si hay id
+    if (id.value) {
+        formData.append("funcion", "editarSeccion");
+        formData.append("id", id.value);
+    } else {
+        formData.append("funcion", "nuevaSeccion");
+    }
+
+    // Datos del formulario
+    formData.append("nombre", nombre.value);
+    formData.append("hora", hora.value);
+    formData.append("lugar", lugar.value);
+
+    // Enviar al PHP
+    fetch("../php/acciones/gala.php", {
+        method: "POST",
+        body: formData
+    })
+        .then(() => {
+            limpiar();
+            cargarSecciones();
+        });
+});
+
+function borrar(id) {
+    var formData = new FormData();
+    formData.append("funcion", "borrarSeccion");
+    formData.append("id", id);
+
+    fetch("../php/acciones/gala.php", {
+        method: "POST",
+        body: formData
+    })
+    .then(() => cargarSecciones());
+}
+
+function limpiar() {
+    id.value = "";
+    nombre.value = "";
+    hora.value = "";
+    lugar.value = "";
+}
+
+cargarSecciones();
 
 // Funciones pos gala
 $resumen = document.getElementById("resumen");

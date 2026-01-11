@@ -14,51 +14,26 @@
     <br>
     <button id="cambio">Cambiar formato</button>
     <div id="pre">
-        <div id="secciones">
-            <div class="seccion">
-                <img src="" alt="Foto universidad">
-                <br>
-                <video autoplay>
-                    <source src="" type="">
-                </video>
-                <p>
-                    Esta es la sección 1
-                </p>
+        <h1>Pre-Gala del Festival</h1>
 
-                <button id="eliminarSeccion">Eliminar sección</button>
-                <button id="editarInfoSeccion">Editar sección</button>
-            </div>
-            <p></p>
-            <div class="seccion" id="2">
-                <img src="" alt="Foto universidad">
-                <br>
-                <video autoplay>
-                    <source src="" type="">
-                </video>
-                <p>
-                    Estas es la sección 2
-                </p>
+        <section>
+            <h2>Añadir / Editar sección</h2>
+            <input type="hidden" id="id">
+            <input id="nombre" placeholder="Nombre de la sección">
+            <input id="hora" type="time">
+            <input id="lugar" placeholder="Lugar">
+            <button id="guardarSecciones">Guardar</button>
+        </section>
 
-                <button id="eliminarSeccion">Eliminar sección</button>
-                <button id="editarInfoSeccion">Editar sección</button>
-            </div>
-        </div>
-        <br>
-        <button id="nuevaSeccion"><a href="../html/formularioSeccion.html">Añadir sección</a></button>
+        <section>
+            <h2>Secciones del evento</h2>
+            <div id="lista"></div>
+        </section>
     </div>
 
     <div id="pos">
-        <img src="" alt="Foto 1 Gala">
-        <br>
-        <img src="" alt="Foto 2 Gala">
-        <br>
-        <img src="" alt="Foto 3 Gala">
-        <br>
-        <p>
-            Texto pos gala
-        </p>
-        <button id="btn-resumen">Añadir un resumen</button>
         <p></p>
+        <button id="btn-resumen">Añadir un resumen</button>
         <div id="resumen" action="" method="post">
             <textarea placeholder="Pon aquí tu resumen" id="#texto-resumen"></textarea>
             <br>
