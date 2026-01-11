@@ -1,40 +1,44 @@
 <?php
-
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 header("Content-Type: application/json");
+session_start();
+$idOrganizador = $_SESSION['usuario']['id'];
+
 
 require "../BBDD/conecta.php";
 
-$data = [];
+// Inicializamos arrays
+$data = [
+    "noticias" => [],
+    "eventos" => [],
+    "premios" => [],
+    "patrocinadores" => [],
+    "galas" => []
+];
 
-//Noticias
+// NOTICIAS
 $r = $conn->query("SELECT * FROM noticias");
 while ($f = $r->fetch_assoc()) $data["noticias"][] = $f;
 
-
-//Eventos
+// EVENTOS
 $r = $conn->query("SELECT * FROM eventos");
 while ($f = $r->fetch_assoc()) $data["eventos"][] = $f;
 
-
-//Premios
+// PREMIOS
 $r = $conn->query("SELECT * FROM premios");
 while ($f = $r->fetch_assoc()) $data["premios"][] = $f;
 
-
-//Patrocinadores
+// PATROCINADORES
 $r = $conn->query("SELECT * FROM patrocinadores");
 while ($f = $r->fetch_assoc()) $data["patrocinadores"][] = $f;
 
-
-//Gala
+// GALAS
 $r = $conn->query("SELECT * FROM galas");
 while ($f = $r->fetch_assoc()) $data["galas"][] = $f;
 
-
+// Devolvemos JSON
 echo json_encode($data, JSON_UNESCAPED_UNICODE);
 
 $conn->close();
-
 ?>
