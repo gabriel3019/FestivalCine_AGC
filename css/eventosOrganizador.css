@@ -70,7 +70,7 @@ header nav a:hover {
     top: 50px;
     background: white;
     border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
     min-width: 140px;
     overflow: hidden;
     z-index: 10;
@@ -125,6 +125,38 @@ h2 {
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
 }
 
+.formulario-evento form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.formulario-evento label {
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.formulario-evento input,
+.formulario-evento textarea {
+    width: 100%;
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    resize: vertical;
+}
+
+.formulario-evento textarea {
+    min-height: 120px;
+}
+
+.formulario-evento .botones-form {
+    margin-top: 15px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
 /* Ocultar */
 .oculto {
     display: none;
@@ -169,7 +201,7 @@ h2 {
     background: white;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
 }
 
 .evento img {

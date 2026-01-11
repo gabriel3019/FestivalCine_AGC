@@ -7,7 +7,7 @@ session_start();
 require "../BBDD/conecta.php";
 
 if (!isset($_SESSION['id_organizador'])) {
-    $_SESSION['id_organizador'] = 1; // ID de organizador de prueba
+    $_SESSION['id_organizador'] = 1; 
 }
 
 $idOrganizador = $_SESSION['id_organizador'];
@@ -39,7 +39,6 @@ try {
             $idOrganizador = $_SESSION['id_organizador'] ?? 0;
             error_log("ID organizador en sesión: $idOrganizador");
 
-            // Validar que el ID exista en la base de datos
             $stmtCheck = $conn->prepare("SELECT COUNT(*) FROM organizador WHERE id_organizador = ?");
             $stmtCheck->bind_param("i", $idOrganizador);
             $stmtCheck->execute();
@@ -63,7 +62,7 @@ try {
 
             // Validar fecha
             if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $fecha)) {
-                $fecha = date('Y-m-d'); // fecha actual si no es válida
+                $fecha = date('Y-m-d'); 
             }
 
             $stmt = $conn->prepare(

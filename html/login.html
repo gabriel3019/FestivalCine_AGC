@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
     <link rel="stylesheet" href="../css/login.css">
 </head>
+
 <body>
 
 
@@ -19,18 +21,20 @@
             <!-- Formulario -->
             <form id="loginForm">
                 <label>Correo electrónico</label>
-                <input type="email" name="email"  placeholder="Introduce tu correo" required>
+                <input type="email" name="email" placeholder="Introduce tu correo" required>
+                <p class="error" id="emailError"></p>
 
 
                 <label>Contraseña</label>
-                <input type="password" name="password"  placeholder="Introduce tu contraseña" required>
+                <input type="password" name="password" placeholder="Introduce tu contraseña" required>
+                <p class="error" id="passwordError"></p>
 
 
                 <button type="submit" class="btn primary">Iniciar sesión</button>
             </form>
 
 
-           <p class="login-link">
+            <p class="login-link">
                 ¿No tienes cuenta?
                 <a href="../html/registro.html">Crear cuenta</a>
             </p>
@@ -42,4 +46,5 @@
     <script src="../js/login.js"></script>
 
 </body>
+
 </html>

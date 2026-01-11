@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log("btnAnadir:", btnAnadir);
     console.log("formularioNoticia:", formularioNoticia);
 
-    // ------------------ FUNCIONES ------------------
+    // Funciones
     async function enviarNoticia(data) {
         try {
             const formData = new FormData();
@@ -37,7 +37,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // ------------------ CARGAR NOTICIAS ------------------
     async function cargarNoticias() {
         const formData = new FormData();
         formData.append("action", "listar");
@@ -89,7 +88,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 
-    /* Cerrar si se pulsa fuera */
+    //Cerrar si se pulsa fuera 
     overlay.addEventListener("click", () => {
         formularioNoticia.classList.add("oculto");
         overlay.classList.add("oculto");
@@ -210,7 +209,7 @@ document.addEventListener("DOMContentLoaded", () => {
         input.classList.remove("input-error");
     }
 
-    // Validación en blur (cuando se sale del campo)
+    // Validación cuando se sale del campo
     titulo.addEventListener("blur", () => {
         if (titulo.value.trim() === "") {
             mostrarError(titulo, "Debes escribir un título");

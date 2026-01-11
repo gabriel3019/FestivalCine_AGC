@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     profileIcon.addEventListener("click", function (event) {
-        event.stopPropagation(); // Evita que se cierre al hacer click en el document
+        event.stopPropagation(); 
         profileMenu.style.display = profileMenu.style.display === "block" ? "none" : "block";
     });
 

@@ -36,7 +36,7 @@ try {
             $idOrganizador = $_SESSION['id_organizador'] ?? 0;
             error_log("ID organizador en sesión: $idOrganizador");
 
-            // Validar que el ID exista en la base de datos
+           
             $stmtCheck = $conn->prepare("SELECT COUNT(*) FROM organizador WHERE id_organizador = ?");
             $stmtCheck->bind_param("i", $idOrganizador);
             $stmtCheck->execute();

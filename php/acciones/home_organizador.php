@@ -8,27 +8,27 @@ require "../BBDD/conecta.php";
 
 $data = [];
 
-/* NOTICIAS */
+//Noticias
 $r = $conn->query("SELECT * FROM noticias");
 while ($f = $r->fetch_assoc()) $data["noticias"][] = $f;
 
 
-/* EVENTOS */
+//Eventos
 $r = $conn->query("SELECT * FROM eventos");
 while ($f = $r->fetch_assoc()) $data["eventos"][] = $f;
 
 
-/* PREMIOS */
+//Premios
 $r = $conn->query("SELECT * FROM premios");
 while ($f = $r->fetch_assoc()) $data["premios"][] = $f;
 
 
-/* PATROCINADORES */
+//Patrocinadores
 $r = $conn->query("SELECT * FROM patrocinadores");
 while ($f = $r->fetch_assoc()) $data["patrocinadores"][] = $f;
 
 
-/* GALA */
+//Gala
 $r = $conn->query("SELECT * FROM galas");
 while ($f = $r->fetch_assoc()) $data["galas"][] = $f;
 

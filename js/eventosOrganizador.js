@@ -17,10 +17,16 @@ document.addEventListener("DOMContentLoaded", () => {
     const tipo_evento = document.getElementById("tipo_evento");
     const form = document.getElementById("form-evento");
 
+    const inputFecha = document.getElementById("fecha");
+
     console.log("btnAnadir:", btnAnadir);
     console.log("formularioEvento:", formularioEvento);
 
-    // ------------------ FUNCIONES ------------------
+    if (inputFecha) {
+        const hoy = new Date().toISOString().split("T")[0];
+        inputFecha.min = hoy;
+    }
+
     async function enviarEvento(data) {
         try {
             const formData = new FormData();
@@ -40,7 +46,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // ------------------ CARGAR EVENTOS ------------------
     async function cargarEventos() {
         const formData = new FormData();
         formData.append("action", "listar");
@@ -95,7 +100,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 
-    /* Cerrar si se pulsa fuera */
+    //Cerrar si se pulsa fuera
     overlay.addEventListener("click", () => {
         formularioEvento.classList.add("oculto");
         overlay.classList.add("oculto");
@@ -119,7 +124,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         let valido = true;
 
-        // Validación con mensajes debajo de los campos
+        // Validación de error
         if (!nombre) {
             mostrarError(nombreInput, "Debes escribir un nombre");
             valido = false;
@@ -172,7 +177,6 @@ document.addEventListener("DOMContentLoaded", () => {
         if (data.success) {
             cargarEventos();
 
-            // Cierra el formulario y el overlay automáticamente
             formularioEvento.classList.add("oculto");
             overlay.classList.add("oculto");
 
@@ -271,7 +275,7 @@ document.addEventListener("DOMContentLoaded", () => {
         input.classList.remove("input-error");
     }
 
-    // Validación en blur (cuando se sale del campo)
+    // Validación cuando se sale del campo
     nombre.addEventListener("blur", () => {
         if (nombre.value.trim() === "") {
             mostrarError(nombre, "Debes escribir un nombre");

@@ -123,11 +123,42 @@ h2 {
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
 }
 
+.formulario-noticia form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.formulario-noticia label {
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.formulario-noticia input,
+.formulario-noticia textarea {
+    width: 100%;
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    resize: vertical;
+}
+
+.formulario-noticia textarea {
+    min-height: 120px;
+}
+
 /* Ocultar */
 .oculto {
     display: none;
 }
 
+.botones-form {
+    margin-top: 15px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
 
 .botones-form button {
     margin-right: 10px;
