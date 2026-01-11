@@ -15,7 +15,7 @@
     <button id="cambio">Cambiar formato</button>
     <div id="pre">
         <div id="secciones">
-            <div class="seccion" id="1">
+            <div class="seccion">
                 <img src="" alt="Foto universidad">
                 <br>
                 <video autoplay>
@@ -24,10 +24,6 @@
                 <p>
                     Esta es la sección 1
                 </p>
-
-                <select id="galas">
-                    <option value="">Elige una gala</option>
-                </select>
 
                 <button id="eliminarSeccion">Eliminar sección</button>
                 <button id="editarInfoSeccion">Editar sección</button>
@@ -48,8 +44,9 @@
             </div>
         </div>
         <br>
-        <button id="nuevaSeccion">Añadir sección</button>
+        <button id="nuevaSeccion"><a href="../html/formularioSeccion.html">Añadir sección</a></button>
     </div>
+
     <div id="pos">
         <img src="" alt="Foto 1 Gala">
         <br>
@@ -60,10 +57,25 @@
         <p>
             Texto pos gala
         </p>
-        <button id="editarTexto">Editar el texto</button>
+        <button id="btn-resumen">Añadir un resumen</button>
+        <p></p>
+        <div id="resumen" action="" method="post">
+            <textarea placeholder="Pon aquí tu resumen" id="#texto-resumen"></textarea>
+            <br>
+            <button id="btn-eliminarR">Eliminar resumen</button>
+            <button id="btn-subirR" type="submit">Subir resumen</button>
+        </div>
         <br>
-        <button id="nuevaImg">Añadir imagen</button>
+        <!-- Selector de archivos -->
+        Sube una imagen:
+        <input type="file" id="inputImagen" accept="image/*">
+
+        <!-- Contenedor donde se mostrarán las imágenes -->
+        <div id="galeria"></div>
         <br>
+        <select id="galas">
+            <option value="">Ganadores</option>
+        </select>
         <button id="edicionAnterior">Añadir a ediciones anteriores</button>
     </div>
 

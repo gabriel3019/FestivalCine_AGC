@@ -1,7 +1,12 @@
 /* Por defecto el div de la pos gala esta escondido*/
 #pos{
-    display: block;
-}
-#pre{
+    display: none;
+};
 
+#pre{
+    display: block;
+};
+
+#resumen{
+    display: none;
 }

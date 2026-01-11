@@ -17,10 +17,10 @@ document.getElementById("cambio").addEventListener("click", () => {
     }
 });
 
-function listarGala(){
+function listarGanadoresGala() {
     var formData = new FormData();
 
-    formData.append("funcion", "listarGala");
+    formData.append("funcion", "listarGanadoresGala");
     fetch("../php/acciones/gala.php", {
         method: "POST",
         body: formData
@@ -34,7 +34,7 @@ function listarGala(){
             var SelectGala = document.querySelector('#galas');
             data.forEach(element => {
 
-                var html = `<option>${element.nombre} nivel:(${element.descripcion})</option>`;
+                var html = `<option> id_premio: ${element.id_premio} id_corto:(${element.id_corto})</option>`;
 
                 SelectGala.innerHTML += html;
             });
@@ -46,39 +46,46 @@ function listarGala(){
         })
 }
 
-listarGala();
+listarGanadoresGala();
 
-/* Funciones pre gala
+// Funciones pre gala
 function listarSecciones() {
 
 }
 
 // Funciones pos gala
-function listarSeccionesPos() {
-    var formData = new formData();
+$resumen = document.getElementById("resumen");
+$Btnresumen = document.getElementById("btn-resumen").addEventListener("click", () => {
+    $resumen.style.display = "block";
+});
 
-    formData.append("funcion", "listarSeccionesPos");
-    fetch("../php/acciones/gala.php", {
-        method: "POST",
-        body: formData
-    })
+$eliminarResumen = document.getElementById("btn-eliminarR").addEventListener("click", () => {
+    $resumen.style.display = "none";
 
-        .then(function (response) {
-            return response.json();
-        })
+    SelectResumen = document.getElementById('#texto-resumen');
+});
 
-        .then(function (data) {
-            var SelectUsr = document.querySelector('#nombreU');
-            data.forEach(element => {
+// Añadir las imagenes al html
+// Recogo el imput y la galeria de las imagenes
+const inputImagen = document.getElementById("inputImagen");
+const galeria = document.getElementById("galeria");
 
-                var html = `<option value="${element.id_usuario}" nivel="${element.nivel}">${element.apodo} nivel:(${element.nivel})</option>`;
+// Detecta cuando un usuario selecciona una imagen
+inputImagen.addEventListener("change", function () {
+    const archivo = inputImagen.files[0];
 
-                SelectUsr.innerHTML += html;
-            });
-        })
+    if (archivo) {
+        // Crear una etiqueta <img>
+        const img = document.createElement("img");
 
-        .catch(function (error) {
-            console.error("Errorrrrrrr en la solicitud ", error);
-            alert("Error al hacer la solicitud. Vete a la consola para ver que ha pasado");
-        })
-}*/
+        // Crear una URL temporal para la imagen
+        img.src = URL.createObjectURL(archivo);
+
+        // Estilo simple
+        img.style.width = "200px";
+        img.style.margin = "10px";
+
+        // Añadir la imagen a la galería
+        galeria.appendChild(img);
+    }
+});
