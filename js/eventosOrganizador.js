@@ -20,6 +20,48 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log("btnAnadir:", btnAnadir);
     console.log("formularioEvento:", formularioEvento);
 
+    // Elementos de sesión
+    const profileIcon = document.getElementById("icono_persona");
+    const profileMenu = document.getElementById("menu");
+    const logoutBtn = document.getElementById("cerrar_sesion");
+    const volver_home = document.getElementById("volver_home");
+    const nombreUsuario = document.getElementById("nombreUsuario");
+
+    // Comprobar sesión
+    fetch("../php/acciones/check-session.php", { method: "POST" })
+        .then(res => res.json())
+        .then(data => {
+            if (data.logged && data.usuario?.rol.toLowerCase() === "organizador") {
+                profileIcon.style.display = "flex";
+                nombreUsuario.textContent = data.usuario.nombre;
+            } else {
+                window.location.href = "../html/login.html";
+            }
+        });
+
+    // Mostrar/Ocultar menú de perfil
+    profileIcon.addEventListener("click", function (event) {
+        event.stopPropagation();
+        profileMenu.style.display = profileMenu.style.display === "block" ? "none" : "block";
+    });
+
+    document.addEventListener("click", function () {
+        profileMenu.style.display = "none";
+    });
+
+    // Volver a home
+    volver_home.addEventListener("click", function () {
+        window.location.href = "home_organizador.html";
+    });
+
+    // Cerrar sesión
+    logoutBtn.addEventListener("click", function () {
+        fetch("../php/acciones/cerrar_sesion.php")
+            .then(() => {
+                window.location.href = "../html/login.html";
+            });
+    });
+
     // ------------------ FUNCIONES ------------------
     async function enviarEvento(data) {
         try {

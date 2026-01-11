@@ -266,18 +266,61 @@ section h2 {
     background-color: #218838;
 }
 
-/* ===================== */
+.premio-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 10px;
+    background: #f9f9f9;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.premio-texto p {
+    margin: 5px 0 0 0;
+    font-weight: normal;
+    color: #555;
+}
+
+.premio-acciones button {
+    margin-left: 5px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.premio-acciones .editar {
+    background-color: #ffc107; /* amarillo */
+    color: #fff;
+}
+
+.premio-acciones .eliminar {
+    background-color: #dc3545; /* rojo */
+    color: #fff;
+}
+
+
 /* Footer */
 footer {
     background: #222;
     color: #fff;
     padding: 30px 40px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
     text-align: center;
+    gap: 10px;
 }
 
-footer p {
-    margin: 0;
+footer a {
+    color: #fff;
+    text-decoration: none;
 }
+
+footer a:hover {
+    text-decoration: underline;
+}
+
 
 /* ===================== */
 /* Responsive */

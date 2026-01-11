@@ -6,8 +6,8 @@ header('Content-Type: application/json');
 session_start();
 require "../BBDD/conecta.php";
 
-$_SESSION['id_organizador'] = 1; 
-$idOrganizador = $_SESSION['id_organizador'];
+$idOrganizador = $_SESSION['usuario']['id'];
+
 
 $action = $_POST['action'] ?? '';
 try {

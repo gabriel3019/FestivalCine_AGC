@@ -6,11 +6,7 @@ header('Content-Type: application/json');
 session_start();
 require "../BBDD/conecta.php";
 
-if (!isset($_SESSION['id_organizador'])) {
-    $_SESSION['id_organizador'] = 1; // ID de organizador de prueba
-}
-
-$idOrganizador = $_SESSION['id_organizador'];
+$idOrganizador = $_SESSION['usuario']['id'];
 
 $action = $_POST['action'] ?? '';
 try {

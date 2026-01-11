@@ -10,25 +10,25 @@
 
 <body>
 
-  <!-- HEADER PRINCIPAL -->
-    <header class="header">
+    <header>
         <div class="logo">
-            <img src="../css/imagenes/Universidad-europea-logo_poc9mEM.2e16d0ba.fill-767x384.png" alt="Logo">
+            <img src="../css/imagenes/Universidad-europea-logo_poc9mEM.2e16d0ba.fill-767x384.png" alt="Logo ">
         </div>
-
         <nav>
-            <a href="#">Noticias</a>
-            <a href="#">Eventos</a>  nn
+            <a href="noticiasOrganizador.html">Noticias</a>
+            <a href="eventosOrganizador.html">Eventos</a>
             <a href="premiosOrganizador.html">Premios</a>
+            <a href="#">Patrocinadores</a>
             <a href="#">Gala</a>
         </nav>
-
         <span id="nombreUsuario"></span>
 
         <div class="auth">
-            <div id="icono_persona" class="icono_persona" style="display: none;">
+            <!-- Icono perfil -->
+            <div id="icono_persona" class="icono_persona">
                 👤
                 <div id="menu" class="menu">
+                    <a href="#" id="cerrar_sesion">Crear nueva cuenta</a>
                     <a href="#" id="volver_home">Volver a home</a>
                     <a href="#" id="cerrar_sesion">Cerrar sesión</a>
                 </div>
@@ -39,88 +39,58 @@
     <main class="container">
         <section class="categorias-premios">
             <h2>PREMIOS</h2>
-            <div class="categoria">
-                <h3>Alumnos</h3>
-                <ul>
-                    <li>🥇 Primer Premio — <strong>Cámara Canon</strong></li>
-                    <li>🥈 Segundo Premio — Reconocimiento del Festival</li>
-                    <li>🥉 Tercer Premio — Reconocimiento del Festival</li>
-                </ul>
-                <div class="acciones">
-                    <button>Editar categoría</button>
-                    <button>Eliminar categoría</button>
-                </div>
-            </div>
-            <div class="categoria">
-                <h3>Alumni</h3>
-                <ul>
-                    <li>🥇 Primer Premio — Reconocimiento del Festival</li>
-                    <li>🥈 Segundo Premio — Reconocimiento del Festival</li>
-                </ul>
-                <div class="acciones">
-                    <button>Editar categoría</button>
-                    <button>Eliminar categoría</button>
-                </div>
-            </div>
-            <div class="categoria">
-                <h3>Carrera Profesional</h3>
-                <ul>
-                    <li>🏆 Premio a la Carrera Profesional — Reconocimiento del Festival</li>
-                </ul>
-                <div class="acciones">
-                    <button>Editar categoría</button>
-                    <button>Eliminar categoría</button>
-                </div>
-            </div>
-            <div class="nueva-categoria">
-                <h3>Añadir nueva categoría</h3>
-                <form>
-                    <label for="nombre_categoria">Nombre de la categoría</label>
-                    <input type="text" id="nombre_categoria" placeholder="Ej. Animación">
 
-                    <button type="submit">Añadir categoría</button>
+            <!-- Contenedor donde se insertarán los premios dinámicamente -->
+            <div id="premios-container"></div>
+
+            <!-- Formulario para añadir nuevo premio -->
+            <div class="nueva-categoria">
+                <h3>Añadir nuevo premio</h3>
+                <form>
+                    <label for="nombre_categoria">Nombre del premio</label>
+                    <input type="text" id="nombre_categoria" placeholder="Ej. Mejor Cortometraje" required>
+
+                    <label for="descripcion_categoria">Descripción</label>
+                    <textarea id="descripcion_categoria" placeholder="Describe el premio..." required></textarea>
+
+                    <label for="categoria_premio">Categoría</label>
+                    <select id="categoria_premio" required>
+                        <option value="">Selecciona categoría</option>
+                        <option value="Alumnos">Alumnos</option>
+                        <option value="Alumni">Alumni</option>
+                        <option value="Carrera Profesional">Carrera Profesional</option>
+                    </select>
+
+                    <button type="submit">Añadir premio</button>
                 </form>
             </div>
         </section>
 
         <section class="ganadores">
             <h2>Asignar Ganadores</h2>
-
             <div class="ganador-categoria">
                 <h3>Ganadores - Alumnos</h3>
-
                 <label for="alumnos_primer">Primer Premio</label>
-                <select id="alumnos_primer">
-                    <option value="">Seleccionar participante</option>
-                </select>
+                <select id="alumnos_primer"><option value="">Seleccionar participante</option></select>
 
                 <label for="alumnos_segundo">Segundo Premio</label>
-                <select id="alumnos_segundo">
-                    <option value="">Seleccionar participante</option>
-                </select>
+                <select id="alumnos_segundo"><option value="">Seleccionar participante</option></select>
 
                 <label for="alumnos_tercero">Tercer Premio</label>
-                <select id="alumnos_tercero">
-                    <option value="">Seleccionar participante</option>
-                </select>
+                <select id="alumnos_tercero"><option value="">Seleccionar participante</option></select>
             </div>
 
             <div class="ganador-categoria">
                 <h3>Ganadores - Alumni</h3>
-
                 <label for="alumni_primer">Primer Premio</label>
-                <select id="alumni_primer">
-                    <option value="">Seleccionar participante</option>
-                </select>
+                <select id="alumni_primer"><option value="">Seleccionar participante</option></select>
 
                 <label for="alumni_segundo">Segundo Premio</label>
-                <select id="alumni_segundo">
-                    <option value="">Seleccionar participante</option>
-                </select>
+                <select id="alumni_segundo"><option value="">Seleccionar participante</option></select>
             </div>
+
             <div class="ganador-categoria">
                 <h3>Premio a la Carrera Profesional</h3>
-
                 <form>
                     <label for="nombre_profesional">Nombre y apellidos</label>
                     <input type="text" id="nombre_profesional" required>
@@ -137,15 +107,16 @@
                     <button type="submit">Guardar ganador</button>
                 </form>
             </div>
-
         </section>
-
     </main>
 
     <footer>
-        <p>Panel del Organizador · Festival de Cortos</p>
+        <a href="#subir-corto">Sube tu corto</a>
+        <div>¿Quiénes somos?</div>
+        <div>Legal</div>
+        <div>Conecta</div>
     </footer>
 
+    <script src="../js/premiosOrganizador.js"></script>
 </body>
-
 </html>
