@@ -1,12 +1,40 @@
 document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById("loginForm");
-    if (!form) return; // Si no existe el formulario, no hace nada
+    if (!form) return;
+
+    const emailInput = document.querySelector("input[name='email']");
+    const passwordInput = document.querySelector("input[name='password']");
+
+    const emailError = document.getElementById("emailError");
+    const passwordError = document.getElementById("passwordError");
+
+    // Validación al salir del campo
+
+    emailInput.addEventListener("blur", () => {
+        if (emailInput.value.trim() === "") {
+            emailError.textContent = "Debes introducir un correo electrónico";
+            emailError.style.display = "block";
+        } else {
+            emailError.textContent = "";
+            emailError.style.display = "none";
+        }
+    });
+
+    passwordInput.addEventListener("blur", () => {
+        if (passwordInput.value.trim() === "") {
+            passwordError.textContent = "Debes introducir una contraseña";
+            passwordError.style.display = "block";
+        } else {
+            passwordError.textContent = "";
+            passwordError.style.display = "none";
+        }
+    });
 
     form.addEventListener("submit", function (e) {
         e.preventDefault();
 
         // Tomamos los valores del formulario
-           const emailInput = document.querySelector("input[name='email']");
+        const emailInput = document.querySelector("input[name='email']");
         const passwordInput = document.querySelector("input[name='password']");
 
         if (!emailInput || !passwordInput) {
@@ -17,34 +45,26 @@ document.addEventListener("DOMContentLoaded", function () {
         const email = emailInput.value.trim();
         const password = passwordInput.value;
 
-        // Validación simple
         if (email === "" || password === "") {
             alert("Por favor completa todos los campos");
             return;
         }
-        // Creamos FormData igual que en registro.js
+
         const formData = new FormData();
         formData.append("email", email);
         formData.append("password", password);
 
-        // Petición AJAX
-        fetch("php/acciones/login.php", {
+        fetch("../php/acciones/login.php", {
             method: "POST",
             body: formData
         })
             .then(response => response.json())
             .then(data => {
-                console.log("Respuesta login:", data);
                 if (data.success) {
-                    console.log("Rol del usuario:", data.rol);
-                    // alert("Login correcto");
-
-                    // Redirigir según rol si lo necesitas
                     if (data.rol.toLowerCase() === "organizador") {
-                        console.log("Redirigiendo al home de organizador");
-                        window.location.href = "html/home_organizador.html";
+                        window.location.href = "../html/home_organizador.html";
                     } else {
-                        window.location.href = "html/home.html"; // usuario normal
+                        window.location.href = "../html/home.html";
                     }
                 } else {
                     alert(data.message);

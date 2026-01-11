@@ -104,3 +104,9 @@ input {
     opacity: 0.85;
 }
 
+.error {
+    color: red;
+    font-size: 0.85rem;
+    margin-top: 5px;
+    display: none;
+}

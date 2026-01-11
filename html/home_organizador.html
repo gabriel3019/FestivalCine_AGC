@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Home Admin</title>
-    <link rel="stylesheet" href="css/home_organizador.css">
+    <link rel="stylesheet" href="../css/home_organizador.css">
 </head>
 
 <body>
@@ -13,20 +13,20 @@
 
     <header>
         <div class="logo">
-            <img src="css/imagenes/Universidad-europea-logo_poc9mEM.2e16d0ba.fill-767x384.png" alt="Logo ">
+            <img src="../css/imagenes/Universidad-europea-logo_poc9mEM.2e16d0ba.fill-767x384.png" alt="Logo ">
         </div>
+
         <nav>
-            <a href="#">Cortos</a>
-            <a href="#">Participantes</a>
-            <a href="#">Votos</a>
-            <a href="#">Premios</a>
-            <a href="#">Mensajes</a>
+            <a href="noticiasOrganizador.html">Noticias</a>
+            <a href="eventosOrganizador.html">Eventos</a>
+            <a href="premiosOrganizador.html">Premios</a>
+            <a href="#">Patrocinadores</a>
+            <a href="#">Gala</a>
         </nav>
-        <span id="nombreUsuario"></span>
 
         <div class="auth">
             <!-- Icono perfil -->
-            <div id="icono_persona" class="icono_persona" style="display: none;">
+            <div id="icono_persona" class="icono_persona">
                 👤
                 <div id="menu" class="menu">
                     <a href="#" id="volver_home">Volver a home</a>
@@ -34,51 +34,25 @@
                 </div>
             </div>
 
+            <span id="nombreUsuario"></span>
 
         </div>
     </header>
 
-    <nav>
-        <div class="container">
-            <!-- Tarjetas resumen -->
-            <div class="cards">
-                <div class="card">
-                    <h3>Total Cortos</h3>
-                    <p id="total_cortos">0</p>
-                </div>
-                <div class="card">
-                    <h3>Cortos Pendientes</h3>
-                    <p id="cortos_pendientes">0</p>
-                </div>
-                <div class="card">
-                    <h3>Votos Totales</h3>
-                    <p id="votos_totales">0</p>
-                </div>
-                <div class="card">
-                    <h3>Participantes</h3>
-                    <p id="total_participantes">0</p>
-                </div>
-            </div>
+    <h2>Noticias</h2>
+    <table id="noticias"></table>
 
-            <!-- Gráficos -->
-            <div class="charts">
-                <h2>Gráfico de Actividad</h2>
-                <div class="chart-placeholder"></div>
-            </div>
+    <h2>Eventos</h2>
+    <table id="eventos"></table>
 
-            <!-- Actividad reciente -->
-            <div class="activity">
-                <h2>Actividad Reciente</h2>
-                <div id="actividad_reciente"></div>
-            </div>
+    <h2>Premios</h2>
+    <table id="premios"></table>
 
-            <!-- Accesos rápidos -->
-            <div class="quick-access">
-                <button>Añadir anuncio</button>
-                <button>Descargar listados</button>
-            </div>
-        </div>
-    </nav>
+    <h2>Patrocinadores</h2>
+    <table id="patrocinadores"></table>
+
+    <h2>Gala</h2>
+    <table id="gala"></table>
 
 
     <footer>
@@ -89,7 +63,7 @@
     </footer>
 
 
-    <script src="js/home_organizador.js"></script>
+    <script src="../js/home_organizador.js"></script>
 </body>
 
 </html>

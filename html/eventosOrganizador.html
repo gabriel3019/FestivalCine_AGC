@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Eventos</title>
+    <link rel="stylesheet" href="../css/eventosOrganizador.css">
+</head>
+
+<body>
+
+    <header>
+        <div class="logo">
+            <img src="../css/imagenes/Universidad-europea-logo_poc9mEM.2e16d0ba.fill-767x384.png" alt="Logo ">
+        </div>
+        <nav>
+            <a href="noticiasOrganizador.html">Noticias</a>
+            <a href="eventosOrganizador.html">Eventos</a>
+            <a href="premiosOrganizador.html">Premios</a>
+            <a href="#">Patrocinadores</a>
+            <a href="#">Gala</a>
+        </nav>
+        <span id="nombreUsuario"></span>
+
+        <div class="auth">
+            <!-- Icono perfil -->
+            <div id="icono_persona" class="icono_persona">
+                👤
+                <div id="menu" class="menu">
+                    <a href="#" id="cerrar_sesion">Crear nueva cuenta</a>
+                    <a href="#" id="volver_home">Volver a home</a>
+                    <a href="#" id="cerrar_sesion">Cerrar sesión</a>
+                </div>
+            </div>
+
+
+        </div>
+    </header>
+    <br>
+    <h2>Eventos</h2>
+
+
+
+
+    <div class="acciones-generales">
+        <button id="btnAnadir" class="btn-anadir" name="anadir">+ Añadir evento</button>
+    </div>
+
+    <div id="formulario-evento" class="formulario-evento oculto">
+        <h3>Añadir evento</h3>
+        <br>
+        <form id="form-evento">
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" name="nombre" required>
+
+            <label for="descripcion">Descripcion:</label>
+            <textarea id="descripcion" name="descripcion" required></textarea>
+
+            <label for="fecha">Fecha:</label>
+            <input type="date" id="fecha" name="fecha" required>
+
+            <label for="lugar">Lugar:</label>
+            <input type="text" id="lugar" name="lugar" required>
+
+            <label for="tipo_evento">Tipo de evento:</label>
+            <input type="text" id="tipo_evento" name="tipo_evento" required>
+
+            <div class="botones-form">
+                <button type="submit">Guardar</button>
+                <button type="button" id="cancelar">Cancelar</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="eventos-container" id="eventos-container"></div>
+
+    <div id="overlay" class="overlay oculto"></div>
+
+    <footer>
+        <a href="#subir-corto">Sube tu corto</a>
+        <div>¿Quiénes somos?</div>
+        <div>Legal</div>
+        <div>Conecta</div>
+    </footer>
+
+    <script src="../js/eventosOrganizador.js"></script>
+</body>
+
+</html>
