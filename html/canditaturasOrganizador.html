@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Candidaturas</title>
+    <link rel="stylesheet" href="../css/canditaturasOrganizador.css">
+</head>
+
+<body>
+
+    <!-- HEADER (idéntico al tuyo) -->
+    <header>
+        <div class="logo">
+            <img src="../css/imagenes/Universidad-europea-logo_poc9mEM.2e16d0ba.fill-767x384.png" alt="Logo ">
+        </div>
+        <nav>
+            <a href="noticiasOrganizador.html">Noticias</a>
+            <a href="eventosOrganizador.html">Eventos</a>
+            <a href="premiosOrganizador.html">Premios</a>
+            <a href="#">Patrocinadores</a>
+            <a href="gala.html">Gala</a>
+            <a href="canditaturasOrganizador.html">Canditaturas</a>
+        </nav>
+
+        <div class="auth">
+            <div id="icono_persona" class="icono_persona">
+                👤
+                <div id="menu" class="menu">
+                    <a href="#">Crear nueva cuenta</a>
+                    <a href="#">Volver a home</a>
+                    <a href="#">Cerrar sesión</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <h2>Candidaturas</h2>
+
+        <div class="candidaturas-container">
+
+            <!-- CANDIDATURA -->
+            <div class="candidatura-card">
+                <h3>Título del corto</h3>
+                <p><strong>Autor:</strong> Juan Pérez</p>
+                <p><strong>Categoría:</strong> Cortometraje</p>
+
+                <div class="acciones">
+                    <button class="btn-aceptar">Aceptar</button>
+                    <button class="btn-rechazar">Rechazar</button>
+                </div>
+
+                <!-- Nominar premio -->
+                <div class="nominar oculto">
+                    <label for="premio">Nominar a premio:</label>
+                    <select>
+                        <option value="">Selecciona un premio</option>
+                        <option>Mejor Corto</option>
+                        <option>Mejor Dirección</option>
+                        <option>Mejor Guion</option>
+                    </select>
+                    <button class="btn-guardar">Guardar nominación</button>
+                </div>
+
+                <!-- Mensaje rechazo -->
+                <div class="rechazo oculto">
+                    <label for="mensaje">Motivo del rechazo:</label>
+                    <textarea rows="3" placeholder="Escribe el motivo..."></textarea>
+                    <button class="btn-guardar">Guardar mensaje</button>
+                </div>
+            </div>
+
+            <!-- Puedes duplicar esta tarjeta para más candidaturas -->
+
+        </div>
+    </main>
+
+    <footer>
+        <a href="#subir-corto">Sube tu corto</a>
+        <div>¿Quiénes somos?</div>
+        <div>Legal</div>
+        <div>Conecta</div>
+    </footer>
+
+</body>
+
+</html>
