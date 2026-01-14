@@ -134,6 +134,13 @@ CREATE TABLE noticias (
     FOREIGN KEY (id_organizador) REFERENCES organizador(id_organizador)
     ON DELETE CASCADE
 );
+
+CREATE TABLE secciones (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100),
+    hora TIME,
+    lugar VARCHAR(100)
+    );
 ";
 
 $conexion->multi_query($sql);
