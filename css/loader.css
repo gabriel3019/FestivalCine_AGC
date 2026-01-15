@@ -1,0 +1,29 @@
+#loader {
+  position: fixed;
+  inset: 0;
+  background: #ffff; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  transition: opacity .6s ease;
+}
+
+#loader.oculto {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Logo */
+.loader-logo {
+  width: 260px;
+  max-width: 85%;
+  filter: brightness(1.1) contrast(1.1); /* mejora blanco */
+  animation: pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%   { opacity: .6; transform: scale(0.97); }
+  50%  { opacity: 1;  transform: scale(1); }
+  100% { opacity: .6; transform: scale(0.97); }
+}
