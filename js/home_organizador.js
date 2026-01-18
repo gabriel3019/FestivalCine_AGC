@@ -13,6 +13,13 @@ document.addEventListener("DOMContentLoaded", function () {
     const logoutBtn = document.getElementById("cerrar_sesion");
     const volver_home = document.getElementById("volver_home");
     const nombreUsuario = document.getElementById("nombreUsuario");
+    const menuToggle = document.getElementById("menu-toggle");
+    const nav = document.querySelector("header nav");
+
+    menuToggle.addEventListener("click", () => {
+        nav.classList.toggle("active");
+    });
+
 
     // Comprobar sesión
     fetch("../php/acciones/check-session.php", { method: "POST" })
@@ -26,7 +33,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
 
-    // Mostrar/Ocultar menú de perfil
     profileIcon.addEventListener("click", function (event) {
         event.stopPropagation();
         profileMenu.style.display = profileMenu.style.display === "block" ? "none" : "block";
@@ -35,13 +41,10 @@ document.addEventListener("DOMContentLoaded", function () {
     document.addEventListener("click", function () {
         profileMenu.style.display = "none";
     });
-
-     // Volver a home
     volver_home.addEventListener("click", function () {
         window.location.href = "home_organizador.html";
     });
 
-    // Cerrar sesión
     logoutBtn.addEventListener("click", function () {
         fetch("../php/acciones/cerrar_sesion.php")
             .then(() => {

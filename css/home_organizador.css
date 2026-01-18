@@ -1,63 +1,112 @@
-/* Reset y estilos básicos */
+/* Cargar fuente Hellix */
+@font-face {
+    font-family: 'Hellix';
+    src: url('../fonts/Hellix-Regular.woff2') format('woff2'),
+         url('../fonts/Hellix-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Hellix';
+    src: url('../fonts/Hellix-Bold.woff2') format('woff2'),
+         url('../fonts/Hellix-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+/* Aplicar Hellix a toda la web */
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Hellix', Arial, sans-serif;
 }
 
 body {
     background: #fff;
-    padding-top: 100px;
-    /* Ajusta según altura del header */
+    padding-top: 100px; /* Ajusta según altura del header */
     color: #111;
 }
 
-/* Cabecera */
+/* =========================
+   Header uniforme y hover con cuadrado rojo
+========================= */
+
+/* Header fijo */
 header {
     position: fixed;
-    /* Fijo al hacer scroll */
     top: 0;
     left: 0;
     width: 100%;
-    padding: 16px 40px;
+    padding: 16px 20px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     background-color: #f5f5f5;
     border-bottom: 1px solid #ddd;
     z-index: 1000;
-    /* Para que quede encima del contenido */
+    flex-wrap: wrap;
 }
 
+/* Logo */
 .logo img {
-    height: 60px;
+    height: 50px;
     width: auto;
 }
 
+/* Navegación principal */
 header nav {
     display: flex;
-    gap: 25px;
+    gap: 20px;
     flex: 1;
     justify-content: center;
+    flex-wrap: wrap;
 }
 
+/* Links del header */
 header nav a {
+    position: relative; /* necesario para el pseudo-elemento */
     text-decoration: none;
-    color: #111;
+    color: #111;       /* color fijo, no cambia al hover */
     font-size: 14px;
     font-weight: bold;
+    padding: 5px 0;    /* espacio para el cuadrado */
 }
 
-header nav a:hover {
-    color: #007BFF;
+/* Pseudo-elemento: cuadrado rojo */
+header nav a::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;     /* más abajo del texto */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6px;        /* tamaño del cuadrado */
+    height: 6px;
+    background-color: red;
+    border-radius: 2px; /* opcional, bordes redondeados */
+    opacity: 0;        /* invisible por defecto */
+    transition: opacity 0.2s, transform 0.2s;
 }
 
-/* Icono cel usuario */
+/* Mostrar cuadrado rojo al pasar el ratón / tocar */
+header nav a:hover::after,
+header nav a:focus::after {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0); /* queda justo debajo del texto */
+}
+
+/* Usuario */
 .auth {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 8px;
+}
+
+#nombreUsuario {
+    font-weight: bold;
+    font-size: 14px;
+    white-space: nowrap;
 }
 
 .icono_persona {
@@ -74,6 +123,7 @@ header nav a:hover {
     font-size: 18px;
 }
 
+/* Menú desplegable usuario */
 .menu {
     display: none;
     position: absolute;
@@ -97,11 +147,13 @@ header nav a:hover {
     background-color: #f0f0f0;
 }
 
+/* Tablas */
 table {
     border-collapse: collapse;
     width: 100%;
     margin-bottom: 30px;
     background: white;
+    font-size: 14px;
 }
 
 th,
@@ -116,13 +168,14 @@ th {
 
 h2 {
     color: #8b0000;
+    margin-bottom: 12px;
 }
 
 /* Footer */
 footer {
     background: #222;
     color: #fff;
-    padding: 30px 40px;
+    padding: 30px 20px;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     text-align: center;
@@ -138,20 +191,73 @@ footer a:hover {
     text-decoration: underline;
 }
 
+/* Botones */
+button {
+    padding: 8px 16px;
+    font-family: 'Hellix', Arial, sans-serif;
+    cursor: pointer;
+    border-radius: 6px;
+}
+
+/* Botón hamburguesa - solo visible en móvil */
+.menu-toggle {
+    display: none; /* por defecto no se ve */
+    font-size: 24px;
+    cursor: pointer;
+}
+
+/* Móvil */
+@media (max-width: 768px) {
+    header nav {
+        display: none; /* ocultamos nav por defecto en móvil */
+        flex-direction: column;
+        width: 100%;
+        background: #f5f5f5;
+        padding: 10px 0;
+        gap: 10px;
+    }
+
+    .menu-toggle {
+        display: block; /* mostramos el botón en móvil */
+    }
+
+    header nav.active {
+        display: flex; /* cuando se activa el menú */
+    }
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     header {
         flex-direction: column;
         align-items: flex-start;
-        gap: 12px;
+        padding: 12px 16px;
+        gap: 10px;
     }
 
-    .cards,
-    .quick-access {
-        grid-template-columns: 1fr;
+    header nav {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        width: 100%;
+    }
+
+    .auth {
+        width: 100%;
+        justify-content: flex-end;
+    }
+
+    table, th, td {
+        font-size: 12px;
     }
 
     footer {
         grid-template-columns: 1fr 1fr;
+        padding: 20px 10px;
+        text-align: center;
+    }
+
+    h2 {
+        font-size: 18px;
     }
 }

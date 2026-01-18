@@ -1,9 +1,26 @@
-/* Reset y estilos básicos */
+/* Cargar fuente Hellix */
+@font-face {
+    font-family: 'Hellix';
+    src: url('../fonts/Hellix-Regular.woff2') format('woff2'),
+         url('../fonts/Hellix-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Hellix';
+    src: url('../fonts/Hellix-Bold.woff2') format('woff2'),
+         url('../fonts/Hellix-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+/* Aplicar Hellix a toda la web */
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Hellix', Arial, sans-serif;
 }
 
 body {
@@ -11,7 +28,6 @@ body {
     color: #111;
 }
 
-/* Cabecera */
 header {
     padding: 16px 40px;
     display: flex;
@@ -22,7 +38,7 @@ header {
 }
 
 .logo img {
-    height: 60px;
+    height: 80px;
     width: auto;
 }
 
@@ -32,21 +48,47 @@ header nav {
 }
 
 header nav a {
+    position: relative; /* necesario para el pseudo-elemento */
     text-decoration: none;
-    color: #111;
+    color: #111;       /* color fijo, no cambia al hover */
     font-size: 14px;
     font-weight: bold;
+    padding: 5px 0;    /* espacio para el cuadrado */
 }
 
-header nav a:hover {
-    color: #007BFF;
+/* Pseudo-elemento: cuadrado rojo */
+header nav a::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;      /* ajusta para que salga más abajo del texto */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6px;        /* tamaño del cuadrado */
+    height: 6px;
+    background-color: red;
+    border-radius: 2px; /* opcional, bordes ligeramente redondeados */
+    opacity: 0;        /* invisible por defecto */
+    transition: opacity 0.2s, transform 0.2s;
+}
+
+/* Mostrar cuadrado rojo al pasar el ratón / tocar en móvil */
+header nav a:hover::after,
+header nav a:focus::after {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0); /* justo debajo del texto */
 }
 
 /* Usuario */
 .auth {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 8px;
+}
+
+#nombreUsuario {
+    font-size: 14px;
+    font-weight: bold;
+    color: #111;
 }
 
 .icono_persona {
@@ -71,7 +113,7 @@ header nav a:hover {
     background: white;
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-    min-width: 140px;
+    min-width: 160px;
     overflow: hidden;
     z-index: 10;
 }
@@ -80,6 +122,7 @@ header nav a:hover {
     display: block;
     padding: 10px;
     color: #333;
+    text-decoration: none;
 }
 
 .menu a:hover {

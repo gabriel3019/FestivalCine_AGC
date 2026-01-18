@@ -30,7 +30,7 @@ try {
 
         case "anadir":
 
-            $idOrganizador = $_SESSION['id_organizador'] ?? 0;
+            $idOrganizador = $_SESSION['usuario']['id'];
             error_log("ID organizador en sesión: $idOrganizador");
 
             $stmtCheck = $conn->prepare("SELECT COUNT(*) FROM organizador WHERE id_organizador = ?");

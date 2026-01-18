@@ -31,10 +31,10 @@ try {
 
         case "anadir":
 
-            $idOrganizador = $_SESSION['id_organizador'] ?? 0;
+            $idOrganizador = $_SESSION['usuario']['id'];
             error_log("ID organizador en sesión: $idOrganizador");
 
-           
+
             $stmtCheck = $conn->prepare("SELECT COUNT(*) FROM organizador WHERE id_organizador = ?");
             $stmtCheck->bind_param("i", $idOrganizador);
             $stmtCheck->execute();
@@ -86,6 +86,14 @@ try {
 
             if ($id <= 0) {
                 throw new Exception("ID inválido");
+            }
+
+            if (trim($titulo) === '' || trim($contenido) === '') {
+                echo json_encode([
+                    "success" => false,
+                    "message" => "Título y contenido no pueden estar vacíos"
+                ]);
+                exit;
             }
 
             $stmt = $conn->prepare(

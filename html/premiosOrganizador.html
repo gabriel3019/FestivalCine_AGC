@@ -4,15 +4,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Premios - Organizador</title>
+    <title>Premios</title>
     <link rel="stylesheet" href="../css/premios_organizador.css">
 </head>
 
 <body>
 
+    <!-- HEADER EXISTENTE -->
     <header>
         <div class="logo">
-            <img src="../css/imagenes/Universidad-europea-logo_poc9mEM.2e16d0ba.fill-767x384.png" alt="Logo ">
+            <a href="home_organizador.html">
+                <img src="../css/imagenes/Universidad-europea-logo_poc9mEM.2e16d0ba.fill-767x384.png" alt="Logo ">
+            </a>
         </div>
         <nav>
             <a href="noticiasOrganizador.html">Noticias</a>
@@ -20,15 +23,16 @@
             <a href="premiosOrganizador.html">Premios</a>
             <a href="#">Patrocinadores</a>
             <a href="gala.html">Gala</a>
+            <a href="canditaturasOrganizador.html">Candidatos</a>
         </nav>
-        <span id="nombreUsuario"></span>
 
         <div class="auth">
+            <span id="nombreUsuario"></span>
             <!-- Icono perfil -->
             <div id="icono_persona" class="icono_persona">
                 👤
                 <div id="menu" class="menu">
-                    <a href="#" id="cerrar_sesion">Crear nueva cuenta</a>
+                    <a href="#" id="crear_cuenta">Crear nueva cuenta</a>
                     <a href="#" id="volver_home">Volver a home</a>
                     <a href="#" id="cerrar_sesion">Cerrar sesión</a>
                 </div>
@@ -36,140 +40,123 @@
         </div>
     </header>
 
-    <main class="container">
-        <section class="categorias-premios">
-            <h2>PREMIOS</h2>
-            <button id="btnNuevoPremio" class="btn-principal">+ Añadir premio</button>
-            <!-- MODAL -->
-            <div id="modalPremio" class="modal">
-                <div class="modal-contenido">
-                    <h3 id="modalTitulo">Añadir premio</h3>
+    <!-- CONTENIDO PREMIOS -->
+    <div class="container">
 
-                    <form id="formPremio">
-                        <input type="hidden" id="premio_id">
+        <h2>PREMIOS</h2>
 
-                        <label>Nombre del premio</label>
-                        <input type="text" id="modal_nombre" required>
+        <div class="acciones-generales">
+            <button class="btn-principal" id="btnNuevoPremio">+ AÑADIR PREMIO</button>
+        </div>
 
-                        <label>Descripción</label>
-                        <textarea id="modal_descripcion" required></textarea>
+        <!-- Tablas de premios -->
+        <div class="tabla-premios-container categorias-premios">
+            <h3>PREMIOS - ALUMNOS</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Descripción</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tabla-alumnos"></tbody>
+            </table>
 
-                        <label>Categoría</label>
-                        <select id="modal_categoria" required>
-                            <option value="">Selecciona categoría</option>
-                            <option value="Alumnos">Alumnos</option>
-                            <option value="Alumni">Alumni</option>
-                            <option value="Carrera Profesional">Carrera Profesional</option>
-                        </select>
+            <h3>PREMIOS - ALUMNI</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Descripción</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tabla-alumni"></tbody>
+            </table>
 
-                        <div class="modal-acciones">
-                            <button type="submit" class="guardar">Guardar</button>
-                            <button type="button" id="cerrarModal" class="cancelar">Cancelar</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <div class="tablas-premios">
+            <h3>PREMIOS - CARRERA PROFESIONAL</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Descripción</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tabla-carrera"></tbody>
+            </table>
+        </div>
 
-                <h3>Premios - Alumnos</h3>
-                <table class="tabla-premios">
-                    <thead>
-                        <tr>
-                            <th>Nombre</th>
-                            <th>Descripción</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tabla-alumnos"></tbody>
-                </table>
+        <!-- Formulario asignar ganadores -->
+        <div class="form-ganadores">
+            <h3>ASIGNAR GANADORES - ALUMNOS</h3>
+            <label>PRIMER PREMIO</label>
+            <select>
+                <option>Seleccionar participante</option>
+            </select>
+            <label>SEGUNDO PREMIO</label>
+            <select>
+                <option>Seleccionar participante</option>
+            </select>
+            <label>TERCER PREMIO</label>
+            <select>
+                <option>Seleccionar participante</option>
+            </select>
 
-                <h3>Premios - Alumni</h3>
-                <table class="tabla-premios">
-                    <thead>
-                        <tr>
-                            <th>Nombre</th>
-                            <th>Descripción</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tabla-alumni"></tbody>
-                </table>
+            <h3>ASIGNAR GANADORES - ALUMNI</h3>
+            <label>PRIMER PREMIO</label>
+            <select>
+                <option>Seleccionar participante</option>
+            </select>
+            <label>SEGUNDO PREMIO</label>
+            <select>
+                <option>Seleccionar participante</option>
+            </select>
 
-                <h3>Premios - Carrera Profesional</h3>
-                <table class="tabla-premios">
-                    <thead>
-                        <tr>
-                            <th>Nombre</th>
-                            <th>Descripción</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tabla-carrera"></tbody>
-                </table>
+            <h3>PREMIO A LA CARRERA PROFESIONAL</h3>
+            <label>NOMBRE Y APELLIDOS</label>
+            <input type="text" placeholder="Nombre y apellidos">
+            <label>CORREO ELECTRÓNICO</label>
+            <input type="email" placeholder="correo@ejemplo.com">
+            <label>TELEFONO DE CONTACTO</label>
+            <input type="text" placeholder="Teléfono">
+            <label>VÍDEO DE RECORRIDO PROFESIONAL (URL)</label>
+            <input type="url" placeholder="https://">
 
-            </div>
+            <button>GUARDAR GANADOR</button>
+        </div>
 
+    </div>
 
-            <section class="ganadores">
-                <h2>Asignar Ganadores</h2>
-                <div class="ganador-categoria">
-                    <h3>Ganadores - Alumnos</h3>
-                    <label for="alumnos_primer">Primer Premio</label>
-                    <select id="alumnos_primer">
-                        <option value="">Seleccionar participante</option>
-                    </select>
+    <!-- MODAL PREMIO -->
+    <div id="modalPremio" class="modal">
+        <div class="modal-contenido">
+            <span id="cerrarModal" class="cerrar">&times;</span>
 
-                    <label for="alumnos_segundo">Segundo Premio</label>
-                    <select id="alumnos_segundo">
-                        <option value="">Seleccionar participante</option>
-                    </select>
+            <h2 id="modalTitulo">Añadir premio</h2>
 
-                    <label for="alumnos_tercero">Tercer Premio</label>
-                    <select id="alumnos_tercero">
-                        <option value="">Seleccionar participante</option>
-                    </select>
-                </div>
+            <form id="formPremio">
+                <input type="hidden" id="premio_id" name="premio_id">
 
-                <div class="ganador-categoria">
-                    <h3>Ganadores - Alumni</h3>
-                    <label for="alumni_primer">Primer Premio</label>
-                    <select id="alumni_primer">
-                        <option value="">Seleccionar participante</option>
-                    </select>
+                <label>Nombre del premio</label>
+                <input type="text" id="modal_nombre" required>
 
-                    <label for="alumni_segundo">Segundo Premio</label>
-                    <select id="alumni_segundo">
-                        <option value="">Seleccionar participante</option>
-                    </select>
-                </div>
+                <label>Descripción</label>
+                <textarea id="modal_descripcion" required></textarea>
 
-                <div class="ganador-categoria">
-                    <h3>Premio a la Carrera Profesional</h3>
-                    <form>
-                        <label for="nombre_profesional">Nombre y apellidos</label>
-                        <input type="text" id="nombre_profesional" required>
+                <label>Categoría</label>
+                <select id="modal_categoria" required>
+                    <option value="Alumnos">Alumnos</option>
+                    <option value="Alumni">Alumni</option>
+                    <option value="Carrera profesional">Carrera profesional</option>
+                </select>
 
-                        <label for="email_profesional">Correo electrónico</label>
-                        <input type="email" id="email_profesional" required>
+                <button type="submit" class="btn-principal">Guardar</button>
+            </form>
+        </div>
+    </div>
 
-                        <label for="telefono_profesional">Teléfono de contacto</label>
-                        <input type="tel" id="telefono_profesional" required>
-
-                        <label for="video_profesional">Vídeo de recorrido profesional (URL)</label>
-                        <input type="url" id="video_profesional" placeholder="https://">
-
-                        <button type="submit">Guardar ganador</button>
-                    </form>
-                </div>
-            </section>
-    </main>
-
-    <footer>
-        <a href="#subir-corto">Sube tu corto</a>
-        <div>¿Quiénes somos?</div>
-        <div>Legal</div>
-        <div>Conecta</div>
-    </footer>
 
     <script src="../js/premiosOrganizador.js"></script>
 </body>

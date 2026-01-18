@@ -207,10 +207,11 @@ document.addEventListener("DOMContentLoaded", () => {
             const contenido = noticia.querySelector(".texto").textContent;
 
             const nuevoTitulo = prompt("Nuevo título", titulo);
-            if (!nuevoTitulo) return;
+            if (nuevoTitulo === null) return;
 
             const nuevoContenido = prompt("Nuevo contenido", contenido);
-            if (!nuevoContenido) return;
+            if (nuevoContenido === null) return;
+
 
             const data = await enviarNoticia({
                 action: "editar",

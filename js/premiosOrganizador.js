@@ -5,7 +5,6 @@ document.addEventListener("DOMContentLoaded", () => {
     /* ===================== */
     /* MODAL */
     /* ===================== */
-
     const btnNuevo = document.getElementById("btnNuevoPremio");
     const modal = document.getElementById("modalPremio");
     const cerrarModal = document.getElementById("cerrarModal");
@@ -20,7 +19,6 @@ document.addEventListener("DOMContentLoaded", () => {
     /* ===================== */
     /* SESIÓN */
     /* ===================== */
-
     const profileIcon = document.getElementById("icono_persona");
     const profileMenu = document.getElementById("menu");
     const logoutBtn = document.getElementById("cerrar_sesion");
@@ -57,7 +55,6 @@ document.addEventListener("DOMContentLoaded", () => {
     /* ===================== */
     /* FETCH */
     /* ===================== */
-
     async function fetchPremios(action, data = {}) {
         const formData = new FormData();
         formData.append("action", action);
@@ -72,7 +69,6 @@ document.addEventListener("DOMContentLoaded", () => {
     /* ===================== */
     /* CARGAR PREMIOS */
     /* ===================== */
-
     async function cargarPremios() {
         const data = await fetchPremios("listar");
         if (!data.success) return;
@@ -94,6 +90,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 </td>
             `;
 
+            let tabla;
             if (p.categoria === "Alumnos") {
                 tabla = document.getElementById("tabla-alumnos");
             } else if (p.categoria === "Alumni") {
@@ -109,7 +106,6 @@ document.addEventListener("DOMContentLoaded", () => {
     /* ===================== */
     /* ABRIR MODAL NUEVO */
     /* ===================== */
-
     btnNuevo.addEventListener("click", () => {
         modalTitulo.textContent = "Añadir premio";
         formPremio.reset();
@@ -118,7 +114,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     cerrarModal.addEventListener("click", () => modal.style.display = "none");
-
     modal.addEventListener("click", e => {
         if (e.target === modal) modal.style.display = "none";
     });
@@ -126,7 +121,6 @@ document.addEventListener("DOMContentLoaded", () => {
     /* ===================== */
     /* GUARDAR (AÑADIR / EDITAR) */
     /* ===================== */
-
     formPremio.addEventListener("submit", async e => {
         e.preventDefault();
 
@@ -150,7 +144,6 @@ document.addEventListener("DOMContentLoaded", () => {
     /* ===================== */
     /* EDITAR / ELIMINAR */
     /* ===================== */
-
     categoriasContainer.addEventListener("click", async e => {
         const tr = e.target.closest("tr");
         if (!tr) return;
@@ -172,5 +165,8 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
+    /* ===================== */
+    /* INICIO */
+    /* ===================== */
     cargarPremios();
 });
