@@ -6,11 +6,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gala del festival</title>
     <link rel="stylesheet" href="../css/gala.css">
+    <link rel="stylesheet" href="../css/home_organizador.css">
 </head>
 
+<header>
+    <div class="logo">
+        <img src="../css/imagenes/Universidad-europea-logo_poc9mEM.2e16d0ba.fill-767x384.png" alt="Logo ">
+    </div>
+
+    <nav>
+        <a href="noticiasOrganizador.html">Noticias</a>
+        <a href="eventosOrganizador.html">Eventos</a>
+        <a href="premiosOrganizador.html">Premios</a>
+        <a href="#">Patrocinadores</a>
+        <a href="gala.html">Gala</a>
+    </nav>
+
+    <div class="auth">
+        <!-- Icono perfil -->
+        <div id="icono_persona" class="icono_persona">
+            👤
+            <div id="menu" class="menu">
+                <a href="#" id="volver_home">Volver a home</a>
+                <a href="#" id="cerrar_sesion">Cerrar sesión</a>
+            </div>
+        </div>
+
+        <span id="nombreUsuario"></span>
+
+    </div>
+</header>
+
 <body>
-    <button id="home-btn">Volver al home</button>
-    <br>
     <br>
     <button id="cambio">Cambiar formato</button>
     <div id="pre">
@@ -29,11 +56,15 @@
             <h2>Secciones del evento</h2>
             <div id="lista"></div>
         </section>
+
+        <h2>Eventos</h2>
+        <table id="eventos"></table>
     </div>
 
     <div id="pos">
-        <p></p>
+        <br>
         <button id="btn-resumen">Añadir un resumen</button>
+        <br>
         <div id="resumen" action="" method="post">
             <textarea placeholder="Pon aquí tu resumen" id="#texto-resumen"></textarea>
             <br>
@@ -48,9 +79,8 @@
         <!-- Contenedor donde se mostrarán las imágenes -->
         <div id="galeria"></div>
         <br>
-        <select id="galas">
-            <option value="">Ganadores</option>
-        </select>
+        <h2>Premios</h2>
+        <table id="premios"></table>
         <button id="edicionAnterior">Añadir a ediciones anteriores</button>
     </div>
 

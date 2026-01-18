@@ -1,6 +1,75 @@
-document.getElementById("home-btn").addEventListener("click", () => {
-    window.location.href = "../html/home.html";
+document.addEventListener("DOMContentLoaded", function () {
+
+    // Elementos de tablas
+    const eventos = document.getElementById("eventos");
+    const premios = document.getElementById("premios");
+
+    // Elementos de sesión
+    const profileIcon = document.getElementById("icono_persona");
+    const profileMenu = document.getElementById("menu");
+    const logoutBtn = document.getElementById("cerrar_sesion");
+    const volver_home = document.getElementById("volver_home");
+    const nombreUsuario = document.getElementById("nombreUsuario");
+
+    // Comprobar sesión
+    fetch("../php/acciones/check-session.php", { method: "POST" })
+        .then(res => res.json())
+        .then(data => {
+            if (data.logged && data.usuario?.rol.toLowerCase() === "organizador") {
+                profileIcon.style.display = "flex";
+                nombreUsuario.textContent = data.usuario.nombre;
+            } else {
+                window.location.href = "../html/login.html";
+            }
+        });
+
+    // Mostrar/Ocultar menú de perfil
+    profileIcon.addEventListener("click", function (event) {
+        event.stopPropagation();
+        profileMenu.style.display = profileMenu.style.display === "block" ? "none" : "block";
+    });
+
+    document.addEventListener("click", function () {
+        profileMenu.style.display = "none";
+    });
+
+     // Volver a home
+    volver_home.addEventListener("click", function () {
+        window.location.href = "home_organizador.html";
+    });
+
+    // Cerrar sesión
+    logoutBtn.addEventListener("click", function () {
+        fetch("../php/acciones/cerrar_sesion.php")
+            .then(() => {
+                window.location.href = "../html/login.html";
+            });
+    });
+
+    // Cargar datos desde PHP
+    fetch("../php/acciones/home_organizador.php")
+        .then(res => res.json())
+        .then(data => {
+
+            // EVENTOS
+            html = "<tr><th>Nombre</th><th>Fecha</th><th>Lugar</th></tr>";
+            data.eventos.forEach(e => {
+                html += `<tr><td>${e.nombre}</td><td>${e.fecha}</td><td>${e.lugar}</td></tr>`;
+            });
+            eventos.innerHTML = html;
+
+            // PREMIOS
+            html = "<tr><th>Premio</th><th>Categoria</th></tr>";
+            data.premios.forEach(p => {
+                html += `<tr><td>${p.nombre_premio}</td><td>${p.categoria || ''}</td></tr>`;
+            });
+            premios.innerHTML = html;
+
+        })
+        .catch(err => console.error("Error al cargar datos:", err));
+
 });
+
 
 // Recojo los dos divs que contienen la info de la pre y post gala
 preGala = document.getElementById("pre");
@@ -16,37 +85,6 @@ document.getElementById("cambio").addEventListener("click", () => {
         posGala.style.display = "none";
     }
 });
-
-function listarGanadoresGala() {
-    var formData = new FormData();
-
-    formData.append("funcion", "listarGanadoresGala");
-    fetch("../php/acciones/gala.php", {
-        method: "POST",
-        body: formData
-    })
-
-        .then(function (response) {
-            return response.json();
-        })
-
-        .then(function (data) {
-            var SelectGala = document.querySelector('#galas');
-            data.forEach(element => {
-
-                var html = `<option> id_premio: ${element.id_premio} id_corto:(${element.id_corto})</option>`;
-
-                SelectGala.innerHTML += html;
-            });
-        })
-
-        .catch(function (error) {
-            console.error("Errorrrrrrr en la solicitud ", error);
-            alert("Error al hacer la solicitud. Vete a la consola para ver que ha pasado");
-        })
-}
-
-listarGanadoresGala();
 
 // Funciones pre gala
 function cargarSecciones() {
