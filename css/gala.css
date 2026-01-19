@@ -1,8 +1,26 @@
+/* Cargar fuente Hellix */
+@font-face {
+    font-family: 'Hellix';
+    src: url('../fonts/Hellix-Regular.woff2') format('woff2'),
+         url('../fonts/Hellix-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Hellix';
+    src: url('../fonts/Hellix-Bold.woff2') format('woff2'),
+         url('../fonts/Hellix-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+/* Aplicar Hellix a toda la web */
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Hellix', Arial, sans-serif;
 }
 
 body {
@@ -12,12 +30,104 @@ body {
 
 header {
     padding: 16px 40px;
-    display:
-        flex;
+    display: flex;
     align-items: center;
     justify-content: space-between;
+    background-color: #f5f5f5;
+    border-bottom: 1px solid #ddd;
 }
-/* Por defecto el div de la pos gala esta escondido*/
+
+.logo img {
+    height: 80px;
+    width: auto;
+}
+
+header nav {
+    display: flex;
+    gap: 15px;
+}
+
+header nav a {
+    position: relative; /* necesario para el pseudo-elemento */
+    text-decoration: none;
+    color: #111;       /* color fijo, no cambia al hover */
+    font-size: 14px;
+    font-weight: bold;
+    padding: 5px 0;    /* espacio para el cuadrado */
+}
+
+/* Pseudo-elemento: cuadrado rojo */
+header nav a::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;      /* ajusta para que salga más abajo del texto */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6px;        /* tamaño del cuadrado */
+    height: 6px;
+    background-color: red;
+    border-radius: 2px; /* opcional, bordes ligeramente redondeados */
+    opacity: 0;        /* invisible por defecto */
+    transition: opacity 0.2s, transform 0.2s;
+}
+
+/* Mostrar cuadrado rojo al pasar el ratón / tocar en móvil */
+header nav a:hover::after,
+header nav a:focus::after {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0); /* justo debajo del texto */
+}
+
+/* Usuario */
+.auth {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+#nombreUsuario {
+    font-size: 14px;
+    font-weight: bold;
+    color: #111;
+}
+
+.icono_persona {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #333;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+    font-size: 18px;
+}
+
+.menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 50px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    min-width: 160px;
+    overflow: hidden;
+    z-index: 10;
+}
+
+.menu a {
+    display: block;
+    padding: 10px;
+    color: #333;
+    text-decoration: none;
+}
+
+.menu a:hover {
+    background-color: #f0f0f0;
+}
 #pos{
     display: none;
 };
