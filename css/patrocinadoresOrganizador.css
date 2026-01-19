@@ -1,0 +1,319 @@
+/* =========================
+   Fuente y header
+========================= */
+/* Cargar fuente Hellix */
+@font-face {
+    font-family: 'Hellix';
+    src: url('../fonts/Hellix-Regular.woff2') format('woff2'),
+         url('../fonts/Hellix-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Hellix';
+    src: url('../fonts/Hellix-Bold.woff2') format('woff2'),
+         url('../fonts/Hellix-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+/* Aplicar Hellix a toda la web */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Hellix', Arial, sans-serif;
+}
+
+body {
+    background: #fff;
+    color: #111;
+}
+
+header {
+    padding: 16px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #f5f5f5;
+    border-bottom: 1px solid #ddd;
+}
+
+.logo img {
+    height: 80px;
+    width: auto;
+}
+
+header nav {
+    display: flex;
+    gap: 15px;
+}
+
+header nav a {
+    position: relative; /* necesario para el pseudo-elemento */
+    text-decoration: none;
+    color: #111;       /* color fijo, no cambia al hover */
+    font-size: 14px;
+    font-weight: bold;
+    padding: 5px 0;    /* espacio para el cuadrado */
+}
+
+/* Pseudo-elemento: cuadrado rojo */
+header nav a::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;      /* ajusta para que salga más abajo del texto */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6px;        /* tamaño del cuadrado */
+    height: 6px;
+    background-color: red;
+    border-radius: 2px; /* opcional, bordes ligeramente redondeados */
+    opacity: 0;        /* invisible por defecto */
+    transition: opacity 0.2s, transform 0.2s;
+}
+
+/* Mostrar cuadrado rojo al pasar el ratón / tocar en móvil */
+header nav a:hover::after,
+header nav a:focus::after {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0); /* justo debajo del texto */
+}
+
+/* Usuario */
+.auth {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+#nombreUsuario {
+    font-size: 14px;
+    font-weight: bold;
+    color: #111;
+}
+
+.icono_persona {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #333;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+    font-size: 18px;
+}
+
+.menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 50px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    min-width: 160px;
+    overflow: hidden;
+    z-index: 10;
+}
+
+.menu a {
+    display: block;
+    padding: 10px;
+    color: #333;
+    text-decoration: none;
+}
+
+.menu a:hover {
+    background-color: #f0f0f0;
+}
+
+/* =========================
+   Título y botones
+========================= */
+h2 {
+    text-align: center;
+    margin: 25px 0;
+}
+
+.acciones-generales {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.btn-anadir {
+    background-color: #116ba7;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    font-size: 14px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.btn-anadir:hover {
+    background-color: #3191d1;
+}
+
+/* =========================
+   Overlay y formularios
+========================= */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 100;
+    display: none;
+}
+
+.formulario-patrocinador {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 420px;
+    max-width: 90%;
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 20px;
+    z-index: 101;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+.formulario-patrocinador form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.formulario-patrocinador label {
+    font-weight: bold;
+}
+
+.formulario-patrocinador input,
+.formulario-patrocinador textarea {
+    width: 100%;
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+.oculto {
+    display: none;
+}
+
+.botones-form {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.botones-form button {
+    padding: 5px 10px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+}
+
+.botones-form button:hover {
+    opacity: 0.85;
+}
+
+/* =========================
+   Patrocinadores
+========================= */
+.patrocinadores-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 0 40px 40px;
+}
+
+.patrocinador {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    position: relative;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+.patrocinador img {
+    width: 90px;
+    height: 90px;
+    object-fit: contain;
+    border-radius: 8px;
+    flex-shrink: 0;
+    background-color: #f5f5f5;
+    padding: 5px;
+}
+
+.patrocinador-info {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.patrocinador-info h4 {
+    margin: 0 0 5px 0;
+    color: #1f2937;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.patrocinador-info a {
+    color: #116ba7;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.patrocinador-info a:hover {
+    text-decoration: underline;
+}
+
+.acciones {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    display: flex;
+    gap: 10px;
+}
+
+.acciones button {
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.btn-editar:hover {
+    color: #007BFF;
+}
+
+.btn-eliminar:hover {
+    color: #c0392b;
+}
+
+#modal-eliminar {
+    background-color: #c0392b;
+    color: white;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    border: none;
+}
+
+#modal-eliminar:hover {
+    background-color: #e74c3c;
+}
