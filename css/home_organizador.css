@@ -155,21 +155,3 @@ footer a:hover {
         grid-template-columns: 1fr 1fr;
     }
 }
-button{
-    width: 150px;
-    height: 50px;
-    text-align: center;
-    margin: 5px;
-    border-radius: 0%;
-    background-color: red;
-    color: #f7f5f5;
-    border: 0px;
-    transition: 0.3s;
-}
-
-button:hover {
-    background-color: #f3f5f7;
-    color: red;
-    border: black, solid, 1px;
-    
-}

@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", function () {
         profileMenu.style.display = "none";
     });
 
-     // Volver a home
+    // Volver a home
     volver_home.addEventListener("click", function () {
         window.location.href = "home_organizador.html";
     });
@@ -97,17 +97,22 @@ function cargarSecciones() {
     })
         .then(r => r.json())
         .then(data => {
-            lista.innerHTML = "";
+            lista.innerHTML = "<tr><th>Nombre</th><th>Hora</th><th>Lugar</th><th>Borrar/Editar</th></tr>";
             data.forEach(elemnto => {
                 lista.innerHTML += `
-                <div class="evento">
-                    <b>${elemnto.nombre}</b><br>
-                    ${elemnto.hora} - ${elemnto.lugar}<br>
-                    <button onclick="editar(${elemnto.id},'${elemnto.nombre}','${elemnto.hora}','${elemnto.lugar}')">Editar</button>
-                    <button onclick="borrar(${elemnto.id})">Borrar</button>
-                </div>`;
+                <tr class="evento">
+                    <td>${elemnto.nombre}</td>
+                    <td>${elemnto.hora}</td>  
+                    <td>${elemnto.lugar}</td>
+                    <td><button class="eliminar"  onclick="borrar(${elemnto.id})">🗑️</button>
+                    <button class="editar" onclick="editar(${elemnto.id},'${elemnto.nombre}','${elemnto.hora}','${elemnto.lugar}')">✏️</button></td>
+                </tr>`;
             });
         });
+}
+
+function vacio() {
+
 }
 
 function editar(i, n, h, l) {
@@ -154,7 +159,7 @@ function borrar(id) {
         method: "POST",
         body: formData
     })
-    .then(() => cargarSecciones());
+        .then(() => cargarSecciones());
 }
 
 function limpiar() {

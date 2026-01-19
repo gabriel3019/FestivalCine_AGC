@@ -29,3 +29,37 @@ header {
 #resumen{
     display: none;
 }
+
+.boton{
+    width: 150px;
+    height: 50px;
+    text-align: center;
+    margin: 5px;
+    border-radius: 0%;
+    background-color: red;
+    color: #f7f5f5;
+    border: 0px;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.boton:hover {
+    background-color: #f3f5f7;
+    color: red;
+    border: black, solid, 1px;
+    
+}
+
+.editar, .eliminar{
+    width: 20px;
+    height: 20px;
+    font-size: medium;
+    border-radius: 5px;
+    background-color: white;
+    color: #fff;
+    border: 0px;
+}
+
+#cambio{
+    text-align: center;
+}

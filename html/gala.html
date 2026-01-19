@@ -39,7 +39,7 @@
 
 <body>
     <br>
-    <button id="cambio">Cambiar formato</button>
+    <button class="boton" id="cambio">Cambiar formato</button>
     <div id="pre">
         <h1>Pre-Gala del Festival</h1>
 
@@ -49,12 +49,12 @@
             <input id="nombre" placeholder="Nombre de la sección">
             <input id="hora" type="time">
             <input id="lugar" placeholder="Lugar">
-            <button id="guardarSecciones">Guardar</button>
+            <button class="boton" id="guardarSecciones">Guardar</button>
         </section>
 
         <section>
             <h2>Secciones del evento</h2>
-            <div id="lista"></div>
+            <table id="lista"></table>
         </section>
 
         <h2>Eventos</h2>
@@ -63,13 +63,13 @@
 
     <div id="pos">
         <br>
-        <button id="btn-resumen">Añadir un resumen</button>
+        <button class="boton" id="btn-resumen">Añadir un resumen</button>
         <br>
         <div id="resumen" action="" method="post">
             <textarea placeholder="Pon aquí tu resumen" id="#texto-resumen"></textarea>
+            <button class="boton, eliminar" id="btn-eliminarR">🗑️</button>
             <br>
-            <button id="btn-eliminarR">Eliminar resumen</button>
-            <button id="btn-subirR" type="submit">Subir resumen</button>
+            <button class="boton" id="btn-subirR" type="submit">Subir Resumen</button>
         </div>
         <br>
         <!-- Selector de archivos -->

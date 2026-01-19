@@ -76,10 +76,16 @@ function nuevaSeccion()
     $lugar = $_POST['lugar'];
 
     global $conexion;
-    $sql = "INSERT INTO secciones (nombre, hora, lugar) VALUES ('$nombre', '$hora', '$lugar')";
-    $resultado = $conexion->query($sql) or die("Error al crear nueva sección");
-
-    echo $resultado;
+    if ($nombre == "" || $hora == "" || $lugar == "") {
+        echo "<script>
+                alert('Se deben rellenar todos los campos');
+                window.history.back();
+              </script>";
+    } else {
+        $sql = "INSERT INTO secciones (nombre, hora, lugar) VALUES ('$nombre', '$hora', '$lugar')";
+        $resultado = $conexion->query($sql) or die("Error al crear nueva sección");
+        echo $resultado;
+    }
 }
 
 // Parte pos de la gala
