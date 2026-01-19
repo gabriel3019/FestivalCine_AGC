@@ -354,6 +354,26 @@ h2 {
     border: 1px solid red;
 }
 
+/* Modal específico para editar/eliminar noticia */
+#modal-noticia {
+    z-index: 102; /* encima de otros formularios */
+}
+
+/* Botón eliminar rojo */
+#modal-eliminar {
+    background-color: #c0392b;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+#modal-eliminar:hover {
+    background-color: #e74c3c;
+}
+
+
 /* Footer */
 footer {
     background: #222;

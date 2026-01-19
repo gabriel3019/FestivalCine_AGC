@@ -57,6 +57,9 @@
             <label for="contenido">Contenido:</label>
             <textarea id="contenido" name="contenido" rows="4" required></textarea>
 
+            <label for="imagen">Imagen:</label>
+            <input type="file" id="imagen" name="imagen" accept="image/*">
+
             <div class="botones-form">
                 <button type="submit">Guardar</button>
                 <button type="button" id="cancelar">Cancelar</button>
@@ -65,6 +68,38 @@
     </div>
 
     <div class="noticias-container" id="noticias-container"></div>
+
+    <div id="modal-noticia" class="formulario-noticia oculto">
+        <h3 id="modal-titulo">Editar Noticia</h3>
+        <br>
+        <form id="modal-form">
+            <label for="modal-titulo-input">Título:</label>
+            <input type="text" id="modal-titulo-input" name="titulo" required>
+
+            <label for="modal-contenido-input">Contenido:</label>
+            <textarea id="modal-contenido-input" name="contenido" rows="4" required></textarea>
+
+            <label for="modal-imagen-input">Imagen:</label>
+            <input type="file" id="modal-imagen-input" name="imagen" accept="image/*">
+
+
+            <div class="botones-form">
+                <button type="submit">Guardar cambios</button>
+                <button type="button" id="modal-cancelar">Cancelar</button>
+            </div>
+        </form>
+    </div>
+
+    <div id="modal-eliminar" class="formulario-noticia oculto">
+        <h3>Eliminar noticia</h3>
+        <p>¿Seguro que quieres eliminar la noticia?</p>
+
+        <div class="botones-form">
+            <button id="confirmar-eliminar" class="btn-eliminar">Eliminar</button>
+            <button id="cancelar-eliminar">Cancelar</button>
+        </div>
+    </div>
+
 
 
     <div id="overlay" class="overlay oculto"></div>
