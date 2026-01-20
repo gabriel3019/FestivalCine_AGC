@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Candidaturas</title>
-    <link rel="stylesheet" href="../css/candidaturasOrganizador.css">
+    <link rel="stylesheet" href="../css/canditaturasOrganizador.css">
 </head>
 
 <body>
@@ -16,7 +16,7 @@
             </a>
         </div>
         <nav>
-           <a href="noticiasOrganizador.html">Noticias</a>
+            <a href="noticiasOrganizador.html">Noticias</a>
             <a href="eventosOrganizador.html">Eventos</a>
             <a href="premiosOrganizador.html">Premios</a>
             <a href="patrocinadoresOrganizador.html">Patrocinadores</a>
@@ -25,12 +25,14 @@
         </nav>
 
         <div class="auth">
+            <span id="nombreUsuario"></span>
+            <!-- Icono perfil -->
             <div id="icono_persona" class="icono_persona">
                 👤
                 <div id="menu" class="menu">
-                    <a href="#">Crear nueva cuenta</a>
-                    <a href="#">Volver a home</a>
-                    <a href="#">Cerrar sesión</a>
+                    <a href="#" id="crear_cuenta">Crear nueva cuenta</a>
+                    <a href="#" id="volver_home">Volver a home</a>
+                    <a href="#" id="cerrar_sesion">Cerrar sesión</a>
                 </div>
             </div>
         </div>
@@ -48,8 +50,8 @@
                 <p><strong>Categoría:</strong> Cortometraje</p>
 
                 <div class="acciones">
-                    <button class="btn-aceptar">Aceptar</button>
                     <button class="btn-rechazar">Rechazar</button>
+                    <button class="btn-aceptar">Aceptar</button>
                 </div>
 
                 <!-- Nominar premio -->
