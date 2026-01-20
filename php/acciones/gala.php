@@ -77,14 +77,21 @@ function nuevaSeccion()
 
     global $conexion;
     if ($nombre == "" || $hora == "" || $lugar == "") {
-        echo "<script>
-                alert('Se deben rellenar todos los campos');
-                window.history.back();
-              </script>";
+        echo json_encode([
+            "status"=> "error",
+            "message" => "Se deben rellenar todos los campos"
+        ]);
+        exit;
     } else {
         $sql = "INSERT INTO secciones (nombre, hora, lugar) VALUES ('$nombre', '$hora', '$lugar')";
         $resultado = $conexion->query($sql) or die("Error al crear nueva sección");
-        echo $resultado;
+        echo json_encode([
+            "status"=> "error",
+            "data" => $resultado
+        ]);
+        echo json_encode([
+            "resultado"=> $resultado
+        ]);
     }
 }
 
