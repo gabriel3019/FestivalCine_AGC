@@ -3,8 +3,8 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Noticias</title>
-    <link rel="stylesheet" href="../css/noticiasOrganizador.css">
+    <title>Patrocinadores</title>
+    <link rel="stylesheet" href="../css/patrocinadoresOrganizador.css">
 </head>
 
 <body>
@@ -15,8 +15,8 @@
                 <img src="../css/imagenes/Universidad-europea-logo_poc9mEM.2e16d0ba.fill-767x384.png" alt="Logo ">
             </a>
         </div>
-         <nav>
-            <a href="noticiasOrganizador.html">Noticias</a>
+        <nav>
+           <a href="noticiasOrganizador.html">Noticias</a>
             <a href="eventosOrganizador.html">Eventos</a>
             <a href="premiosOrganizador.html">Premios</a>
             <a href="patrocinadoresOrganizador.html">Patrocinadores</a>
@@ -24,10 +24,8 @@
             <a href="canditaturasOrganizador.html">Candidatos</a>
         </nav>
 
-
         <div class="auth">
             <span id="nombreUsuario"></span>
-            <!-- Icono perfil -->
             <div id="icono_persona" class="icono_persona">
                 👤
                 <div id="menu" class="menu">
@@ -38,28 +36,23 @@
             </div>
         </div>
     </header>
-    <br>
-    <h2>Noticias</h2>
 
-
-
+    <h2>Patrocinadores</h2>
 
     <div class="acciones-generales">
-        <button id="btnAnadir" class="btn-anadir" name="anadir">+ Añadir noticia</button>
+        <button id="btnAnadir" class="btn-anadir">+ Añadir patrocinador</button>
     </div>
 
-    <div id="formulario-noticia" class="formulario-noticia oculto">
-        <h3>Añadir noticia</h3>
-        <br>
-        <form id="form-noticia">
-            <label for="titulo">Título:</label>
-            <input type="text" id="titulo" name="titulo" required>
+    <!-- Formulario añadir patrocinador -->
+    <div id="formulario-patrocinador" class="formulario-patrocinador oculto">
+        <h3>Añadir patrocinador</h3>
+        <form id="form-patrocinador">
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" name="nombre" required>
 
-            <label for="contenido">Contenido:</label>
-            <textarea id="contenido" name="contenido" rows="4" required></textarea>
 
-            <label for="imagen">Imagen:</label>
-            <input type="file" id="imagen" name="imagen" accept="image/*">
+            <label for="logo">Logo:</label>
+            <input type="file" id="logo" name="logo" accept="image/*">
 
             <div class="botones-form">
                 <button type="submit">Guardar</button>
@@ -68,21 +61,18 @@
         </form>
     </div>
 
-    <div class="noticias-container" id="noticias-container"></div>
+    <!-- Contenedor de patrocinadores -->
+    <div class="patrocinadores-container" id="patrocinadores-container"></div>
 
-    <div id="modal-noticia" class="formulario-noticia oculto">
-        <h3 id="modal-titulo">Editar Noticia</h3>
-        <br>
+    <!-- Modal editar patrocinador -->
+    <div id="modal-patrocinador" class="formulario-patrocinador oculto">
+        <h3 id="modal-titulo">Editar patrocinador</h3>
         <form id="modal-form">
-            <label for="modal-titulo-input">Título:</label>
-            <input type="text" id="modal-titulo-input" name="titulo" required>
+            <label for="modal-nombre-input">Nombre:</label>
+            <input type="text" id="modal-nombre-input" name="nombre" required>
 
-            <label for="modal-contenido-input">Contenido:</label>
-            <textarea id="modal-contenido-input" name="contenido" rows="4" required></textarea>
-
-            <label for="modal-imagen-input">Imagen:</label>
-            <input type="file" id="modal-imagen-input" name="imagen" accept="image/*">
-
+            <label for="modal-logo-input">Logo:</label>
+            <input type="file" id="modal-logo-input" name="logo" accept="image/*">
 
             <div class="botones-form">
                 <button type="submit">Guardar cambios</button>
@@ -91,21 +81,19 @@
         </form>
     </div>
 
-    <div id="modal-eliminar" class="formulario-noticia oculto">
-        <h3>Eliminar noticia</h3>
-        <p>¿Seguro que quieres eliminar la noticia?</p>
-
+    <!-- Modal eliminar patrocinador -->
+    <div id="modal-eliminar" class="formulario-patrocinador oculto">
+        <h3>Eliminar patrocinador</h3>
+        <p>¿Seguro que quieres eliminar este patrocinador?</p>
         <div class="botones-form">
             <button id="confirmar-eliminar" class="btn-eliminar">Eliminar</button>
             <button id="cancelar-eliminar">Cancelar</button>
         </div>
     </div>
 
-
-
     <div id="overlay" class="overlay oculto"></div>
 
-    <script src="../js/noticiasOrganizador.js"></script>
+    <script src="../js/patrocinadoresOrganizador.js"></script>
 </body>
 
 </html>

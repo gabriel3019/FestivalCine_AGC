@@ -51,11 +51,8 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    // Guardamos login solo si es exitoso
-                    localStorage.setItem("logueado", "true");
-
-                    // Redirigir según rol
-                    if (data.rol.toLowerCase() === "organizador") {
+                    const rol = data.rol ? data.rol.toLowerCase() : '';
+                    if (rol === "organizador") {
                         window.location.href = "../html/home_organizador.html";
                     } else {
                         window.location.href = "../html/home.html";

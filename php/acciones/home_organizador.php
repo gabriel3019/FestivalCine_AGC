@@ -2,9 +2,8 @@
 header("Content-Type: application/json");
 session_start();
 $idOrganizador = $_SESSION['usuario']['id'];
-
-
 require "../BBDD/conecta.php";
+
 
 // Inicializamos arrays
 $data = [

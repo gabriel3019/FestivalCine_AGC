@@ -1,9 +1,26 @@
-/* home.css limpio */
+/* Cargar fuente Hellix */
+@font-face {
+    font-family: 'Hellix';
+    src: url('../fonts/Hellix-Regular.woff2') format('woff2'),
+         url('../fonts/Hellix-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Hellix';
+    src: url('../fonts/Hellix-Bold.woff2') format('woff2'),
+         url('../fonts/Hellix-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+/* Aplicar Hellix a toda la web */
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Hellix', Arial, sans-serif;
 }
 
 body {

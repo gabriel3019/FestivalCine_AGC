@@ -76,10 +76,23 @@ function nuevaSeccion()
     $lugar = $_POST['lugar'];
 
     global $conexion;
-    $sql = "INSERT INTO secciones (nombre, hora, lugar) VALUES ('$nombre', '$hora', '$lugar')";
-    $resultado = $conexion->query($sql) or die("Error al crear nueva sección");
-
-    echo $resultado;
+    if ($nombre == "" || $hora == "" || $lugar == "") {
+        echo json_encode([
+            "status"=> "error",
+            "message" => "Se deben rellenar todos los campos"
+        ]);
+        exit;
+    } else {
+        $sql = "INSERT INTO secciones (nombre, hora, lugar) VALUES ('$nombre', '$hora', '$lugar')";
+        $resultado = $conexion->query($sql) or die("Error al crear nueva sección");
+        echo json_encode([
+            "status"=> "error",
+            "data" => $resultado
+        ]);
+        echo json_encode([
+            "resultado"=> $resultado
+        ]);
+    }
 }
 
 // Parte pos de la gala

@@ -6,13 +6,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gala del festival</title>
     <link rel="stylesheet" href="../css/gala.css">
+    <link rel="stylesheet" href="../css/home_organizador.css">
 </head>
 
+ <header>
+        <div class="logo">
+            <a href="home_organizador.html">
+                <img src="../css/imagenes/Universidad-europea-logo_poc9mEM.2e16d0ba.fill-767x384.png" alt="Logo ">
+            </a>
+        </div>
+         <nav>
+            <a href="noticiasOrganizador.html">Noticias</a>
+            <a href="eventosOrganizador.html">Eventos</a>
+            <a href="premiosOrganizador.html">Premios</a>
+            <a href="patrocinadoresOrganizador.html">Patrocinadores</a>
+            <a href="gala.html">Gala</a>
+            <a href="canditaturasOrganizador.html">Candidatos</a>
+        </nav>
+
+
+        <div class="auth">
+            <span id="nombreUsuario"></span>
+            <!-- Icono perfil -->
+            <div id="icono_persona" class="icono_persona">
+                👤
+                <div id="menu" class="menu">
+                    <a href="#" id="crear_cuenta">Crear nueva cuenta</a>
+                    <a href="#" id="volver_home">Volver a home</a>
+                    <a href="#" id="cerrar_sesion">Cerrar sesión</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
 <body>
-    <button id="home-btn">Volver al home</button>
     <br>
-    <br>
-    <button id="cambio">Cambiar formato</button>
+    <button class="boton" id="cambio">Cambiar formato</button>
     <div id="pre">
         <h1>Pre-Gala del Festival</h1>
 
@@ -22,23 +51,27 @@
             <input id="nombre" placeholder="Nombre de la sección">
             <input id="hora" type="time">
             <input id="lugar" placeholder="Lugar">
-            <button id="guardarSecciones">Guardar</button>
+            <button class="boton" id="guardarSecciones">Guardar</button>
         </section>
 
         <section>
             <h2>Secciones del evento</h2>
-            <div id="lista"></div>
+            <table id="lista"></table>
         </section>
+
+        <h2>Eventos</h2>
+        <table id="eventos"></table>
     </div>
 
     <div id="pos">
-        <p></p>
-        <button id="btn-resumen">Añadir un resumen</button>
+        <br>
+        <button class="boton" id="btn-resumen">Añadir un resumen</button>
+        <br>
         <div id="resumen" action="" method="post">
             <textarea placeholder="Pon aquí tu resumen" id="#texto-resumen"></textarea>
+            <button class="boton, eliminar" id="btn-eliminarR">🗑️</button>
             <br>
-            <button id="btn-eliminarR">Eliminar resumen</button>
-            <button id="btn-subirR" type="submit">Subir resumen</button>
+            <button class="boton" id="btn-subirR" type="submit">Subir Resumen</button>
         </div>
         <br>
         <!-- Selector de archivos -->
@@ -48,9 +81,8 @@
         <!-- Contenedor donde se mostrarán las imágenes -->
         <div id="galeria"></div>
         <br>
-        <select id="galas">
-            <option value="">Ganadores</option>
-        </select>
+        <h2>Premios</h2>
+        <table id="premios"></table>
         <button id="edicionAnterior">Añadir a ediciones anteriores</button>
     </div>
 
