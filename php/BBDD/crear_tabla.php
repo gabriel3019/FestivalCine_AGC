@@ -1,26 +1,28 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <title>Crear BBDD Festival Cine</title>
 </head>
+
 <body>
 
-<?php
-$conexion = new mysqli("localhost", "root", "");
-if ($conexion->connect_error) {
-    die("Error de conexión");
-}
+    <?php
+    $conexion = new mysqli("localhost", "root", "");
+    if ($conexion->connect_error) {
+        die("Error de conexión");
+    }
 
-/* ================= CREAR DB ================= */
-$conexion->query("CREATE DATABASE IF NOT EXISTS FestivalCine");
-$conexion->select_db("FestivalCine");
+    /* ================= CREAR DB ================= */
+    $conexion->query("CREATE DATABASE IF NOT EXISTS FestivalCine");
+    $conexion->select_db("FestivalCine");
 
-/* ================= HASH ================= */
-$hash = password_hash("1234", PASSWORD_DEFAULT);
+    /* ================= HASH ================= */
+    $hash = password_hash("1234", PASSWORD_DEFAULT);
 
-/* ================= TABLAS ================= */
-$sql = "
+    /* ================= TABLAS ================= */
+    $sql = "
 
 CREATE TABLE usuarios (
     id_usuario INT AUTO_INCREMENT PRIMARY KEY,
@@ -31,6 +33,7 @@ CREATE TABLE usuarios (
     rol ENUM('usuario','alumni','organizador') NOT NULL,
     fecha_registro DATE NOT NULL
 );
+
 
 CREATE TABLE organizador (
     id_organizador INT AUTO_INCREMENT PRIMARY KEY,
@@ -143,11 +146,12 @@ CREATE TABLE secciones (
     );
 ";
 
-$conexion->multi_query($sql);
-while ($conexion->more_results() && $conexion->next_result()) {}
+    $conexion->multi_query($sql);
+    while ($conexion->more_results() && $conexion->next_result()) {
+    }
 
-/* ================= DATOS DE PRUEBA ================= */
-$datos = "
+    /* ================= DATOS DE PRUEBA ================= */
+    $datos = "
 
 INSERT INTO usuarios VALUES
 (NULL,'Juan','Pérez','juan@mail.com','$hash','usuario',NOW()),
@@ -176,12 +180,14 @@ INSERT INTO noticias (id_organizador, titulo, contenido, imagen, estado, fecha_p
 (1, 'Convocatoria de cortometrajes abierta', 'Invitamos a todos los cineastas a enviar sus cortometrajes para participar en nuestro festival. ¡No pierdas la oportunidad!', 'noticia2.jpg', 'publicada', NOW());
 ";
 
-$conexion->multi_query($datos);
-while ($conexion->more_results() && $conexion->next_result()) {}
+    $conexion->multi_query($datos);
+    while ($conexion->more_results() && $conexion->next_result()) {
+    }
 
-echo "<h3>BBDD creada correctamente</h3>";
-$conexion->close();
-?>
+    echo "<h3>BBDD creada correctamente</h3>";
+    $conexion->close();
+    ?>
 
 </body>
+
 </html>
