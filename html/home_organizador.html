@@ -23,9 +23,9 @@
         </div>
 
         <div id="menu-toggle" class="menu-toggle">☰</div>
-        
+
         <nav>
-           <a href="noticiasOrganizador.html">Noticias</a>
+            <a href="noticiasOrganizador.html">Noticias</a>
             <a href="eventosOrganizador.html">Eventos</a>
             <a href="premiosOrganizador.html">Premios</a>
             <a href="patrocinadoresOrganizador.html">Patrocinadores</a>
@@ -48,20 +48,104 @@
         </div>
     </header>
 
-    <h2>Noticias</h2>
-    <table id="noticias"></table>
+    <main class="contenedor">
 
-    <h2>Eventos</h2>
-    <table id="eventos"></table>
+        <h1 class="titulo-panel">Panel de Organizador</h1>
+        <section>
+            <a href="noticiasOrganizador.html">
+                 <h2>Noticias</h2>
+            </a>
+            <div class="table-container">
+                <table id="noticias">
+                    <!-- contenido dinámico -->
+                </table>
+            </div>
+        </section>
 
-    <h2>Premios</h2>
-    <table id="premios"></table>
+        <section>
+            <a href="eventosOrganizador.html">
+            <h2>Eventos</h2>
+            </a>
+            <div class="table-container">
+                <table id="eventos">
+                    <!-- contenido dinámico -->
+                </table>
+            </div>
+        </section>
 
-    <h2>Patrocinadores</h2>
-    <table id="patrocinadores"></table>
+        <section>
+            <a href="premiosOrganizador.html">
+            <h2>Premios</h2>
+            </a>
+           <div class="table-container">
+                <table id="premios">
+                    <!-- contenido dinámico -->
+                </table>
+            </div>
+        </section>
 
-    <h2>Gala</h2>
-    <table id="gala"></table>
+        <section>
+            <a href="patrocinadoresOrganizador.html">
+            <h2>Patrocinadores</h2>
+            </a>
+            <div class="table-container">
+                <table id="patrocinadores">
+                    <!-- contenido dinámico -->
+                </table>
+            </div>
+        </section>
+
+        <section>
+            <a href="gala.html">
+            <h2>Gala</h2>
+            </a>
+            <div class="table-container">
+                <table id="gala">
+                    <!-- contenido dinámico -->
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Modal Crear Organizador -->
+    <!-- Modal Crear Organizador -->
+    <div id="modalCrearCuenta" class="modal" style="display:none;">
+        <div class="modal-content">
+            <span id="cerrarModalCuenta" class="close">&times;</span>
+            <h3>Crear cuenta organizador</h3>
+            <form id="formCrearCuenta">
+
+                <div class="form-group">
+                    <input type="text" name="nombre" id="nombre" required placeholder="">
+                    <label for="nombre">Nombre*</label>
+                </div>
+
+                <div class="form-group">
+                    <input type="email" name="correo" id="correo" required placeholder="">
+                    <label for="correo">Correo*</label>
+                </div>
+
+                <div class="form-group">
+                    <input type="password" name="contrasena" id="contrasena" required placeholder="">
+                    <label for="contrasena">Contraseña*</label>
+                </div>
+
+                <div class="form-group">
+                    <input type="password" name="contrasena2" id="contrasena2" required placeholder="">
+                    <label for="contrasena2">Confirmar contraseña*</label>
+                </div>
+
+                <div class="modal-buttons">
+                    <button type="submit" class="btn-crear">Crear cuenta</button>
+                    <button type="button" class="btn-cancelar" id="btnCancelarModal">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+
 
     <script src="../js/home_organizador.js"></script>
     <script src="../js/loader.js"></script>

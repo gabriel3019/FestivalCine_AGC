@@ -20,7 +20,6 @@ document.addEventListener("DOMContentLoaded", function () {
         nav.classList.toggle("active");
     });
 
-
     // Comprobar sesión
     fetch("../php/acciones/check-session.php", { method: "POST" })
         .then(res => res.json())
@@ -94,5 +93,70 @@ document.addEventListener("DOMContentLoaded", function () {
 
         })
         .catch(err => console.error("Error al cargar datos:", err));
+
+    // =====================================
+    // MODAL CREAR ORGANIZADOR (ADAPTADO)
+    // =====================================
+    const btnCrear = document.getElementById("crear_cuenta");
+    const modalCuenta = document.getElementById("modalCrearCuenta");
+    const btnCerrarModal = document.getElementById("cerrarModalCuenta");
+    const btnCancelar = document.getElementById("btnCancelarModal");
+    const formCrear = document.getElementById("formCrearCuenta");
+
+    if (btnCrear && modalCuenta && btnCerrarModal && formCrear && btnCancelar) {
+
+        // Abrir modal
+        btnCrear.addEventListener("click", (e) => {
+            e.preventDefault();
+            modalCuenta.style.display = "flex";
+        });
+
+        // Cerrar modal con X
+        btnCerrarModal.addEventListener("click", () => {
+            modalCuenta.style.display = "none";
+            formCrear.reset();
+        });
+
+        // Cerrar modal con botón Cancelar
+        btnCancelar.addEventListener("click", () => {
+            modalCuenta.style.display = "none";
+            formCrear.reset();
+        });
+
+        // Cerrar modal al hacer click fuera del contenido
+        window.addEventListener("click", (e) => {
+            if (e.target === modalCuenta) {
+                modalCuenta.style.display = "none";
+                formCrear.reset();
+            }
+        });
+
+        // Enviar formulario vía AJAX con validación de contraseñas
+        formCrear.addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            const pass1 = formCrear.contrasena.value;
+            const pass2 = formCrear.contrasena2.value;
+
+            if (pass1 !== pass2) {
+                alert("Las contraseñas no coinciden");
+                return;
+            }
+
+            const formData = new FormData(formCrear);
+
+            fetch("../php/acciones/crearOrganizador.php", {
+                method: "POST",
+                body: formData
+            })
+                .then(res => res.text())
+                .then(data => {
+                    alert(data); // Mensaje de éxito/error
+                    modalCuenta.style.display = "none";
+                    formCrear.reset();
+                })
+                .catch(err => console.error("Error:", err));
+        });
+    }
 
 });

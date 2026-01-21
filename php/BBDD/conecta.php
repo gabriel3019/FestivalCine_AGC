@@ -1,21 +1,22 @@
 <?php
-$host = "localhost";
-$user = "root";
-$pass = "";
-$db   = "FestivalCine";
+header('Content-Type: application/json');
 
-/* Conectar al servidor */
-$conn = new mysqli($host, $user, $pass);
+// Configuración
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "festivalcine";
+
+// Crear conexión
+$conn = new mysqli($servername, $username, $password);
+
 if ($conn->connect_error) {
-    die("Error conectando a MySQL");
+    echo json_encode([
+        'status' => 'error',
+        'message' => 'Error de conexión con la base de datos'
+    ]);
+    exit;
 }
 
-/* Crear BBDD si no existe */
-$conn->query("
-    CREATE DATABASE IF NOT EXISTS $db
-    CHARACTER SET utf8mb4
-    COLLATE utf8mb4_general_ci
-");
-
-/* Seleccionar BBDD */
-$conn->select_db($db);
+// Seleccionar base de datos
+$conn->select_db($dbname);

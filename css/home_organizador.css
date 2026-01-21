@@ -171,25 +171,45 @@ h2 {
     margin-bottom: 12px;
 }
 
-/* Footer */
-footer {
-    background: #222;
-    color: #fff;
-    padding: 30px 20px;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    text-align: center;
-    gap: 10px;
+/* Tablas estilo “card” */
+.table-container table {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    border-collapse: collapse;
+    background: #fff;
+    font-size: 14px;
+    border-radius: 10px;  /* esquinas redondeadas */
+    overflow: hidden;
+    border: none;          /* sin borde */
+    box-shadow: 0 0 0 rgba(0,0,0,0); /* sin sombra inicial */
+    transition: box-shadow 0.3s ease; /* transición suave */
 }
 
-footer a {
-    color: #fff;
-    text-decoration: none;
+/* Hover: aparecer sombra */
+.table-container table:hover {
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1); /* sombra suave */
 }
 
-footer a:hover {
-    text-decoration: underline;
+/* Cabecera y celdas sin borde */
+.table-container th,
+.table-container td {
+    border: none;
+    padding: 12px;
 }
+
+/* Cabecera estilo */
+.table-container th {
+    background: #f3f3f3;
+    font-weight: 600;
+    text-align: left;
+}
+
+/* Hover filas: ligero cambio de fondo */
+.table-container tbody tr:hover {
+    background-color: #fafafa;
+}
+
 
 /* Botones */
 button {
@@ -205,6 +225,244 @@ button {
     font-size: 24px;
     cursor: pointer;
 }
+
+/* =========================
+   CONTENEDOR PRINCIPAL
+========================= */
+
+.contenedor {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+/* Secciones tipo tarjeta */
+section {
+    background: #ffffff;
+    padding: 25px;
+    margin-bottom: 40px;
+    border-radius: 14px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+}
+
+/* Títulos */
+section h2 {
+    color: #8b0000;
+    margin-bottom: 18px;
+    font-size: 22px;
+    border-left: 4px solid #8b0000;
+    padding-left: 12px;
+}
+
+/* Tablas modernas */
+table {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    border-collapse: collapse;
+    background: #fff;
+    font-size: 14px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+/* Cabecera */
+th {
+    background: #f3f3f3;
+    font-weight: 600;
+    padding: 12px;
+    text-align: left;
+}
+
+/* Celdas */
+td {
+    padding: 12px;
+    border-top: 1px solid #eee;
+}
+
+/* Hover filas */
+tbody tr:hover {
+    background-color: #fafafa;
+}
+
+/* Eliminar bordes antiguos */
+th,
+td {
+    border: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .contenedor {
+        padding: 20px 10px;
+    }
+
+    section {
+        padding: 18px;
+    }
+
+    table {
+        font-size: 12px;
+    }
+
+    section h2 {
+        font-size: 18px;
+    }
+}
+/* =========================
+   PANEL ORGANIZADOR
+========================= */
+
+.titulo-panel {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 40px;
+    color: #111;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    text-align: center;
+}
+
+.titulo-panel::before {
+    font-size: 30px;
+}
+
+/* Subtítulo opcional si algún día lo quieres */
+.subtitulo-panel {
+    color: #666;
+    margin-top: -20px;
+    margin-bottom: 30px;
+    font-size: 14px;
+}
+
+.modal {
+    position: fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background: rgba(0,0,0,0.5);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:1000;
+}
+
+.modal-content {
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    width:350px;
+    position:relative;
+    box-shadow:0 0 10px rgba(0,0,0,0.3);
+    text-align:center;
+}
+
+.close {
+    position:absolute;
+    top:10px;
+    right:15px;
+    font-size:24px;
+    cursor:pointer;
+}
+
+.modal input[type="text"],
+.modal input[type="email"],
+.modal input[type="password"] {
+    width: 90%;
+    padding:8px;
+    margin-bottom:10px;
+    border-radius:5px;
+    border:1px solid #ccc;
+}
+
+/* Inputs estilo floating y solo borde inferior */
+.modal .form-group {
+    position: relative;
+    margin-top: 20px;
+}
+
+.modal .form-group input {
+    width: 100%;
+    padding: 12px 10px;
+    border: none; /* eliminar borde completo */
+    border-bottom: 2px solid #ccc; /* solo borde inferior */
+    border-radius: 0;
+    outline: none;
+    font-size: 16px;
+    background: none;
+    transition: border-color 0.2s;
+}
+
+.modal .form-group input:focus {
+    border-bottom-color: black; /* color de borde al focus */
+}
+
+/* Label centrado inicialmente dentro del input */
+.modal .form-group label {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+    color: #aaa;
+    font-size: 16px;
+    pointer-events: none;
+    transition: all 0.2s ease-out;
+    background: white;
+    padding: 0 5px;
+}
+
+/* Cuando el input tiene foco o tiene valor */
+.modal .form-group input:focus + label,
+.modal .form-group input:not(:placeholder-shown) + label {
+    top: -10px;           /* sube el label */
+    font-size: 12px;      /* más pequeño */
+    color: black;           /* color del label */
+}
+
+
+.modal-buttons {
+    display:flex;
+    justify-content: space-between;
+    margin-top:15px;
+}
+
+.btn-crear {
+    background:red;
+    color:white;
+    border:none;
+    padding:10px 20px;
+    border-radius:5px;
+    cursor:pointer;
+    width:48%;
+    transition: all 0.3s ease;
+}
+
+.btn-crear:hover {
+    background:white;
+    color:red;
+    border:1px solid red;
+}
+
+.btn-cancelar {
+    background:white;
+    color:black;
+    border:1px solid black;
+    padding:10px 20px;
+    border-radius:5px;
+    cursor:pointer;
+    width:48%;
+    transition: all 0.3s ease;
+}
+
+.btn-cancelar:hover {
+    background:black;
+    color:white;
+}
+
+
 
 /* Móvil */
 @media (max-width: 768px) {
