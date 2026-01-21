@@ -9,6 +9,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const overlay = document.getElementById("overlay");
 
+    const campos = [
+        { input: document.getElementById('titulo'), error: document.getElementById('tituloError') },
+        { input: document.getElementById('contenido'), error: document.getElementById('contenidoError') },
+        { input: document.getElementById('imagen'), error: document.getElementById('imagenError') }
+    ];
+
     // Modal editar / eliminar
     const modalEditar = document.getElementById("modal-noticia");
     const modalForm = document.getElementById("modal-form");
@@ -56,22 +62,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // ===================== FUNCIONES API =====================
     async function api(data) {
-    const formData = new FormData();
-    for (let key in data) {
-        if (key === "imagen" && data[key] instanceof File) {
-            formData.append("imagen", data[key]);
-        } else {
-            formData.append(key, data[key]);
+        const formData = new FormData();
+        for (let key in data) {
+            if (key === "imagen" && data[key] instanceof File) {
+                formData.append("imagen", data[key]);
+            } else {
+                formData.append(key, data[key]);
+            }
         }
+
+        const res = await fetch("../php/acciones/noticiasOrganizador.php", {
+            method: "POST",
+            body: formData
+        });
+
+        return res.json();
     }
-
-    const res = await fetch("../php/acciones/noticiasOrganizador.php", {
-        method: "POST",
-        body: formData
-    });
-
-    return res.json();
-}
     // ===================== CARGAR NOTICIAS =====================
     async function cargarNoticias() {
         const data = await api({ action: "listar" });
@@ -84,22 +90,26 @@ document.addEventListener("DOMContentLoaded", () => {
             div.className = "noticia";
             div.dataset.id = n.id_noticia;
 
+            // Si no hay imagen, usamos la de fondo por defecto
             const imgSrc = n.imagen ? n.imagen : "../css/imagenes/fondo.png";
 
             div.innerHTML = `
-    <div class="acciones">
-        <button class="btn-editar">✏️</button>
-        <button class="btn-eliminar">🗑️</button>
-    </div>
-    <img src="${imgSrc}" alt="Imagen noticia">
-    <div class="contenido">
-        <h3 class="titulo">${n.titulo}</h3>
-        <p class="texto">${n.contenido}</p>
-        <div class="info">
-            <span class="fecha">${new Date(n.fecha_publicacion).toLocaleDateString("es-ES")}</span>
-        </div>
-    </div>
-`;
+            <img src="${imgSrc}" alt="Imagen noticia">
+            <div class="contenido">
+                <div class="meta-info">
+                    <span class="lugar">Madrid</span>
+                    <span class="fecha">${n.fecha} - ${n.hora}</span>
+                </div>
+                
+                <h3 class="titulo">${n.titulo}</h3>
+                <p class="descripcion">${n.contenido}</p>
+
+                <div class="acciones">
+                    <button class="btn-editar">✏️</button>
+                    <button class="btn-eliminar">🗑️</button>
+                </div>
+            </div>
+        `;
 
             contenedor.appendChild(div);
         });
@@ -137,9 +147,11 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!titulo || !contenido) return;
 
         const data = { action: "anadir", titulo, contenido };
+
         if (imagen) data.imagen = imagen;
 
         const res = await api(data, true);
+
         if (res.success) {
             formNoticia.reset();
             cerrarTodo();
@@ -159,7 +171,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // ✏️ EDITAR
         if (e.target.classList.contains("btn-editar")) {
             modalTituloInput.value = noticia.querySelector(".titulo").textContent;
-            modalContenidoInput.value = noticia.querySelector(".texto").textContent;
+            modalContenidoInput.value = noticia.querySelector(".descripcion").textContent;
             modalEditar.classList.remove("oculto");
             overlay.classList.remove("oculto");
         }
@@ -177,14 +189,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const titulo = modalTituloInput.value.trim();
         const contenido = modalContenidoInput.value.trim();
-        const imagen = modalImagenInput?.files[0];
+        const imagen = document.getElementById("modal-imagen-input").files[0];
 
         if (!titulo || !contenido) return;
 
-        const data = { action: "editar", id: noticiaActualId, titulo, contenido };
-        if (imagen) data.imagen = imagen;
+        const data = {
+            action: "editar",
+            id: noticiaActualId,
+            titulo: titulo,
+            contenido: contenido
+        };
 
-        const res = await api(data, true);
+        if (imagen) {
+            data.imagen = imagen; // La función api() ya se encarga de meterlo en el FormData
+        }
+
+        const res = await api(data);
+
         if (res.success) {
             cerrarTodo();
             cargarNoticias();
@@ -198,6 +219,28 @@ document.addEventListener("DOMContentLoaded", () => {
             cerrarTodo();
             cargarNoticias();
         }
+    });
+
+    campos.forEach(item => {
+        // Evento 'blur': al salir del input
+        item.input.addEventListener('blur', () => {
+            if (item.input.value.trim() === "") {
+                item.input.classList.add("input-error"); // Añadimos la clase de error
+                item.error.textContent = "Este campo es obligatorio";
+                item.error.style.display = "block";
+            } else {
+                item.input.classList.remove("input-error");
+                item.error.style.display = "none";
+            }
+        });
+
+        // Quitar error mientras se escribe
+        item.input.addEventListener('input', () => {
+            if (item.input.value.trim() !== "") {
+                item.input.classList.remove("input-error");
+                item.error.style.display = "none";
+            }
+        });
     });
 
 });

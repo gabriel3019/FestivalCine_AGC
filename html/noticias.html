@@ -3,8 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Últimas Noticias</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Noticias</title>
     <link rel="stylesheet" href="../css/noticias.css">
 </head>
 
@@ -13,35 +12,38 @@
 
     <header>
         <div class="logo">
-            <img src="../css/imagenes/Universidad-europea-logo_poc9mEM.2e16d0ba.fill-767x384.png" alt="Logo ">
+            <a href="home.html">
+                <img src="../css/imagenes/Universidad-europea-logo_poc9mEM.2e16d0ba.fill-767x384.png" alt="Logo ">
+            </a>
         </div>
+
         <nav>
             <a href="noticias.html">Noticias</a>
             <a href="eventos.html">Eventos</a>
-            <a href="catalogo.html">Catalogo</a>
             <a href="premios.html">Premios</a>
-            <a href="#">Patrocinadores</a>
+            <a href="patrocinadores.html">Patrocinadores</a>
             <a href="gala.html">Gala</a>
-
+            <a href="catalogo.html">Catálogo</a>
         </nav>
 
-        <div class="user-menu">
-            <button class="user-toggle">
-                <img src="../css/imagenes/emoticono-removebg-preview.png" alt="Usuario">
-                <span>▼</span>
-            </button>
-            <ul class="user-dropdown">
-                <li><a href="#" id="mi_perfil">Mi perfil</a></li>
-                <li><a href="#" id="mis_cortos">Mis cortos</a></li>
-                <li><a href="#" id="volver_home">Volver a home</a></li>
-                <li><a href="#" id="cerrar_sesion">Cerrar sesión</a></li>
-            </ul>
-        </div>
+        <div class="auth-container">
+            <div id="auth-visitante" class="auth">
+                <button id="login-btn">Iniciar sesión</button>
+                <button id="register-btn" class="primary">Regístrate</button>
+            </div>
 
-
-        <div class="auth">
-            <button id="login-btn">Iniciar sesión</button>
-            <button id="register-btn" class="primary">Regístrate</button>
+            <div id="auth-usuario" class="auth" style="display: none;">
+                <span id="nombreUsuario"></span>
+                <div id="icono_persona" class="icono_persona">
+                    👤
+                    <div id="menu" class="menu">
+                        <a href="#" id="mi_perfil">Mi perfil</a>
+                        <a href="#" id="mis_cortos">Mis cortos</a>
+                        <a href="#" id="volver_home">Volver a home</a>
+                        <a href="#" id="cerrar_sesion">Cerrar sesión</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </header>
 
@@ -63,12 +65,10 @@
     </section>
 
     <!-- TÍTULO -->
-    <main class="main">
-        <!-- LISTADO DE NOTICIAS -->
-        <section class="news-list">
-            <div class="cards" id="noticias-container"></div>
-        </section>
-    </main>
+
+    <!-- LISTADO DE NOTICIAS -->
+    <div class="noticias-container" id="noticias-container"></div>
+
 
     <footer class="footer">
         <div class="footer-top">

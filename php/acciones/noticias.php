@@ -2,19 +2,23 @@
 header('Content-Type: application/json');
 require "../BBDD/conecta.php";
 
-$sql = "SELECT titulo, contenido, fecha_publicacion FROM noticias 
-        ORDER BY fecha_publicacion DESC";
+$query = "SELECT id_noticia, titulo, contenido, fecha_publicacion, imagen,
+          DATE_FORMAT(fecha_publicacion, '%d %b %Y') as fecha,
+          DATE_FORMAT(fecha_publicacion, '%H:%i') as hora
+          FROM noticias
+          ORDER BY fecha_publicacion DESC";
 
-$result = $conn->query($sql);
-
-if (!$result) {
-    echo json_encode(["error" => $conn->error]);
-    exit;
-}
-
+$result = $conn->query($query);
 $noticias = [];
-while ($fila = $result->fetch_assoc()) {
-    $noticias[] = $fila;
+// Asegúrate de que esta ruta sea correcta según donde guardas las fotos
+$rutaWeb = "../css/imagenes/"; 
+
+while ($row = $result->fetch_assoc()) {
+    if ($row['imagen']) {
+        $row['imagen'] = $rutaWeb . $row['imagen'];
+    }
+    $noticias[] = $row;
 }
 
-echo json_encode($noticias);
+echo json_encode(["success" => true, "noticias" => $noticias]);
+?>
