@@ -27,9 +27,8 @@
         <nav>
             <a href="noticias.html">Noticias</a>
             <a href="eventos.html">Eventos</a>
-            <a href="catalogo.html">Catalogo</a>
             <a href="premios.html">Premios</a>
-            <a href="#">Patrocinadores</a>
+            <a href="">Patrocinadores</a>
             <a href="gala.html">Gala</a>
 
         </nav>
@@ -56,7 +55,18 @@
 
 
     <div class="hero">
-        <div class="play"></div>
+        <div class="carousel">
+            <img src="../css/imagenes/fondo.png" class="active">
+            <img src="../css/imagenes/gala.jpg">
+            <img src="../css/imagenes/gala2.jpg">
+        </div>
+
+        <div class="carousel-dots">
+            <span class="dot active"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+        </div>
+    </div>
     </div>
 
 
@@ -64,25 +74,31 @@
         <div>
             <h2>Envía tu cortometraje</h2>
             <p>Comparte tu talento y participa en nuestros concursos.</p>
-            <button>Subir ahora</button>
+            <a href="registro.html" class="upload-btn">Subir ahora</a>
         </div>
-        <div class="image"></div>
+
+        <div class="image video hero-video" id="openVideo">
+            <img src="../css/imagenes/gala.jpg" alt="Video Festival">
+            <div class="play-button">▶</div>
+        </div>
     </div>
 
 
+
     <section>
-        <h2>ÚLTIMAS NOTICIAS</h2>
-        <div class="cards">
-            <div class="card">
-                <div class="thumb"></div>
-                <p>Noticas</p>
-            </div>
-            <div class="card">
-                <div class="thumb"></div>
-                <p>Eventos</p>
-            </div>
+        <h2>ÚLTIMA NOTICIA</h2>
+        <div class="card" id="ultima-noticia">
+            <!-- Se llenará dinámicamente -->
         </div>
     </section>
+
+    <section>
+        <h2>PRÓXIMO EVENTO</h2>
+        <div class="card" id="ultimo-evento">
+            <!-- Se llenará dinámicamente -->
+        </div>
+    </section>
+
 
 
     <section>
@@ -183,9 +199,19 @@
         </div>
     </footer>
 
+    <div class="video-modal" id="videoModal">
+        <div class="close-modal" id="closeVideo">✕</div>
+
+        <iframe src="https://www.youtube.com/embed/wHg_GHzt_84?autoplay=1" allow="autoplay; encrypted-media"
+            allowfullscreen>
+        </iframe>
+    </div>
+
+
 
     <script src="../js/home.js"></script>
     <script src="../js/loader.js"></script>
+    <script src="../js/video.js"></script>
 </body>
 
 </html>

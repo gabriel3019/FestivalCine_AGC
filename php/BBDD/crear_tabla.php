@@ -1,11 +1,21 @@
 <?php
-// ---------------------- CONEXIÓN ----------------------
-// Asegúrate de requerir conecta.php antes si no lo haces aquí
+// ---------------------- CONEXIÓN Y CREACIÓN DE BD ----------------------
 if (!isset($conn)) {
-    $conn = new mysqli("localhost", "root", "", "FestivalCine");
+    // 1. Conectamos SOLO al servidor (sin especificar base de datos aún)
+    $conn = new mysqli("localhost", "root", "");
+
     if ($conn->connect_error) {
         die("Error de conexión: " . $conn->connect_error);
     }
+
+    // 2. Creamos la base de datos si no existe (con soporte para acentos/ñ)
+    $sqlCreate = "CREATE DATABASE IF NOT EXISTS festivalCine CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci";
+    if (!$conn->query($sqlCreate)) {
+        die("Error creando la base de datos: " . $conn->error);
+    }
+
+    // 3. Ahora sí, seleccionamos la base de datos
+    $conn->select_db("festivalCine");
 }
 
 // ---------------------- CREACIÓN DE TABLAS ----------------------

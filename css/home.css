@@ -25,24 +25,127 @@
 
 body {
     background: #fff;
+    padding-top: 100px; /* Ajusta según altura del header */
     color: #111;
-    padding-top: 120px; /* altura del header */
 }
 
+/* =========================
+   Header uniforme y hover con cuadrado rojo
+========================= */
+
+/* Header fijo */
 header {
-    padding: 16px 40px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #f5f5f5;
+    border-bottom: 1px solid #ddd;
     z-index: 1000;
-    background: #fff;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    flex-wrap: wrap;
 }
 
+/* Logo */
+.logo img {
+    height: 50px;
+    width: auto;
+}
+
+/* Navegación principal */
+header nav {
+    display: flex;
+    gap: 20px;
+    flex: 1;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* Links del header */
+header nav a {
+    position: relative; /* necesario para el pseudo-elemento */
+    text-decoration: none;
+    color: #111;       /* color fijo, no cambia al hover */
+    font-size: 14px;
+    font-weight: bold;
+    padding: 5px 0;    /* espacio para el cuadrado */
+}
+
+/* Pseudo-elemento: cuadrado rojo */
+header nav a::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;     /* más abajo del texto */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6px;        /* tamaño del cuadrado */
+    height: 6px;
+    background-color: red;
+    border-radius: 2px; /* opcional, bordes redondeados */
+    opacity: 0;        /* invisible por defecto */
+    transition: opacity 0.2s, transform 0.2s;
+}
+
+/* Mostrar cuadrado rojo al pasar el ratón / tocar */
+header nav a:hover::after,
+header nav a:focus::after {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0); /* queda justo debajo del texto */
+}
+
+/* Usuario */
+.auth {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+#nombreUsuario {
+    font-weight: bold;
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+.icono_persona {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #333;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+    font-size: 18px;
+}
+
+/* Menú desplegable usuario */
+.menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 50px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    min-width: 140px;
+    overflow: hidden;
+    z-index: 10;
+}
+
+.menu a {
+    display: block;
+    padding: 10px;
+    color: #333;
+}
+
+.menu a:hover {
+    background-color: #f0f0f0;
+}
 .logo img {
     height: 80px;
     width: auto;
@@ -71,6 +174,7 @@ nav a {
     background: #fff;
     cursor: pointer;
 }
+
 
 .auth .primary {
     background: #f30000;
@@ -126,13 +230,25 @@ nav a {
     margin-bottom: 20px;
 }
 
-.upload button {
+/* Botón negro por defecto, blanco al pasar el ratón */
+.upload-btn {
+    display: inline-block;
     padding: 10px 26px;
-    background: #111;
-    color: #fff;
+    background: #111;     /* negro */
+    color: #fff;          /* texto blanco */
+    border-color: #111;
+    text-decoration: none;
     border: none;
     cursor: pointer;
+    transition: all 0.3s ease;
 }
+
+.upload-btn:hover {
+    background: #fff;     /* fondo blanco al hover */
+    color: #111; 
+    border: 1px solid #111;      /* texto negro al hover */
+}
+
 
 .image {
     background: #e5e5e5;
@@ -154,6 +270,154 @@ section h2 {
     font-size: 28px;
     margin-bottom: 40px;
 }
+
+/* ===== HERO FULL WIDTH ===== */
+.hero {
+    width: 100%;
+    height: 520px;
+    margin: 0;
+    border-radius: 0;
+    position: relative;
+    overflow: hidden;
+    background: #000;
+}
+
+.carousel {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.carousel img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 1.2s ease-in-out;
+}
+
+.carousel img.active {
+    opacity: 1;
+}
+
+.carousel-dots {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+}
+
+.dot {
+    width: 14px;
+    height: 14px;
+    background: #ff2b2b;
+    opacity: 0.4;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+}
+
+.dot.active {
+    opacity: 1;
+}
+
+
+.image.video {
+    position: relative;
+    padding-top: 56.25%; /* 16:9 */
+    background: #000;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.image.video iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+/* HERO VIDEO */
+.hero-video {
+    position: relative;
+    width: 100%;
+    height: 520px;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.hero-video img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* TEXTO */
+.hero-text {
+    position: absolute;
+    left: 80px;
+    bottom: 80px;
+    color: white;
+    font-size: 22px;
+    max-width: 400px;
+    line-height: 1.4;
+}
+
+/* PLAY ROJO */
+.play-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90px;
+    height: 90px;
+    background: #ff2b2b;
+    color: white;
+    font-size: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* MODAL */
+.video-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.95);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.video-modal iframe {
+    width: 80%;
+    height: 80%;
+    border: none;
+}
+
+/* CERRAR */
+.close-modal {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    background: #ff2b2b;
+    color: white;
+    font-size: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
 
 .cards {
     display: grid;

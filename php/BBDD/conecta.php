@@ -1,22 +1,22 @@
 <?php
-header('Content-Type: application/json');
+// php/BBDD/conecta.php
 
-// Configuración
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "festivalcine";
+$dbname = "festivalCine"; // Asegúrate de que coincida con crear_tabla.php
 
-// Crear conexión
-$conn = new mysqli($servername, $username, $password);
+$conn = new mysqli($servername, $username, $password, $dbname);
 
 if ($conn->connect_error) {
+    // Si falla, devolvemos JSON para que el frontend sepa qué pasó
+    header('Content-Type: application/json');
     echo json_encode([
-        'status' => 'error',
+        'success' => false,
         'message' => 'Error de conexión con la base de datos'
     ]);
     exit;
 }
 
-// Seleccionar base de datos
-$conn->select_db($dbname);
+$conn->set_charset("utf8mb4");
+?>
