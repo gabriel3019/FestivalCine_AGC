@@ -12,15 +12,19 @@ try {
 
         case "listar":
             $result = $conn->query(
-                "SELECT id_noticia, titulo, contenido, fecha_publicacion, imagen
-                 FROM noticias
-                 ORDER BY fecha_publicacion DESC"
+                "SELECT id_noticia, titulo, contenido, fecha_publicacion, imagen,
+                DATE_FORMAT(fecha_publicacion, '%d %b %Y') as fecha,
+                DATE_FORMAT(fecha_publicacion, '%H:%i') as hora
+                FROM noticias
+                ORDER BY fecha_publicacion DESC" // Esto ya hace el filtro de más actual primero
             );
 
             $noticias = [];
+            $rutaWeb = "/FestivalCine_AGC/css/imagenes/";
+
             while ($row = $result->fetch_assoc()) {
                 if ($row['imagen']) {
-                    $row['imagen'] = 'data:image/jpeg;base64,' . base64_encode($row['imagen']);
+                    $row['imagen'] =  $rutaWeb . $row['imagen'];
                 }
                 $noticias[] = $row;
             }
@@ -33,17 +37,25 @@ try {
             $contenido = $_POST['contenido'] ?? '';
             $imagenBD = null;
 
-            if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
-                $imagenBD = file_get_contents($_FILES['imagen']['tmp_name']);
-            }
+            // ruta donde se guardara los archivos
+            $root = dirname(__DIR__, 2);
+            $carpeta = $root . "/css/imagenes/";
+
+            // nombre original del archivo
+            $nombreArchivo = basename($_FILES["imagen"]["name"]);
+            $rutaCompleta = $carpeta . $nombreArchivo;
+            $tipoArchivo = pathinfo($rutaCompleta, PATHINFO_EXTENSION);
+
+            // nombre temporal que php le asigna al archivo al ser subido
+            move_uploaded_file($_FILES["imagen"]["tmp_name"], $rutaCompleta);
 
             $stmt = $conn->prepare(
                 "INSERT INTO noticias (id_organizador, titulo, contenido, fecha_publicacion, imagen)
                  VALUES (?, ?, ?, NOW(), ?)"
             );
 
-            $stmt->bind_param("issb", $idOrganizador, $titulo, $contenido, $imagenBD);
-            if ($imagenBD) $stmt->send_long_data(3, $imagenBD);
+            $stmt->bind_param("isss", $idOrganizador, $titulo, $contenido, $nombreArchivo);
+            // if ($imagenBD) $stmt->send_long_data(3, $nombreArchivo);
 
             $stmt->execute();
             echo json_encode(["success" => $stmt->affected_rows > 0]);
@@ -54,19 +66,27 @@ try {
             $titulo = $_POST['titulo'] ?? '';
             $contenido = $_POST['contenido'] ?? '';
 
-            $imagenBD = null;
+            // Si hay una nueva imagen
             if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
-                $imagenBD = file_get_contents($_FILES['imagen']['tmp_name']);
+                $root = dirname(__DIR__, 2);
+                $carpeta = $root . "/css/imagenes/";
+                $nombreArchivo = basename($_FILES["imagen"]["name"]);
+                $rutaCompleta = $carpeta . $nombreArchivo;
+
+                // Movemos el archivo físico
+                move_uploaded_file($_FILES["imagen"]["tmp_name"], $rutaCompleta);
+
+                // Actualizamos incluyendo el nuevo nombre de la imagen
                 $stmt = $conn->prepare("UPDATE noticias SET titulo=?, contenido=?, imagen=? WHERE id_noticia=?");
-                $stmt->bind_param("ssbi", $titulo, $contenido, $imagenBD, $id);
-                $stmt->send_long_data(2, $imagenBD);
+                $stmt->bind_param("sssi", $titulo, $contenido, $nombreArchivo, $id);
             } else {
+                // Si no se subió imagen nueva, solo actualizamos texto
                 $stmt = $conn->prepare("UPDATE noticias SET titulo=?, contenido=? WHERE id_noticia=?");
                 $stmt->bind_param("ssi", $titulo, $contenido, $id);
             }
 
             $stmt->execute();
-            echo json_encode(["success" => $stmt->affected_rows > 0]);
+            echo json_encode(["success" => $stmt->affected_rows >= 0]); // >= 0 porque si no cambias nada, affected_rows es 0
             break;
 
         case "borrar":
@@ -80,7 +100,6 @@ try {
         default:
             echo json_encode(["success" => false, "message" => "Acción no reconocida"]);
     }
-
 } catch (Throwable $e) {
     echo json_encode(["success" => false, "message" => $e->getMessage()]);
 }

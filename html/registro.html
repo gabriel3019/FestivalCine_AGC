@@ -19,21 +19,21 @@
             <img src="../css/imagenes/logo.png" alt="Logo" class="logo">
 
 
-            <form id="registerForm">
+            <form id="registerForm" enctype="multipart/form-data">
                 <label>Nombre</label>
-                <input type="text"  name="nombre"  placeholder="Nombre" required>
+                <input type="text" name="nombre" placeholder="Nombre" required>
 
 
                 <label>Apellidos</label>
-                <input type="text" name="apellidos"  placeholder="Apellidos" required>
+                <input type="text" name="apellidos" placeholder="Apellidos" required>
 
 
                 <label>Correo electrónico</label>
-                <input type="email"  name="email" placeholder="Correo electrónico" required>
+                <input type="email" name="email" placeholder="Correo electrónico" required>
 
 
                 <label>Contraseña</label>
-                <input type="password" name="password"  placeholder="Contraseña" required>
+                <input type="password" name="password" placeholder="Contraseña" required>
 
                 <label>Rol</label>
                 <select name="rol" required>
@@ -42,6 +42,16 @@
                     <option value="alumni">Alumni</option>
                     <option value="organizador">Organizador</option>
                 </select>
+
+                <label>Subir vídeo</label>
+
+                <div class="video-upload">
+                    <label for="videoInput" class="video-box">
+                        <span id="videoText">Haz clic para subir un vídeo</span>
+                    </label>
+                    <input type="file" id="videoInput" name="video" accept="video/*" hidden>
+                </div>
+
 
 
                 <button type="submit" class="btn primary">

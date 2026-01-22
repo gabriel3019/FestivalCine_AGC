@@ -2,7 +2,7 @@
 @font-face {
     font-family: 'Hellix';
     src: url('../fonts/Hellix-Regular.woff2') format('woff2'),
-         url('../fonts/Hellix-Regular.ttf') format('truetype');
+        url('../fonts/Hellix-Regular.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }
@@ -10,7 +10,7 @@
 @font-face {
     font-family: 'Hellix';
     src: url('../fonts/Hellix-Bold.woff2') format('woff2'),
-         url('../fonts/Hellix-Bold.ttf') format('truetype');
+        url('../fonts/Hellix-Bold.ttf') format('truetype');
     font-weight: bold;
     font-style: normal;
 }
@@ -24,8 +24,11 @@
 }
 
 body {
-    background: #fff;
-    color: #111;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    /* Ocupa toda la pantalla */
 }
 
 header {
@@ -48,26 +51,33 @@ header nav {
 }
 
 header nav a {
-    position: relative; /* necesario para el pseudo-elemento */
+    position: relative;
+    /* necesario para el pseudo-elemento */
     text-decoration: none;
-    color: #111;       /* color fijo, no cambia al hover */
+    color: #111;
+    /* color fijo, no cambia al hover */
     font-size: 14px;
     font-weight: bold;
-    padding: 5px 0;    /* espacio para el cuadrado */
+    padding: 5px 0;
+    /* espacio para el cuadrado */
 }
 
 /* Pseudo-elemento: cuadrado rojo */
 header nav a::after {
     content: '';
     position: absolute;
-    bottom: -8px;      /* ajusta para que salga más abajo del texto */
+    bottom: -8px;
+    /* ajusta para que salga más abajo del texto */
     left: 50%;
     transform: translateX(-50%);
-    width: 6px;        /* tamaño del cuadrado */
+    width: 6px;
+    /* tamaño del cuadrado */
     height: 6px;
     background-color: red;
-    border-radius: 2px; /* opcional, bordes ligeramente redondeados */
-    opacity: 0;        /* invisible por defecto */
+    border-radius: 2px;
+    /* opcional, bordes ligeramente redondeados */
+    opacity: 0;
+    /* invisible por defecto */
     transition: opacity 0.2s, transform 0.2s;
 }
 
@@ -75,7 +85,83 @@ header nav a::after {
 header nav a:hover::after,
 header nav a:focus::after {
     opacity: 1;
-    transform: translateX(-50%) translateY(0); /* justo debajo del texto */
+    transform: translateX(-50%) translateY(0);
+    /* justo debajo del texto */
+}
+
+
+.news-hero {
+    position: relative;
+    height: 320px;
+    background-image: url("../css/imagenes/megafonos_noticia.webp");
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+}
+
+/* Capa oscura */
+.news-hero .overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.33);
+    /* Un poco más oscuro ayuda a que el blanco resalte más */
+    z-index: 1;
+    /* Capa fondo */
+}
+
+/* Contenido encima del overlay */
+.hero-content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* centra NOTICIAS vertical */
+    align-items: center;
+    /* centra NOTICIAS horizontal */
+    z-index: 5;
+    /* Debe ser mayor que el overlay */
+}
+
+/* Título */
+.hero-content h1 {
+    font-size: 35px;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+}
+
+/* Breadcrumb */
+.breadcrumb {
+    position: absolute;
+    bottom: 20px;
+    /* pegado al filo inferior */
+    left: 50%;
+    transform: translateX(-50%);
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    font-size: 14px;
+    color: #fff;
+    z-index: 2;
+}
+
+/* Icono home */
+.home-link img {
+    width: 16px;
+    height: 16px;
+    filter: brightness(0) invert(1);
+    /* Fuerza el blanco total */
+    cursor: pointer;
+}
+
+.home-link img:hover {
+    opacity: 0.8;
 }
 
 /* Usuario */
@@ -138,7 +224,8 @@ h2 {
 /* Botón anadir noticia */
 .acciones-generales {
     text-align: center;
-    margin-bottom: 25px;
+    margin: 40px 0 60px 0;
+    /* Más margen arriba y abajo */
 }
 
 .overlay {
@@ -210,53 +297,139 @@ h2 {
 }
 
 .btn-anadir {
-    background-color: #116ba7;
+    background-color: #ff0000;
+    /* Fondo rojo inicial */
     color: white;
-    border: none;
+    /* Texto blanco inicial */
+    /* Ponemos el borde rojo desde el principio para reservar el espacio */
+    border: 2px solid #ff0000;
     padding: 10px 18px;
     font-size: 14px;
     border-radius: 6px;
     cursor: pointer;
+    /* Controla la suavidad de la animación */
+    transition: all 0.3s ease;
 }
 
 .btn-anadir:hover {
-    background-color: #3191d1;
+    background-color: white;
+    /* Fondo cambia a blanco */
+    color: #ff0000;
+    /* Texto cambia a rojo */
+    border: 2px solid #ff0000;
+    /* El borde se mantiene pero ahora se ve sobre el fondo blanco */
 }
 
 /* =========================
    Noticias
 ========================= */
 .noticias-container {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    padding: 0 40px 40px;
+    flex: 1;
+    /* Se estira para rellenar el hueco */
+    display: grid;
+    /* Forzamos 3 columnas exactas */
+    grid-template-columns: repeat(3, 1fr);
+    /* Margen lateral grande para centrar el contenido (ajusta el 10% a tu gusto) */
+    padding: 60px 10% 100px 10%;
+    gap: 40px;
+    background-color: #ffffff;
+    /* Un gris muy claro de fondo hace resaltar las tarjetas blancas */
 }
 
 .noticia {
     display: flex;
-    gap: 20px;
-    align-items: flex-start;
+    flex-direction: column;
     position: relative;
+    /* Importante para los botones si usas absolute */
     background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
 .noticia img {
-    width: 90px;
-    height: 90px;
+    width: 100%;
+    height: 250px;
+    /* Imagen más alta para efecto vertical */
     object-fit: cover;
-    border-radius: 8px;
-    flex-shrink: 0;
 }
 
+.noticia:hover {
+    transform: translateY(-5px);
+    /* Efecto visual al pasar el ratón */
+}
 
-.contenido {
+.linea-superior {
     display: flex;
     flex-direction: column;
-    width: 100%;
+    /* Cambiamos a columna si el título es muy largo */
+    align-items: flex-start;
+    gap: 5px;
+    margin-bottom: 10px;
+}
+
+.fecha {
+    font-size: 13px;
+    color: #666;
+    white-space: nowrap;
+    /* Evita que la fecha se rompa en dos líneas */
+}
+
+.contenido {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.titulo {
+    font-size: 18px;
+    margin: 0;
+    /* Quitamos márgenes por defecto */
+    flex: 1;
+    /* Permite que el título ocupe el espacio necesario */
+    padding-right: 10px;
+    /* Evita que el texto choque con la fecha */
+}
+
+.descripcion {
+    font-size: 13px;
+    color: #666;
+    margin: 0;
+    /* Limita a 3 líneas de texto para que todos los rectángulos midan parecido */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Ajuste para los estados y botones en este nuevo diseño */
+.info {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #eee;
+}
+
+.meta-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.lugar,
+.fecha {
+    font-size: 13px;
+    color: #888;
+    font-weight: 500;
+}
+
+.acciones {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: auto;
+    /* Empuja los botones al fondo de la tarjeta */
 }
 
 /* Info: fecha + estado */
@@ -275,18 +448,19 @@ h2 {
 
 
 /* Botones editar / borrar */
-.acciones {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-}
 
 .acciones button {
-    background: none;
-    border: none;
+    background: #f5f5f5;
+    /* Un fondo ligero para que resalten */
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 6px;
     font-size: 16px;
     cursor: pointer;
-    margin-left: 6px;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .btn-editar:hover {
@@ -356,7 +530,8 @@ h2 {
 
 /* Modal específico para editar/eliminar noticia */
 #modal-noticia {
-    z-index: 102; /* encima de otros formularios */
+    z-index: 102;
+    /* encima de otros formularios */
 }
 
 /* Botón eliminar rojo */
@@ -374,22 +549,131 @@ h2 {
 }
 
 
-/* Footer */
-footer {
-    background: #222;
+
+.footer {
+    margin-top: auto;
+    background: #1c1c1c;
     color: #fff;
-    padding: 30px 40px;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    text-align: center;
-    gap: 10px;
+    position: relative;
 }
 
-footer a {
+.footer-top {
+    display: flex;
+    justify-content: space-between;
+    padding: 50px 80px;
+}
+
+.footer-column {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.footer-column a {
     color: #fff;
     text-decoration: none;
+    font-size: 15px;
 }
 
-footer a:hover {
+.footer-column a:hover {
     text-decoration: underline;
+}
+
+.footer-social {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+
+
+.footer-social img {
+    width: 20px;
+    height: 20px;
+    filter: invert(1);
+    /* los cambia al color blanco */
+    z-index: 2;
+}
+
+.footer-social a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* CÍRCULO SOLO CON BORDE PARA FACEBOOK */
+.footer-social a.fb {
+    border: 2px solid #fff;
+    border-radius: 50%;
+    padding: 1px;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* CUADRADO SOLO CON BORDE PARA LINKEDIN */
+.footer-social a.ln {
+    border: 2px solid #fff;
+    border-radius: 4px;
+    padding: 4px;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Opcional: quitar fondo de los demás */
+.footer-social a.ig,
+.footer-social a.yt,
+.footer-social a.x {
+    border: none;
+    background: none;
+    padding: 0;
+}
+
+.footer-bottom {
+    background: #ff2b2b;
+    color: #000;
+    display: flex;
+    justify-content: flex-start;
+    /* A la izquierda */
+    align-items: center;
+    /* Centrado verticalmente */
+    padding: 20px 80px 6px 80px;
+    font-size: 14px;
+}
+
+
+
+.footer-logo {
+    position: absolute;
+    left: 80%;
+    bottom: 20px;
+    /* ajusta para subir/bajar */
+    transform: translateX(-50%);
+    background: #fff;
+    padding: 15px;
+    height: 90px;
+    z-index: 10;
+}
+
+.footer-bottom img {
+    height: 50px;
+    background: #fff;
+    padding: 10px;
+}
+
+.error {
+    color: #e74c3c;
+    font-size: 13px;
+    margin: 4px 0 10px 0;
+    font-weight: bold;
+    display: none;
+    /* Se oculta por defecto */
+}
+
+/* Opcional: clase para resaltar el input */
+.input-error {
+    border: 1.5px solid red !important;
 }

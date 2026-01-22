@@ -1,39 +1,51 @@
 document.addEventListener("DOMContentLoaded", function () {
+    // --- ELEMENTOS DEL FORMULARIO ---
     const form = document.getElementById("registerForm");
+    const videoInput = document.getElementById("videoInput");
+    const videoText = document.getElementById("videoText");
+
+    if (!videoInput || !videoText) return;
+
+    // Mostrar el nombre del archivo seleccionado
+    videoInput.addEventListener("change", function () {
+        const file = this.files[0];
+        if (file) {
+            videoText.textContent = `Archivo seleccionado: ${file.name}`;
+        } else {
+            videoText.textContent = "Haz clic para subir un vídeo";
+        }
+    });
+
+    // Envío del formulario
     if (!form) return;
 
-    form.addEventListener("submit", function(e){
+    form.addEventListener("submit", function (e) {
         e.preventDefault();
 
-        const nombre = document.querySelector("input[name='nombre']").value;
-        const apellidos = document.querySelector("input[name='apellidos']").value;
-        const email = document.querySelector("input[name='email']").value;
-        const password = document.querySelector("input[name='password']").value;
-        const rol = document.querySelector("select[name='rol']").value;
+        // Validación: vídeo obligatorio
+        if (!videoInput.files[0]) {
+            alert("Debes subir un vídeo");
+            return;
+        }
 
-        const formData = new FormData();
-        formData.append("nombre", nombre);
-        formData.append("apellidos", apellidos);
-        formData.append("email", email);
-        formData.append("password", password);
-        formData.append("rol", rol);
+        const formData = new FormData(form);
 
-        fetch("php/acciones/registro.php", {
+        fetch("../php/acciones/registro.php", {
             method: "POST",
             body: formData
         })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert("Usuario registrado correctamente");
-                window.location.href = "html/login.html";
-            } else {
-                alert(data.message);
-            }
-        })
-        .catch(error => {
-            console.error("Error:", error);
-            alert("Error en el servidor");
-        });
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert("Usuario registrado correctamente");
+                    window.location.href = "../html/home.html";
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("Error en el servidor");
+            });
     });
 });
