@@ -33,21 +33,19 @@
 
         </nav>
 
-        <div class="user-menu">
-            <button class="user-toggle">
-                <img src="../css/imagenes/emoticono-removebg-preview.png" alt="Usuario">
-                <span>▼</span>
-            </button>
-            <ul class="user-dropdown">
-                <li><a href="#" id="mi_perfil">Mi perfil</a></li>
-                <li><a href="#" id="mis_cortos">Mis cortos</a></li>
-                <li><a href="#" id="volver_home">Volver a home</a></li>
-                <li><a href="#" id="cerrar_sesion">Cerrar sesión</a></li>
-            </ul>
+        <div class="auth" id="auth-user" style="display:none;">
+            <span id="nombreUsuario"></span>
+            <div id="icono_persona" class="icono_persona">
+                👤
+                <div id="menu" class="menu">
+                    <a href="#" id="crear_cuenta">Crear nueva cuenta</a>
+                    <a href="home.html" id="volver_home">Volver a home</a>
+                    <a href="login.html" id="cerrar_sesion">Cerrar sesión</a>
+                </div>
+            </div>
         </div>
 
-
-        <div class="auth">
+        <div class="auth" id="auth-buttons">
             <button id="login-btn">Iniciar sesión</button>
             <button id="register-btn" class="primary">Regístrate</button>
         </div>
@@ -77,10 +75,11 @@
             <a href="registro.html" class="upload-btn">Subir ahora</a>
         </div>
 
-        <div class="image video hero-video" id="openVideo">
+        <div class="hero-video" id="openVideo">
             <img src="../css/imagenes/gala.jpg" alt="Video Festival">
             <div class="play-button">▶</div>
         </div>
+
     </div>
 
 
@@ -202,10 +201,11 @@
     <div class="video-modal" id="videoModal">
         <div class="close-modal" id="closeVideo">✕</div>
 
-        <iframe src="https://www.youtube.com/embed/wHg_GHzt_84?autoplay=1" allow="autoplay; encrypted-media"
-            allowfullscreen>
+        <iframe id="youtubePlayer" src="https://www.youtube.com/embed/wHg_GHzt_84?enablejsapi=1&mute=1"
+            allow="autoplay; encrypted-media" allowfullscreen>
         </iframe>
     </div>
+
 
 
 

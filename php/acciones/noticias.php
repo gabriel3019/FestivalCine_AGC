@@ -11,7 +11,7 @@ $query = "SELECT id_noticia, titulo, contenido, fecha_publicacion, imagen,
 $result = $conn->query($query);
 $noticias = [];
 // Asegúrate de que esta ruta sea correcta según donde guardas las fotos
-$rutaWeb = "../css/imagenes/"; 
+$rutaWeb = "../uploads/";
 
 while ($row = $result->fetch_assoc()) {
     if ($row['imagen']) {

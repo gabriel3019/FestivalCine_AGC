@@ -6,6 +6,9 @@ require "../BBDD/conecta.php";
 $idOrganizador = $_SESSION['usuario']['id'] ?? 0;
 $action = $_POST['action'] ?? '';
 
+$root = dirname(__DIR__, 2);
+$carpeta = $root . "/uploads/";
+
 try {
 
     switch ($action) {
@@ -20,7 +23,7 @@ try {
             );
 
             $noticias = [];
-            $rutaWeb = "/FestivalCine_AGC/css/imagenes/";
+            $rutaWeb = "../uploads/";
 
             while ($row = $result->fetch_assoc()) {
                 if ($row['imagen']) {
@@ -38,8 +41,7 @@ try {
             $imagenBD = null;
 
             // ruta donde se guardara los archivos
-            $root = dirname(__DIR__, 2);
-            $carpeta = $root . "/css/imagenes/";
+    
 
             // nombre original del archivo
             $nombreArchivo = basename($_FILES["imagen"]["name"]);
@@ -68,8 +70,7 @@ try {
 
             // Si hay una nueva imagen
             if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
-                $root = dirname(__DIR__, 2);
-                $carpeta = $root . "/css/imagenes/";
+                
                 $nombreArchivo = basename($_FILES["imagen"]["name"]);
                 $rutaCompleta = $carpeta . $nombreArchivo;
 

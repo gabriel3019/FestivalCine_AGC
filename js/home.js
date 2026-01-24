@@ -7,6 +7,50 @@ document.getElementById("register-btn").addEventListener("click", () => {
     window.location.href = "/FestivalCine_AGC/html/registro.html";
 });
 
+
+const authUser = document.getElementById("auth-user");
+const authButtons = document.getElementById("auth-buttons");
+const nombreUsuario = document.getElementById("nombreUsuario");
+const profileIcon = document.getElementById("icono_persona");
+const profileMenu = document.getElementById("menu");
+const logoutBtn = document.getElementById("cerrar_sesion");
+
+// Comprobar sesión
+fetch("../php/acciones/check-session.php", { method: "POST" })
+    .then(res => res.json())
+    .then(data => {
+        if (data.logged) {
+            // Mostrar usuario
+            authUser.style.display = "flex";
+            authButtons.style.display = "none";
+            nombreUsuario.textContent = data.usuario.nombre;
+        } else {
+            // Mostrar botones
+            authUser.style.display = "none";
+            authButtons.style.display = "flex";
+        }
+    });
+
+
+profileIcon.addEventListener("click", function (event) {
+    event.stopPropagation();
+    profileMenu.style.display = profileMenu.style.display === "block" ? "none" : "block";
+});
+
+document.addEventListener("click", function () {
+    profileMenu.style.display = "none";
+});
+volver_home.addEventListener("click", function () {
+    window.location.href = "home_organizador.html";
+});
+
+logoutBtn.addEventListener("click", function () {
+    fetch("../php/acciones/cerrar_sesion.php")
+        .then(() => {
+            window.location.href = "../html/login.html";
+        });
+});
+
 // ---------------------- CARRUSEL ----------------------
 const slides = document.querySelectorAll(".carousel img");
 const dots = document.querySelectorAll(".dot");
@@ -39,7 +83,7 @@ fetch("../php/acciones/obtenerUltimaNoticias.php")
 
         const container = document.getElementById("ultima-noticia");
         container.innerHTML = `
-            <div class="thumb" style="background-image: url('/FestivalCine_AGC/img/${noticia.imagen}')"></div>
+            <div class="thumb" style="background-image: url('/FestivalCine_AGC/uploads/${noticia.imagen}')"></div>
             <p><strong>${noticia.titulo}</strong></p>
             <p>${noticia.contenido.substring(0, 100)}...</p>
         `;

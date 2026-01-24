@@ -1,8 +1,5 @@
 <?php
 // ================= CONFIGURACIÓN =================
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 
 // Cabecera JSON
 header('Content-Type: application/json');
@@ -12,10 +9,8 @@ session_start();
 require "../BBDD/conecta.php"; // tu conexión $conn
 
 // Carpeta donde se guardan los logos
-$uploadDir = "../uploads/";
-if(!is_dir($uploadDir)){
-    mkdir($uploadDir, 0777, true); // crea la carpeta si no existe
-}
+$root = dirname(__DIR__, 2);
+$uploadDir = $root . "/uploads/";
 
 $action = $_POST['action'] ?? '';
 

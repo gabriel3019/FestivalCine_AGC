@@ -182,16 +182,22 @@ nav a {
     border: 0;
 }
 
-.hero {
-    margin: 40px auto;
-    width: 85%;
-    background: #e5e5e5;
-    height: 380px;
+.hero-video {
+    position: relative;
+    width: 100%;
+    height: 520px;
+    overflow: hidden;
+    cursor: pointer;
     border-radius: 6px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
+
+.hero-video img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
 
 .play {
     width: 70px;
