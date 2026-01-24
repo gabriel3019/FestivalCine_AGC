@@ -1,37 +1,29 @@
+document.addEventListener("DOMContentLoaded", mostrarGala);
+
 function mostrarGala() {
-    contenido = document.getElementById("contenido");
-
-    var formData = new FormData();
-
+    const formData = new FormData();
     formData.append("funcion", "mostrarContenido");
+
     fetch("../php/acciones/galaUsr.php", {
         method: "POST",
         body: formData
     })
-        .then(r => r.json())
-        .then(data => {
-            texto.innerHTML = "";
-            data.forEach(elemnto => {
-                texto.innerHTML += ``;
-            });
+    .then(res => res.json())
+    .then(data => {
+        if (data.length === 0) return;
+
+        const gala = data[0];
+
+        document.getElementById("nombre").textContent = gala.nombre;
+        document.getElementById("descripcion").textContent = gala.descripcion;
+        document.getElementById("fecha").textContent = gala.fecha;
+
+        const galeria = document.getElementById("galeria");
+        galeria.innerHTML = "";
+
+        gala.imagenes.forEach(img => {
+            galeria.innerHTML += `<img src="../img/${img}" width="150">`;
         });
-};
-
-function cargarImagenes() {
-    contenido = document.getElementById("galeria");
-
-    var formData = new FormData();
-
-    formData.append("funcion", "mostrarImagenes");
-    fetch("../php/acciones/galaUsr.php", {
-        method: "POST",
-        body: formData
     })
-        .then(r => r.json())
-        .then(data => {
-            texto.innerHTML = "";
-            data.forEach(elemnto => {
-                texto.innerHTML += ``;
-            });
-        });
-};
+    .catch(err => console.error(err));
+}

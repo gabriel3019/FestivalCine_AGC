@@ -52,6 +52,7 @@ CREATE TABLE IF NOT EXISTS galas (
     fecha DATE NOT NULL,
     lugar VARCHAR(100),
     imagen VARCHAR(255),
+    estado VARCHAR(100),
     FOREIGN KEY (id_evento) REFERENCES eventos(id_evento) ON DELETE CASCADE
 ) ENGINE=InnoDB;",
 
@@ -169,8 +170,8 @@ if ($res->fetch_assoc()['total'] == 0) {
 $res = $conn->query("SELECT COUNT(*) AS total FROM galas");
 if ($res->fetch_assoc()['total'] == 0) {
     $conn->query("
-        INSERT INTO galas (id_evento, nombre, descripcion, fecha, lugar, imagen) VALUES
-        (1,'Gala Inaugural','Inicio del festival','2026-06-15','Teatro Principal','gala.jpg')
+        INSERT INTO galas (id_evento, nombre, descripcion, fecha, lugar, imagen, estado) VALUES
+        (1,'Gala Inaugural','Inicio del festival','2026-06-15','Teatro Principal','gala.jpg', 'pre')
     ");
 }
 
