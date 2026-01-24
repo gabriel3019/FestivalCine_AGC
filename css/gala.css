@@ -2,7 +2,7 @@
 @font-face {
     font-family: 'Hellix';
     src: url('../fonts/Hellix-Regular.woff2') format('woff2'),
-         url('../fonts/Hellix-Regular.ttf') format('truetype');
+        url('../fonts/Hellix-Regular.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }
@@ -10,7 +10,7 @@
 @font-face {
     font-family: 'Hellix';
     src: url('../fonts/Hellix-Bold.woff2') format('woff2'),
-         url('../fonts/Hellix-Bold.ttf') format('truetype');
+        url('../fonts/Hellix-Bold.ttf') format('truetype');
     font-weight: bold;
     font-style: normal;
 }
@@ -48,26 +48,33 @@ header nav {
 }
 
 header nav a {
-    position: relative; /* necesario para el pseudo-elemento */
+    position: relative;
+    /* necesario para el pseudo-elemento */
     text-decoration: none;
-    color: #111;       /* color fijo, no cambia al hover */
+    color: #111;
+    /* color fijo, no cambia al hover */
     font-size: 14px;
     font-weight: bold;
-    padding: 5px 0;    /* espacio para el cuadrado */
+    padding: 5px 0;
+    /* espacio para el cuadrado */
 }
 
 /* Pseudo-elemento: cuadrado rojo */
 header nav a::after {
     content: '';
     position: absolute;
-    bottom: -8px;      /* ajusta para que salga más abajo del texto */
+    bottom: -8px;
+    /* ajusta para que salga más abajo del texto */
     left: 50%;
     transform: translateX(-50%);
-    width: 6px;        /* tamaño del cuadrado */
+    width: 6px;
+    /* tamaño del cuadrado */
     height: 6px;
     background-color: red;
-    border-radius: 2px; /* opcional, bordes ligeramente redondeados */
-    opacity: 0;        /* invisible por defecto */
+    border-radius: 2px;
+    /* opcional, bordes ligeramente redondeados */
+    opacity: 0;
+    /* invisible por defecto */
     transition: opacity 0.2s, transform 0.2s;
 }
 
@@ -75,7 +82,8 @@ header nav a::after {
 header nav a:hover::after,
 header nav a:focus::after {
     opacity: 1;
-    transform: translateX(-50%) translateY(0); /* justo debajo del texto */
+    transform: translateX(-50%) translateY(0);
+    /* justo debajo del texto */
 }
 
 /* Usuario */
@@ -128,19 +136,22 @@ header nav a:focus::after {
 .menu a:hover {
     background-color: #f0f0f0;
 }
-#pos{
-    display: none;
-};
 
-#pre{
-    display: block;
-};
-
-#resumen{
-    display: none;
+#pos {
+    align-items: center;
+    padding: 0px 36px;
 }
 
-.boton{
+#pre {
+    align-items: center;
+    padding: 0px 36px;
+}
+
+#resumen {
+    align-items: center;
+}
+
+.boton {
     width: 150px;
     height: 50px;
     text-align: center;
@@ -157,10 +168,11 @@ header nav a:focus::after {
     background-color: #f3f5f7;
     color: red;
     border: black, solid, 1px;
-    
+
 }
 
-.editar, .eliminar{
+.editar,
+.eliminar {
     width: 20px;
     height: 20px;
     font-size: medium;
@@ -170,6 +182,69 @@ header nav a:focus::after {
     border: 0px;
 }
 
-#cambio{
+#cambio {
     text-align: center;
+}
+
+.formato {
+    text-align: center;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Formulario centrado */
+.formulario-gala {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 420px;
+    max-width: 90%;
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 20px;
+    z-index: 101;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+.formulario-seccion form {
+    text-align: left;
+    width: 30%;
+    height: 50%;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.formulario-seccion label {
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.formulario-seccion input{
+    width: 100%;
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    resize: vertical;
+}
+
+/* Ocultar */
+.oculto {
+    display: none;
+}
+
+.botones-form {
+    margin-top: 15px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    border-radius: 0px;
+}
+
+.botones-form button {
+    margin-right: 10px;
+    padding: 5px 10px;
+
 }

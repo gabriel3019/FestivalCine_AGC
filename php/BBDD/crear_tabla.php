@@ -244,3 +244,5 @@ if ($res->fetch_assoc()['total'] == 0) {
         (1,1,1,CURDATE())
     ");
 }
+
+// PASAR TODO A MULTIQUERY

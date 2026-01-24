@@ -87,6 +87,46 @@ document.getElementById("cambio").addEventListener("click", () => {
 });
 
 // Funciones pre gala
+
+// ===================== AÑADIR SECCION =====================
+
+const btnAnadir = document.getElementById("btnNuevaSeccion");
+const formulario = document.getElementById("formulario-seccion");
+const formSeccion = document.getElementById("form-seccion");
+const cancelar = document.getElementById("cancelar");
+
+// ==========================ABRIR Y CERRAR EL MODAL=================================
+btnAnadir.addEventListener("click", () => {
+    formulario.classList.remove("oculto");
+});
+
+formSeccion.addEventListener("submit", async e => {
+    e.preventDefault();
+
+    const nombre = formSeccion.nombre.value.trim();
+    const contenido = formSeccion.contenido.value.trim();
+    const imagen = formSeccion.imagen.files[0];
+
+    if (!nombre || !contenido) return;
+
+    const data = { action: "anadir", titulo: nombre, contenido };
+    if (imagen) data.imagen = imagen;
+
+    const res = await api(data, true);
+    if (res.success) {
+        formSeccion.reset();
+        limpiar();
+        cargarSecciones();
+    } else {
+        alert(res.message || "Error al añadir seccion");
+    }
+});
+
+cancelar.addEventListener("click", () => {
+    limpiar();
+    formSeccion.reset();
+});
+
 function cargarSecciones() {
     var formData = new FormData();
 
@@ -109,10 +149,6 @@ function cargarSecciones() {
                 </tr>`;
             });
         });
-}
-
-function vacio() {
-
 }
 
 function editar(i, n, h, l) {
@@ -167,20 +203,18 @@ function limpiar() {
     nombre.value = "";
     hora.value = "";
     lugar.value = "";
+    formulario.classList.add("oculto");
+    noticiaActualId = null;
 }
 
 cargarSecciones();
 
 // Funciones pos gala
-$resumen = document.getElementById("resumen");
-$Btnresumen = document.getElementById("btn-resumen").addEventListener("click", () => {
-    $resumen.style.display = "block";
-});
+resumen = document.getElementById("#texto-resumen");
 
-$eliminarResumen = document.getElementById("btn-eliminarR").addEventListener("click", () => {
-    $resumen.style.display = "none";
 
-    SelectResumen = document.getElementById('#texto-resumen');
+eliminarResumen = document.getElementById("btn-eliminarR").addEventListener("click", () => {
+    resumen.value = "";
 });
 
 // Añadir las imagenes al html

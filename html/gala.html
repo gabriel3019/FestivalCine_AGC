@@ -9,40 +9,43 @@
     <link rel="stylesheet" href="../css/home_organizador.css">
 </head>
 
- <header>
-        <div class="logo">
-            <a href="home_organizador.html">
-                <img src="../css/imagenes/Universidad-europea-logo_poc9mEM.2e16d0ba.fill-767x384.png" alt="Logo ">
-            </a>
-        </div>
-         <nav>
-            <a href="noticiasOrganizador.html">Noticias</a>
-            <a href="eventosOrganizador.html">Eventos</a>
-            <a href="premiosOrganizador.html">Premios</a>
-            <a href="patrocinadoresOrganizador.html">Patrocinadores</a>
-            <a href="gala.html">Gala</a>
-            <a href="canditaturasOrganizador.html">Candidatos</a>
-        </nav>
+<header>
+    <div class="logo">
+        <a href="home_organizador.html">
+            <img src="../css/imagenes/Universidad-europea-logo_poc9mEM.2e16d0ba.fill-767x384.png" alt="Logo ">
+        </a>
+    </div>
+    <nav>
+        <a href="noticiasOrganizador.html">Noticias</a>
+        <a href="eventosOrganizador.html">Eventos</a>
+        <a href="premiosOrganizador.html">Premios</a>
+        <a href="patrocinadoresOrganizador.html">Patrocinadores</a>
+        <a href="gala.html">Gala</a>
+        <a href="canditaturasOrganizador.html">Candidatos</a>
+    </nav>
 
 
-        <div class="auth">
-            <span id="nombreUsuario"></span>
-            <!-- Icono perfil -->
-            <div id="icono_persona" class="icono_persona">
-                👤
-                <div id="menu" class="menu">
-                    <a href="#" id="crear_cuenta">Crear nueva cuenta</a>
-                    <a href="#" id="volver_home">Volver a home</a>
-                    <a href="#" id="cerrar_sesion">Cerrar sesión</a>
-                </div>
+    <div class="auth">
+        <span id="nombreUsuario"></span>
+        <!-- Icono perfil -->
+        <div id="icono_persona" class="icono_persona">
+            👤
+            <div id="menu" class="menu">
+                <a href="#" id="crear_cuenta">Crear nueva cuenta</a>
+                <a href="#" id="volver_home">Volver a home</a>
+                <a href="#" id="cerrar_sesion">Cerrar sesión</a>
             </div>
         </div>
-    </header>
+    </div>
+</header>
 
 <body>
     <br>
-    <button class="boton" id="cambio">Cambiar formato</button>
-    <div id="pre">
+    <div class="formato">
+        <h1>Gala</h1>
+        <button class="boton" id="cambio">Cambiar formato</button>
+    </div>
+    <div id="pre" style="display: block;">
         <h1>Pre-Gala del Festival</h1>
 
         <section>
@@ -54,6 +57,28 @@
             <button class="boton" id="guardarSecciones">Guardar</button>
         </section>
 
+        <button id="btnNuevaSeccion" class="boton">Añadir una seccion</button>
+
+        <div id="formulario-seccion" class="formulario-seccion oculto">
+            <h3>Añadir seccion</h3>
+            <br>
+            <form id="form-seccion">
+                <label for="nombre-seccion">Nombre:</label>
+                <input type="text" id="nombre-seccion" name="titulo" required>
+
+                <label for="contenido">Hora:</label>
+                <input type="time" id="contenido" name="contenido" rows="4" required></input>
+
+                <label for="lugar">Lugar:</label>
+                <input type="text" id="lugar" name="luSgar" required>
+
+                <div class="botones-form">
+                    <button type="submit">Guardar</button>
+                    <button type="button" id="cancelar">Cancelar</button>
+                </div>
+            </form>
+        </div>
+
         <section>
             <h2>Secciones del evento</h2>
             <table id="lista"></table>
@@ -63,11 +88,10 @@
         <table id="eventos"></table>
     </div>
 
-    <div id="pos">
-        <br>
-        <button class="boton" id="btn-resumen">Añadir un resumen</button>
-        <br>
-        <div id="resumen" action="" method="post">
+    <div id="pos" style="display: none;">
+        <h1>Pos-Gala del Festival</h1>
+        <h2>Añadir / Editar resumen</h2>
+        <div id="resumen">
             <textarea placeholder="Pon aquí tu resumen" id="#texto-resumen"></textarea>
             <button class="boton, eliminar" id="btn-eliminarR">🗑️</button>
             <br>
@@ -84,7 +108,7 @@
         <h2>Premios</h2>
         <table id="premios"></table>
         <button id="edicionAnterior">Añadir a ediciones anteriores</button>
-    </div>
+    </div> 
 
     <script src="../js/gala.js"></script>
 </body>
