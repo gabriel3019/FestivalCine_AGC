@@ -1,115 +1,173 @@
 <?php
-ob_start(); // limpia cualquier salida previa
+ob_start();
 header('Content-Type: application/json');
 require "../BBDD/conecta.php";
 
-$nombre    = $_POST['nombre'] ?? '';
+/* ===================== PASO 1: USUARIO ===================== */
+$nombre = $_POST['nombre'] ?? '';
 $apellidos = $_POST['apellidos'] ?? '';
-$email     = $_POST['email'] ?? '';
-$password  = $_POST['password'] ?? '';
-$rol       = $_POST['rol'] ?? '';
+$telefono = $_POST['telefono'] ?? null;
+$correo = $_POST['correo'] ?? null;
+$numero_expediente = $_POST['numero_expediente'] ?? '';
+$password = $_POST['password'] ?? '';
 
-/* Validación de campos */
-if (!$nombre || !$apellidos || !$email || !$password || !$rol) {
+if (!$nombre || !$apellidos || !$numero_expediente || !$password) {
     ob_end_clean();
-    echo json_encode(["success" => false, "message" => "Todos los campos son obligatorios"]);
+    echo json_encode([
+        "success" => false,
+        "message" => "Faltan datos obligatorios"
+    ]);
     exit;
 }
 
-/* Solo alumno o alumni */
-if ($rol !== "usuario" && $rol !== "alumni") {
-    ob_end_clean();
-    echo json_encode(["success" => false, "message" => "Rol no válido"]);
-    exit;
+/* Comprobar correo duplicado (si existe) */
+if ($correo) {
+    $check = $conn->prepare("SELECT id_usuario FROM usuarios WHERE correo = ?");
+    $check->bind_param("s", $correo);
+    $check->execute();
+    $check->store_result();
+
+    if ($check->num_rows > 0) {
+        ob_end_clean();
+        echo json_encode([
+            "success" => false,
+            "message" => "El correo ya está registrado"
+        ]);
+        exit;
+    }
+    $check->close();
 }
 
+/* Hash real de la contraseña */
 $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-/* ---------- REGISTRO USUARIO ---------- */
-$check = $conn->prepare("SELECT id_usuario FROM usuarios WHERE correo = ?");
-$check->bind_param("s", $email);
-$check->execute();
-$check->store_result();
+/* Insertar usuario */
+$stmt = $conn->prepare("
+    INSERT INTO usuarios
+    (nombre, apellidos, correo, telefono, numero_expediente, contrasena, fecha_registro)
+    VALUES (?, ?, ?, ?, ?, ?, CURDATE())
+");
 
-if ($check->num_rows > 0) {
-    $check->close();
-    ob_end_clean();
-    echo json_encode(["success" => false, "message" => "El correo ya está registrado"]);
-    exit;
-}
-$check->close();
-
-$fecha = date('Y-m-d');
-$stmt = $conn->prepare(
-    "INSERT INTO usuarios (nombre, apellidos, correo, contrasena, rol, fecha_registro)
-     VALUES (?, ?, ?, ?, ?, ?)"
+$stmt->bind_param(
+    "ssssss",
+    $nombre,
+    $apellidos,
+    $correo,
+    $telefono,
+    $numero_expediente,
+    $hashedPassword
 );
-$stmt->bind_param("ssssss", $nombre, $apellidos, $email, $hashedPassword, $rol, $fecha);
 
-/* ---------- EJECUTAR ---------- */
 if (!$stmt->execute()) {
     ob_end_clean();
-    echo json_encode(["success" => false, "message" => "Error al registrar usuario"]);
+    echo json_encode([
+        "success" => false,
+        "message" => "Error al crear el usuario"
+    ]);
     exit;
 }
 
 $id_usuario = $conn->insert_id;
+$stmt->close();
 
-if (empty($_FILES['video']) || $_FILES['video']['error'] !== 0) {
-    ob_end_clean();
-    echo json_encode(["success" => false, "message" => "Debes subir un vídeo"]);
-    exit;
-}
-
-$nombreOriginal = $_FILES['video']['name'];
-$tmp = $_FILES['video']['tmp_name'];
-$extension = pathinfo($nombreOriginal, PATHINFO_EXTENSION);
-
-// Crear nombre único y rutas
-$nombreFinal = uniqid("video_") . "." . $extension;
-$rutaServidor = "../../css/videos/" . $nombreFinal;
-$rutaBD = "css/videos/" . $nombreFinal;
-
-// Mover archivo
-if (!move_uploaded_file($tmp, $rutaServidor)) {
-    ob_end_clean();
-    echo json_encode(["success" => false, "message" => "Error al subir el vídeo"]);
-    exit;
-}
-
-/* ---------- DATOS CORTOMETRAJE ---------- */
-$titulo = $_POST['titulo'] ?? 'Sin título';
+/* ===================== PASO 2: CORTOMETRAJE ===================== */
+$categoria = $_POST['categoria'] ?? '';
+$titulo = $_POST['titulo'] ?? '';
 $descripcion = $_POST['descripcion'] ?? '';
-$duracion = 0;
-$categoria = 'general';
-$estado = 'pendiente';
-$archivo_video = $rutaBD;
-$fechaSubida = date('Y-m-d H:i:s');
 
-/* ---------- INSERT CORTOMETRAJE ---------- */
-$stmtVideo = $conn->prepare(
-    "INSERT INTO cortometrajes 
-    (id_usuario, titulo, descripcion, archivo_video, duracion, categoria, estado, fecha_subida) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+
+if (!in_array($categoria, ['alumno', 'alumni'])) {
+    ob_end_clean();
+    echo json_encode([
+        "success" => false,
+        "message" => "Categoría no válida"
+    ]);
+    exit;
+}
+
+/* Portada */
+if (!isset($_FILES['portada']) || $_FILES['portada']['error'] !== 0) {
+    ob_end_clean();
+    echo json_encode([
+        "success" => false,
+        "message" => "Debes subir una imagen de portada"
+    ]);
+    exit;
+}
+
+$portadaNombre = uniqid("portada_") . "." . pathinfo($_FILES['portada']['name'], PATHINFO_EXTENSION);
+$rutaPortadaServidor = "../../uploads/portadas/" . $portadaNombre;
+$rutaPortadaBD = "uploads/portadas/" . $portadaNombre;
+
+move_uploaded_file($_FILES['portada']['tmp_name'], $rutaPortadaServidor);
+
+/* Vídeo */
+if (!isset($_FILES['video']) || $_FILES['video']['error'] !== 0) {
+    ob_end_clean();
+    echo json_encode([
+        "success" => false,
+        "message" => "Debes subir el vídeo"
+    ]);
+    exit;
+}
+
+$videoNombre = uniqid("video_") . "." . pathinfo($_FILES['video']['name'], PATHINFO_EXTENSION);
+$rutaVideoServidor = "../../uploads/videos/" . $videoNombre;
+$rutaVideoBD = "uploads/videos/" . $videoNombre;
+
+move_uploaded_file($_FILES['video']['tmp_name'], $rutaVideoServidor);
+
+/* Insert cortometraje */
+$stmt = $conn->prepare("
+    INSERT INTO cortometrajes
+    (id_usuario, titulo, descripcion, imagen_portada, archivo_video, categoria, estado, fecha_subida)
+    VALUES (?, ?, ?, ?, ?, ?, 'pendiente', NOW())
+");
+
+$stmt->bind_param(
+    "isssss",
+    $id_usuario,
+    $titulo,
+    $descripcion,
+    $rutaPortadaBD,
+    $rutaVideoBD,
+    $categoria
 );
 
-$stmtVideo->bind_param("isssisss", $id_usuario, $titulo, $descripcion, $archivo_video, $duracion, $categoria, $estado, $fechaSubida);
+$stmt->execute();
+$id_corto = $conn->insert_id;
+$stmt->close();
 
-if (!$stmtVideo->execute()) {
+/* ===================== PASO 3: CANDIDATURA ===================== */
+if (!isset($_FILES['memoria_pdf']) || $_FILES['memoria_pdf']['error'] !== 0) {
     ob_end_clean();
-    echo json_encode(["success" => false, "message" => "Error al guardar el cortometraje"]);
+    echo json_encode([
+        "success" => false,
+        "message" => "Debes subir la memoria en PDF"
+    ]);
     exit;
 }
 
-$stmtVideo->close();
+$pdfNombre = uniqid("memoria_") . ".pdf";
+$rutaPdfServidor = "../../uploads/memorias/" . $pdfNombre;
+$rutaPdfBD = "uploads/memorias/" . $pdfNombre;
 
+move_uploaded_file($_FILES['memoria_pdf']['tmp_name'], $rutaPdfServidor);
+
+/* Insert candidatura */
+$stmt = $conn->prepare("
+    INSERT INTO candidaturas
+    (id_corto, memoria_pdf, estado_candidatura, fecha_envio)
+    VALUES (?, ?, 'pendiente', NOW())
+");
+
+$stmt->bind_param("is", $id_corto, $rutaPdfBD);
+$stmt->execute();
 
 $stmt->close();
 $conn->close();
 
-/* ---------- RESPUESTA FINAL ---------- */
-ob_end_clean(); // limpia cualquier salida que haya quedado
-echo json_encode([
-    "success" => true,
-    "message" => "Usuario y cortometraje registrados correctamente"
-]);
+/* ===================== RESPUESTA FINAL ===================== */
+ob_end_clean();
+echo json_encode(["success" => true]);
 exit;

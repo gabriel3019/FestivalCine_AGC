@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Mi perfil</title>
+    <link rel="stylesheet" href="../css/perfil.css">
+</head>
+
+<body>
+
+<div class="perfil-container">
+
+    <a href="../html/home.html" class="btn-volver">← Volver a inicio</a>
+
+
+    <h2>Mi perfil</h2>
+
+    <form id="perfilForm" class="form-grid">
+
+        <div>
+            <label>Nombre</label>
+            <input type="text" name="nombre">
+        </div>
+
+        <div>
+            <label>Apellidos</label>
+            <input type="text" name="apellidos">
+        </div>
+
+        <div>
+            <label>Teléfono</label>
+            <input type="text" name="telefono">
+        </div>
+
+        <div>
+            <label>Correo electrónico</label>
+            <input type="email" name="correo">
+        </div>
+
+        <div class="form-full">
+            <label>Número de expediente</label>
+            <input type="text" name="numero_expediente" disabled>
+        </div>
+
+        <div class="form-full">
+            <button type="submit">Guardar datos</button>
+        </div>
+
+    </form>
+
+    <h3>Mis candidaturas</h3>
+    <div id="lista-candidaturas" class="candidaturas-lista"></div>
+
+    <h3>Nueva candidatura</h3>
+
+    <form id="candidaturaForm" enctype="multipart/form-data" class="form-grid">
+
+        <div>
+            <label>Categoría</label>
+            <select name="categoria" required>
+                <option value="">Selecciona</option>
+                <option value="alumno">Alumno</option>
+                <option value="alumni">Alumni</option>
+            </select>
+        </div>
+
+        <div>
+            <label>Título</label>
+            <input type="text" name="titulo" required>
+        </div>
+
+        <div class="form-full">
+            <label>Descripción</label>
+            <textarea name="descripcion" required></textarea>
+        </div>
+
+        <div class="form-full">
+            <label>Vídeo</label>
+            <input type="file" name="video" accept="video/*" required>
+        </div>
+
+        <div class="form-full">
+            <button type="submit">Enviar candidatura</button>
+        </div>
+
+    </form>
+
+</div>
+
+
+    <script src="../js/perfil.js"></script>
+</body>
+
+</html>

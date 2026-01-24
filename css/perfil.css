@@ -1,0 +1,213 @@
+/* ================= RESET ================= */
+@font-face {
+    font-family: 'Hellix';
+    src: url('../fonts/Hellix-Regular.woff2') format('woff2'),
+         url('../fonts/Hellix-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Hellix';
+    src: url('../fonts/Hellix-Bold.woff2') format('woff2'),
+         url('../fonts/Hellix-Bold.ttf') format('truetype');
+    font-weight: bold;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Hellix", Arial, sans-serif;
+}
+
+
+/* Contenedor principal */
+.perfil-container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Títulos */
+h1, h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #222;
+}
+
+h2 {
+    font-size: 1.3rem;
+    margin-top: 40px;
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 10px;
+}
+
+/* Formularios */
+form {
+    margin-top: 20px;
+}
+
+/* Grid para formularios */
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+/* Campo completo (ocupa dos columnas) */
+.form-full {
+    grid-column: 1 / -1;
+}
+
+/* Labels */
+label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: #000000;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+}
+
+
+/* Inputs */
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+select,
+textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 0.95rem;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* Inputs readonly */
+input[readonly] {
+    background-color: #f3f3f3;
+    cursor: not-allowed;
+}
+
+/* Archivo */
+input[type="file"] {
+    padding: 6px;
+}
+
+/* Botones */
+button,
+input[type="submit"] {
+    background-color: #000000;
+    color: #ffffff;
+    border: 1px solid #000000;
+    padding: 12px 18px;
+    border-radius: 0;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    box-sizing: border-box;
+}
+
+/* Hover */
+button:hover,
+input[type="submit"]:hover {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+/* Botón secundario */
+.btn-secondary {
+    background-color: #555;
+}
+
+.btn-secondary:hover {
+    background-color: #333;
+}
+
+/* Sección candidaturas */
+.candidaturas-lista {
+    margin-top: 20px;
+}
+
+/* Tarjeta de candidatura */
+.candidatura-card {
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 15px;
+    margin-bottom: 15px;
+    background-color: #fafafa;
+}
+
+.candidatura-card h3 {
+    margin-bottom: 8px;
+    font-size: 1.1rem;
+}
+
+.candidatura-card p {
+    font-size: 0.9rem;
+    color: #555;
+}
+
+/* Estado */
+.estado {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: bold;
+}
+
+.estado.pendiente {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.estado.aprobada {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.estado.rechazada {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+/* Botón volver */
+.btn-volver {
+    display: inline-block;
+    margin-bottom: 20px;
+    background-color: #000000;
+    color: #ffffff;
+    border: 1px solid #000000;
+    padding: 10px 16px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    border-radius: 0;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Hover */
+.btn-volver:hover {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+
+/* Responsive */
+@media (max-width: 700px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+}

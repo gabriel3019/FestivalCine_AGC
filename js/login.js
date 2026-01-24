@@ -1,69 +1,74 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", () => {
 
     const form = document.getElementById("loginForm");
-    if (!form) return;
+    const email = form.querySelector("input[name='email']");
+    const password = form.querySelector("input[name='password']");
+    const button = form.querySelector("button");
 
-    const emailInput = document.querySelector("input[name='email']");
-    const passwordInput = document.querySelector("input[name='password']");
-    const emailError = document.getElementById("emailError");
-    const passwordError = document.getElementById("passwordError");
+    function setValid(field) {
+        field.classList.remove("invalid");
+        field.classList.add("valid");
+    }
 
-    // Validación al salir del campo
-    emailInput.addEventListener("blur", () => {
-        if (emailInput.value.trim() === "") {
-            emailError.textContent = "Debes introducir un correo electrónico";
-            emailError.style.display = "block";
-        } else {
-            emailError.textContent = "";
-            emailError.style.display = "none";
+    function setInvalid(field, msg) {
+        field.classList.remove("valid");
+        field.classList.add("invalid");
+        field.querySelector(".error-msg").textContent = msg;
+    }
+
+    function validateEmail() {
+        const field = email.closest(".field");
+        const value = email.value.trim();
+
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+            setInvalid(field, "Correo electrónico no válido");
+            return false;
         }
-    });
+        setValid(field);
+        return true;
+    }
 
-    passwordInput.addEventListener("blur", () => {
-        if (passwordInput.value.trim() === "") {
-            passwordError.textContent = "Debes introducir una contraseña";
-            passwordError.style.display = "block";
-        } else {
-            passwordError.textContent = "";
-            passwordError.style.display = "none";
+    function validatePassword() {
+        const field = password.closest(".field");
+        if (password.value.trim() === "") {
+            setInvalid(field, "Debes introducir una contraseña");
+            return false;
         }
-    });
+        setValid(field);
+        return true;
+    }
 
-    form.addEventListener("submit", function (e) {
+    function updateButton() {
+        button.disabled = !(validateEmail() && validatePassword());
+    }
+
+    email.addEventListener("input", updateButton);
+    password.addEventListener("input", updateButton);
+
+    form.addEventListener("submit", e => {
         e.preventDefault();
+        if (button.disabled) return;
 
-        const email = emailInput.value.trim();
-        const password = passwordInput.value;
-
-        if (email === "" || password === "") {
-            alert("Por favor completa todos los campos");
-            return;
-        }
-
-        const formData = new FormData();
-        formData.append("email", email);
-        formData.append("password", password);
+        const data = new FormData(form);
 
         fetch("../php/acciones/login.php", {
             method: "POST",
-            body: formData
+            body: data
         })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    const rol = data.rol ? data.rol.toLowerCase() : '';
-                    if (rol === "organizador") {
-                        window.location.href = "../html/home_organizador.html";
-                    } else {
-                        window.location.href = "../html/home.html";
-                    }
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                //  REDIRECCIÓN SEGÚN TIPO
+                if (data.tipo === "organizador") {
+                    window.location.href = "../html/home_organizador.html";
                 } else {
-                    alert(data.message);
+                    window.location.href = "../html/home.html";
                 }
-            })
-            .catch(error => {
-                console.error("Error:", error);
-                alert("Error en el servidor");
-            });
+            } else {
+                alert(data.message || "Credenciales incorrectas");
+            }
+        })
+        .catch(() => alert("Error de conexión"));
     });
+
 });

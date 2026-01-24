@@ -1,50 +1,49 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
+
     <link rel="stylesheet" href="../css/login.css">
 </head>
 
 <body>
 
+<div class="login-container">
+    <div class="login-card">
 
-    <div class="login-container">
-        <div class="login-card">
+        <img src="../css/imagenes/logo.png" alt="Logo" class="logo">
 
+        <form id="loginForm">
 
-            <!-- Logo -->
-            <img src="../css/imagenes/logo.png" alt="Logo" class="logo">
+            <!-- Correo -->
+            <div class="field">
+                <label>Correo electrónico *</label>
+                <input type="email" name="email" placeholder="Introduce tu correo">
+                <div class="error-msg">Debes introducir un correo válido</div>
+            </div>
 
+            <!-- Contraseña -->
+            <div class="field">
+                <label>Contraseña *</label>
+                <input type="password" name="password" placeholder="Introduce tu contraseña">
+                <div class="error-msg">Debes introducir una contraseña</div>
+            </div>
 
-            <!-- Formulario -->
-            <form id="loginForm">
-                <label>Correo electrónico</label>
-                <input type="email" name="email" placeholder="Introduce tu correo" required>
-                <p class="error" id="emailError"></p>
+            <button type="submit" class="btn primary" disabled>
+                Iniciar sesión
+            </button>
+        </form>
 
+        <p class="login-link">
+            ¿No tienes cuenta?
+            <a href="../html/registro.html">Crear cuenta</a>
+        </p>
 
-                <label>Contraseña</label>
-                <input type="password" name="password" placeholder="Introduce tu contraseña" required>
-                <p class="error" id="passwordError"></p>
-
-
-                <button type="submit" class="btn primary">Iniciar sesión</button>
-            </form>
-
-
-            <p class="login-link">
-                ¿No tienes cuenta?
-                <a href="../html/registro.html">Crear cuenta</a>
-            </p>
-
-
-        </div>
     </div>
+</div>
 
-    <script src="../js/login.js"></script>
+<script src="../js/login.js"></script>
 
 </body>
-
 </html>

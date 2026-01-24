@@ -1,75 +1,228 @@
 <!DOCTYPE html>
 <html lang="es">
 
-
 <head>
     <meta charset="UTF-8">
     <title>Registro</title>
+
     <link rel="stylesheet" href="../css/registro.css">
+
+    <!-- Teléfono internacional -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/css/intlTelInput.css">
 </head>
 
-
 <body>
-
 
     <div class="register-container">
         <div class="register-card">
 
-
             <img src="../css/imagenes/logo.png" alt="Logo" class="logo">
 
+            <!-- ===== PROGRESO ===== -->
+            <div class="progress">
+                <div class="progress-bar"></div>
+            </div>
 
             <form id="registerForm" enctype="multipart/form-data">
-                <label>Nombre</label>
-                <input type="text" name="nombre" placeholder="Nombre" required>
+
+                <!-- ================================================= -->
+                <!-- =============== PASO 1 ========================== -->
+                <!-- ================================================= -->
+                <div class="step step-1 active">
+
+                    <!-- Nombre -->
+                    <div class="field">
+                        <div class="field-labels">
+                            <span class="label-right">*</span>
+                        </div>
+                        <div class="floating">
+                            <input type="text" name="nombre" required placeholder=" ">
+                            <label>Nombre</label>
+                        </div>
+                        <div class="error-msg">Por favor, introduce tu nombre</div>
+                    </div>
+
+                    <!-- Apellidos -->
+                    <div class="field">
+                        <div class="field-labels">
+                            <span class="label-right">*</span>
+                        </div>
+                        <div class="floating">
+                            <input type="text" name="apellidos" required placeholder=" ">
+                            <label>Apellidos</label>
+                        </div>
+                        <div class="error-msg">Por favor, introduce tus apellidos</div>
+                    </div>
+
+                    <!-- Teléfono -->
+                    <div class="field full">
+                        <div class="field-labels">
+                            <span class="label-left">Teléfono</span>
+                            <span class="label-right">(opcional)</span>
+                        </div>
+                        <div class="floating">
+                            <input type="tel" id="telefono" name="telefono" placeholder=" ">
+                        </div>
+                    </div>
+
+                    <!-- Correo -->
+                    <div class="field full">
+                        <div class="field-labels">
+                            <span class="label-left">Correo electrónico</span>
+                            <span class="label-right">(opcional)</span>
+                        </div>
+                        <div class="floating">
+                            <input type="email" name="correo" placeholder=" ">
+                            <label>Correo electrónico</label>
+                        </div>
+                        <div class="error-msg">Correo no válido</div>
+                    </div>
+
+                    <!-- Contraseña -->
+                    <div class="field">
+                        <div class="field-labels">
+                            <span class="label-left">Contraseña</span>
+                            <span class="label-right">*</span>
+                        </div>
+                        <div class="floating">
+                            <input type="password" name="password" required placeholder=" ">
+                            <label>Contraseña</label>
+                        </div>
+                        <div class="error-msg">Mínimo 6 caracteres</div>
+                    </div>
+
+                    <!-- Expediente -->
+                    <div class="field">
+                        <div class="field-labels">
+                            <span class="label-right">*</span>
+                        </div>
+                        <div class="floating">
+                            <input type="text" name="numero_expediente" required placeholder=" ">
+                            <label>Número de expediente</label>
+                        </div>
+                        <div class="error-msg">Campo obligatorio</div>
+                    </div>
+
+                    <!-- Botones -->
+                    <div class="buttons full center">
+                        <button type="button" class="btn primary next-step" disabled>
+                            Aceptar
+                        </button>
+                    </div>
 
 
-                <label>Apellidos</label>
-                <input type="text" name="apellidos" placeholder="Apellidos" required>
-
-
-                <label>Correo electrónico</label>
-                <input type="email" name="email" placeholder="Correo electrónico" required>
-
-
-                <label>Contraseña</label>
-                <input type="password" name="password" placeholder="Contraseña" required>
-
-                <label>Rol</label>
-                <select name="rol" required>
-                    <option value="">Selecciona tu rol</option>
-                    <option value="usuario">Alumno</option>
-                    <option value="alumni">Alumni</option>
-                    <option value="organizador">Organizador</option>
-                </select>
-
-                <label>Subir vídeo</label>
-
-                <div class="video-upload">
-                    <label for="videoInput" class="video-box">
-                        <span id="videoText">Haz clic para subir un vídeo</span>
-                    </label>
-                    <input type="file" id="videoInput" name="video" accept="video/*" hidden>
                 </div>
 
+                <!-- ================================================= -->
+                <!-- =============== PASO 2 ========================== -->
+                <!-- ================================================= -->
+                <div class="step">
+
+                    <div class="field">
+                        <div class="field-labels">
+                            <span class="label-left">Tipo de candidatura</span>
+                            <span class="label-right">*</span>
+                        </div>
+                        <select name="categoria" required>
+                            <option value="" disabled selected>Selecciona una opción</option>
+                            <option value="alumno">Alumno</option>
+                            <option value="alumni">Alumni</option>
+                        </select>
+                        <div class="error-msg">Selecciona una opción</div>
+                    </div>
 
 
-                <button type="submit" class="btn primary">
-                    Crear cuenta
-                </button>
+                    <!-- ===== TÍTULO DEL CORTO ===== -->
+                    <div class="field">
+                        <div class="field-labels">
+                            <span class="label-left">Título del corto</span>
+                            <span class="label-right">*</span>
+                        </div>
+                        <input type="text" name="titulo" required placeholder="Título del corto">
+                        <div class="error-msg">Introduce el título del corto</div>
+                    </div>
+
+                    <!-- ===== DESCRIPCIÓN ===== -->
+                    <div class="field">
+                        <div class="field-labels">
+                            <span class="label-left">Descripción</span>
+                            <span class="label-right">*</span>
+                        </div>
+                        <textarea name="descripcion" rows="4" required
+                            placeholder="Breve descripción del corto"></textarea>
+                        <div class="error-msg">Introduce una descripción</div>
+                    </div>
+
+
+
+                    <div class="field">
+                        <div class="field-labels">
+                            <span class="label-left">Imagen de portada</span>
+                            <span class="label-right">*</span>
+                        </div>
+                        <input type="file" name="portada" accept="image/*" required>
+                        <div class="error-msg">Selecciona una imagen</div>
+                    </div>
+
+                    <div class="field">
+                        <div class="field-labels">
+                            <span class="label-left">Vídeo</span>
+                            <span class="label-right">*</span>
+                        </div>
+                        <div class="video-upload">
+                            <label for="videoInput" class="video-box">
+                                <span id="videoText">Haz clic para subir un vídeo</span>
+                            </label>
+                            <input type="file" id="videoInput" name="video" accept="video/*" hidden required>
+                        </div>
+                        <div class="error-msg">Selecciona un vídeo</div>
+                    </div>
+
+                    <div class="buttons">
+                        <button type="button" class="btn primary next-step" disabled>Seguir</button>
+                        <button type="button" class="btn secondary prev-step">Volver</button>
+                    </div>
+
+                </div>
+
+                <!-- ================================================= -->
+                <!-- =============== PASO 3 ========================== -->
+                <!-- ================================================= -->
+                <div class="step">
+
+                    <div class="field">
+                        <div class="field-labels">
+                            <span class="label-left">Memoria del corto (PDF)</span>
+                            <span class="label-right">*</span>
+                        </div>
+                        <input type="file" name="memoria_pdf" accept="application/pdf" required>
+                        <div class="error-msg">Selecciona un PDF</div>
+                    </div>
+
+                    <div class="buttons">
+                        <button type="submit" class="btn primary" disabled>
+                            Enviar candidatura
+                        </button>
+                        <button type="button" class="btn secondary prev-step">
+                            Volver
+                        </button>
+                    </div>
+
+                </div>
+
             </form>
-
 
             <p class="login-link">
                 ¿Ya tienes cuenta?
                 <a href="../html/login.html">Iniciar sesión</a>
             </p>
 
-
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/js/intlTelInput.min.js"></script>
     <script src="../js/registro.js"></script>
+
 </body>
 
 </html>

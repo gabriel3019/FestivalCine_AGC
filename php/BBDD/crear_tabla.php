@@ -1,20 +1,18 @@
 <?php
 // ---------------------- CONEXIÓN Y CREACIÓN DE BD ----------------------
 if (!isset($conn)) {
-    // 1. Conectamos SOLO al servidor (sin especificar base de datos aún)
     $conn = new mysqli("localhost", "root", "");
 
     if ($conn->connect_error) {
         die("Error de conexión: " . $conn->connect_error);
     }
 
-    // 2. Creamos la base de datos si no existe (con soporte para acentos/ñ)
-    $sqlCreate = "CREATE DATABASE IF NOT EXISTS festivalCine CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci";
+    $sqlCreate = "CREATE DATABASE IF NOT EXISTS festivalCine 
+                  CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci";
     if (!$conn->query($sqlCreate)) {
         die("Error creando la base de datos: " . $conn->error);
     }
 
-    // 3. Ahora sí, seleccionamos la base de datos
     $conn->select_db("festivalCine");
 }
 
@@ -22,17 +20,20 @@ if (!isset($conn)) {
 
 $tablas = [
 
+/* ===================== USUARIOS ===================== */
 "usuarios" => "
 CREATE TABLE IF NOT EXISTS usuarios (
     id_usuario INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(50) NOT NULL,
     apellidos VARCHAR(100) NOT NULL,
     correo VARCHAR(100) NOT NULL UNIQUE,
+    telefono VARCHAR(20) NOT NULL,
+    numero_expediente VARCHAR(50) NOT NULL,
     contrasena VARCHAR(255) NOT NULL,
-    rol ENUM('usuario','alumni','organizador') NOT NULL,
     fecha_registro DATE NOT NULL
 ) ENGINE=InnoDB;",
 
+/* ===================== ORGANIZADOR ===================== */
 "organizador" => "
 CREATE TABLE IF NOT EXISTS organizador (
     id_organizador INT AUTO_INCREMENT PRIMARY KEY,
@@ -41,6 +42,7 @@ CREATE TABLE IF NOT EXISTS organizador (
     contrasena VARCHAR(255) NOT NULL
 ) ENGINE=InnoDB;",
 
+/* ===================== EVENTOS ===================== */
 "eventos" => "
 CREATE TABLE IF NOT EXISTS eventos (
     id_evento INT AUTO_INCREMENT PRIMARY KEY,
@@ -53,6 +55,7 @@ CREATE TABLE IF NOT EXISTS eventos (
     FOREIGN KEY (id_organizador) REFERENCES organizador(id_organizador) ON DELETE CASCADE
 ) ENGINE=InnoDB;",
 
+/* ===================== GALAS ===================== */
 "galas" => "
 CREATE TABLE IF NOT EXISTS galas (
     id_gala INT AUTO_INCREMENT PRIMARY KEY,
@@ -72,22 +75,17 @@ CREATE TABLE IF NOT EXISTS patrocinadores (
     logo VARCHAR(255) NOT NULL
 ) ENGINE=InnoDB;",
 
-"secciones" => "
-CREATE TABLE IF NOT EXISTS secciones (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(100),
-    hora TIME,
-    lugar VARCHAR(100)
-) ENGINE=InnoDB;",
 
+/* ===================== PREMIOS ===================== */
 "premios" => "
 CREATE TABLE IF NOT EXISTS premios (
     id_premio INT AUTO_INCREMENT PRIMARY KEY,
     nombre_premio VARCHAR(100) NOT NULL,
     descripcion TEXT,
-    categoria VARCHAR(50)
+    categoria ENUM('alumno','alumni','honorifico') NOT NULL
 ) ENGINE=InnoDB;",
 
+/* ===================== NOTICIAS ===================== */
 "noticias" => "
 CREATE TABLE IF NOT EXISTS noticias (
     id_noticia INT AUTO_INCREMENT PRIMARY KEY,
@@ -100,44 +98,48 @@ CREATE TABLE IF NOT EXISTS noticias (
     FOREIGN KEY (id_organizador) REFERENCES organizador(id_organizador) ON DELETE CASCADE
 ) ENGINE=InnoDB;",
 
+/* ===================== CORTOMETRAJES ===================== */
 "cortometrajes" => "
 CREATE TABLE IF NOT EXISTS cortometrajes (
     id_corto INT AUTO_INCREMENT PRIMARY KEY,
     id_usuario INT NOT NULL,
     titulo VARCHAR(100) NOT NULL,
     descripcion TEXT,
-    archivo_video VARCHAR(255),
+    imagen_portada VARCHAR(255) NOT NULL,
+    archivo_video VARCHAR(255) NOT NULL,
     duracion INT,
-    categoria VARCHAR(50),
-    estado VARCHAR(50),
-    fecha_subida DATE,
+    categoria ENUM('alumno','alumni') NOT NULL,
+    estado VARCHAR(50) DEFAULT 'pendiente',
+    fecha_subida DATETIME,
     FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario) ON DELETE CASCADE
 ) ENGINE=InnoDB;",
 
+/* ===================== CANDIDATURAS ===================== */
 "candidaturas" => "
 CREATE TABLE IF NOT EXISTS candidaturas (
     id_candidatura INT AUTO_INCREMENT PRIMARY KEY,
     id_corto INT NOT NULL,
-    id_premio INT NOT NULL,
-    estado_candidatura VARCHAR(50),
+    id_premio INT NULL,
+    memoria_pdf VARCHAR(255) NOT NULL,
+    estado_candidatura VARCHAR(50) DEFAULT 'pendiente',
+    fecha_envio DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (id_corto) REFERENCES cortometrajes(id_corto) ON DELETE CASCADE,
-    FOREIGN KEY (id_premio) REFERENCES premios(id_premio) ON DELETE CASCADE
+    FOREIGN KEY (id_premio) REFERENCES premios(id_premio) ON DELETE SET NULL
 ) ENGINE=InnoDB;",
 
-"premios_otorgados" => "
-CREATE TABLE IF NOT EXISTS premios_otorgados (
-    id_premio_otorgado INT AUTO_INCREMENT PRIMARY KEY,
-    id_premio INT NOT NULL,
-    id_corto INT NOT NULL,
-    id_gala INT NOT NULL,
-    fecha_otorgado DATE,
-    FOREIGN KEY (id_premio) REFERENCES premios(id_premio),
-    FOREIGN KEY (id_corto) REFERENCES cortometrajes(id_corto),
-    FOREIGN KEY (id_gala) REFERENCES galas(id_gala)
-) ENGINE=InnoDB;"
+"secciones" => "
+CREATE TABLE IF NOT EXISTS secciones (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    hora TIME NOT NULL,
+    lugar VARCHAR(100) NOT NULL
+) ENGINE=InnoDB;",
+
+
+
 ];
 
-// Ejecutar todas las queries de creación
+// ---------------------- EJECUCIÓN ----------------------
 foreach ($tablas as $tabla => $sql) {
     if (!$conn->query($sql)) {
         echo "Error creando tabla $tabla: " . $conn->error . "<br>";
@@ -147,17 +149,18 @@ foreach ($tablas as $tabla => $sql) {
 // ---------------------- DATOS INICIALES ----------------------
 $hash = password_hash("1234", PASSWORD_DEFAULT);
 
-// Usuarios
+/* ===================== USUARIOS ===================== */
 $res = $conn->query("SELECT COUNT(*) AS total FROM usuarios");
 if ($res->fetch_assoc()['total'] == 0) {
     $conn->query("
-        INSERT INTO usuarios (nombre, apellidos, correo, contrasena, rol, fecha_registro) VALUES
-        ('Juan','Pérez','juan@mail.com','$hash','usuario',CURDATE()),
-        ('Ana','Gómez','ana@mail.com','$hash','alumni',CURDATE())
+        INSERT INTO usuarios 
+        (nombre, apellidos, correo, telefono, numero_expediente, contrasena, fecha_registro) VALUES
+        ('Juan','Pérez','juan@mail.com','600111222','EXP001','$hash',CURDATE()),
+        ('Ana','Gómez','ana@mail.com','600333444','EXP002','$hash',CURDATE())
     ");
 }
 
-// Organizadores
+/* ===================== ORGANIZADOR ===================== */
 $res = $conn->query("SELECT COUNT(*) AS total FROM organizador");
 if ($res->fetch_assoc()['total'] == 0) {
     $conn->query("
@@ -166,25 +169,27 @@ if ($res->fetch_assoc()['total'] == 0) {
     ");
 }
 
-// Eventos
+/* ===================== EVENTOS ===================== */
 $res = $conn->query("SELECT COUNT(*) AS total FROM eventos");
 if ($res->fetch_assoc()['total'] == 0) {
     $conn->query("
-        INSERT INTO eventos (id_organizador, nombre, descripcion, fecha, lugar, tipo_evento) VALUES
+        INSERT INTO eventos 
+        (id_organizador, nombre, descripcion, fecha, lugar, tipo_evento) VALUES
         (1,'Festival de Cine 2026','Evento principal','2026-06-15','Madrid','Festival')
     ");
 }
 
-// Galas
+/* ===================== GALAS ===================== */
 $res = $conn->query("SELECT COUNT(*) AS total FROM galas");
 if ($res->fetch_assoc()['total'] == 0) {
     $conn->query("
-        INSERT INTO galas (id_evento, nombre, descripcion, fecha, lugar, imagen) VALUES
+        INSERT INTO galas 
+        (id_evento, nombre, descripcion, fecha, lugar, imagen) VALUES
         (1,'Gala Inaugural','Inicio del festival','2026-06-15','Teatro Principal','gala.jpg')
     ");
 }
 
-// Patrocinadores
+/* ===================== PATROCINADORES ===================== */
 $res = $conn->query("SELECT COUNT(*) AS total FROM patrocinadores");
 if ($res->fetch_assoc()['total'] == 0) {
     $conn->query("
@@ -194,7 +199,7 @@ if ($res->fetch_assoc()['total'] == 0) {
     ");
 }
 
-// Secciones
+/* ===================== SECCIONES ===================== */
 $res = $conn->query("SELECT COUNT(*) AS total FROM secciones");
 if ($res->fetch_assoc()['total'] == 0) {
     $conn->query("
@@ -204,53 +209,49 @@ if ($res->fetch_assoc()['total'] == 0) {
     ");
 }
 
-// Premios
+/* ===================== PREMIOS ===================== */
 $res = $conn->query("SELECT COUNT(*) AS total FROM premios");
 if ($res->fetch_assoc()['total'] == 0) {
     $conn->query("
         INSERT INTO premios (nombre_premio, descripcion, categoria) VALUES
-        ('Primer premio Mejor cortometraje UE', '600€ + premio patrocinador', 'Alumnos'),
-        ('Segundo premio Mejor cortometraje UE', '300€', 'Alumnos'),
-        ('Tercer premio Mejor cortometraje UE', '100€', 'Alumnos'),
-        ('Primer premio Mejor cortometraje Alumni', '700€', 'Alumni'),
-        ('Segundo premio Mejor cortometraje Alumni', '300€', 'Alumni'),
-        ('Premio Honorífico', 'Reconocimiento profesional', 'Honorífico')
+        ('Primer premio Mejor cortometraje Alumno','600€','alumno'),
+        ('Segundo premio Mejor cortometraje Alumno','300€','alumno'),
+        ('Primer premio Mejor cortometraje Alumni','700€','alumni'),
+        ('Segundo premio Mejor cortometraje Alumni','300€','alumni'),
+        ('Premio Honorífico','Reconocimiento profesional','honorifico')
     ");
 }
 
-// Noticias
+/* ===================== NOTICIAS ===================== */
 $res = $conn->query("SELECT COUNT(*) AS total FROM noticias");
 if ($res->fetch_assoc()['total'] == 0) {
     $conn->query("
-        INSERT INTO noticias (id_organizador, titulo, contenido, imagen, estado, fecha_publicacion) VALUES
+        INSERT INTO noticias 
+        (id_organizador, titulo, contenido, imagen, estado, fecha_publicacion) VALUES
         (1,'Bienvenidos al Festival','Arranca el festival de cine','noticia1.jpg','publicada',NOW()),
         (1,'Convocatoria abierta','Envía tu cortometraje','noticia2.jpg','publicada',NOW())
     ");
 }
 
-// Cortometrajes
+/* ===================== CORTOMETRAJES ===================== */
 $res = $conn->query("SELECT COUNT(*) AS total FROM cortometrajes");
 if ($res->fetch_assoc()['total'] == 0) {
     $conn->query("
-        INSERT INTO cortometrajes (id_usuario, titulo, descripcion, duracion, categoria, estado, fecha_subida) VALUES
-        (1,'Corto Demo','Cortometraje de ejemplo',12,'Ficción','enviado',CURDATE())
+        INSERT INTO cortometrajes 
+        (id_usuario, titulo, descripcion, imagen_portada, archivo_video, duracion, categoria, estado, fecha_subida) VALUES
+        (1,'Corto Demo Alumno','Corto de ejemplo','portada1.jpg','video1.mp4',12,'alumno','pendiente',NOW()),
+        (2,'Corto Demo Alumni','Otro ejemplo','portada2.jpg','video2.mp4',15,'alumni','pendiente',NOW())
     ");
 }
 
-// Candidaturas
+/* ===================== CANDIDATURAS ===================== */
 $res = $conn->query("SELECT COUNT(*) AS total FROM candidaturas");
 if ($res->fetch_assoc()['total'] == 0) {
     $conn->query("
-        INSERT INTO candidaturas (id_corto, id_premio, estado_candidatura) VALUES
-        (1,1,'pendiente')
+        INSERT INTO candidaturas 
+        (id_corto, id_premio, memoria_pdf, estado_candidatura) VALUES
+        (1,1,'memoria_corto1.pdf','pendiente'),
+        (2,3,'memoria_corto2.pdf','pendiente')
     ");
 }
 
-// Premios otorgados
-$res = $conn->query("SELECT COUNT(*) AS total FROM premios_otorgados");
-if ($res->fetch_assoc()['total'] == 0) {
-    $conn->query("
-        INSERT INTO premios_otorgados (id_premio, id_corto, id_gala, fecha_otorgado) VALUES
-        (1,1,1,CURDATE())
-    ");
-}

@@ -1,139 +1,300 @@
+/* ================= RESET ================= */
+@font-face {
+    font-family: 'Hellix';
+    src: url('../fonts/Hellix-Regular.woff2') format('woff2'),
+         url('../fonts/Hellix-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Hellix';
+    src: url('../fonts/Hellix-Bold.woff2') format('woff2'),
+         url('../fonts/Hellix-Bold.ttf') format('truetype');
+    font-weight: bold;
+}
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: Arial, sans-serif;
+    font-family: "Hellix", Arial, sans-serif;
 }
 
-
-/* Fondo */
+/* ================= FONDO ================= */
 body {
-    height: 100vh;
-    background: url("imagenes/fondo.png") no-repeat center center/cover;
+    min-height: 100vh;
+    background: url("imagenes/fondo.png") no-repeat center / cover;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-
-/* Contenedor */
+/* ================= CONTENEDOR ================= */
 .register-container {
-    background: rgba(0, 0, 0, 0.6);
-    padding: 40px;
-    border-radius: 12px;
-    width: 380px;
+    width: 100%;
+    max-width: 520px;
+    max-height: 90vh;
+    padding: 40px 36px;
+    background: rgba(235, 235, 235, 0.96);
+    backdrop-filter: blur(6px);
+    box-shadow: 0 25px 50px rgba(0,0,0,.25);
+    overflow-y: auto;
 }
 
-
-/* Tarjeta */
+/* ================= TARJETA ================= */
 .register-card {
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
 }
 
-
-/* Logo */
+/* ================= LOGO ================= */
 .logo {
     width: 120px;
-    margin-bottom: 20px;
+    margin: 0 auto;
 }
 
+/* ================= PROGRESO ================= */
+.progress {
+    height: 6px;
+    background: #d0d0d0;
+}
 
-/* Formulario */
+.progress-bar {
+    height: 100%;
+    width: 33%;
+    background: #ff2a1a;
+    transition: width .3s ease;
+}
+
+/* ================= FORM ================= */
 form {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 24px;
 }
 
-
-label {
-    color: #fff;
-    font-size: 14px;
-    text-align: left;
+/* ================= STEPS ================= */
+.step {
+    display: none;
 }
 
+.step.active {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
 
-input {
-    padding: 10px;
-    border-radius: 6px;
-    border: none;
+/* Paso 1 en dos columnas */
+.step.step-1.active {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+}
+
+/* Campos largos */
+.field.full {
+    grid-column: 1 / -1;
+}
+
+/* ================= FIELD ================= */
+.field {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+/* ================= LABEL SUPERIOR ================= */
+.field-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: #333;
+}
+
+/* ================= INPUTS CUADRADOS ================= */
+.floating {
+    position: relative;
+}
+
+.floating input,
+.floating select {
+    width: 100%;
+    padding: 16px 44px 16px 14px;
+    border: none;                 /* ❌ sin borde */
+    background: #ffffff;
+    font-size: 15px;
     outline: none;
 }
 
-.video-upload {
-    margin-top: 10px;
+/* Focus */
+.floating input:focus,
+.floating select:focus {
+    background: #f2f2f2;
+    box-shadow: inset 0 0 0 2px #ff2a1a;
 }
 
-.video-box {
+/* ================= LABEL FLOTANTE LIMPIO ================= */
+.floating label {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #666;
+    font-size: 14px;
+    pointer-events: none;
+    transition: .2s ease;
+    background: transparent;
+}
+
+/* Activación label */
+.floating input:focus + label,
+.floating input:not(:placeholder-shown) + label {
+    top: -10px;
+    font-size: 12px;
+    color: #444;
+}
+
+/* Ocultar placeholder */
+.floating input::placeholder {
+    color: transparent;
+}
+
+/* ================= VALIDACIONES ================= */
+.field.valid input {
+    box-shadow: inset 0 0 0 2px #28a745;
+}
+
+.field.invalid input {
+    box-shadow: inset 0 0 0 2px #dc3545;
+}
+
+/* Tick / cruz DENTRO del input */
+.field.valid::after,
+.field.invalid::after {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.field.valid::after {
+    content: "✔";
+    color: #28a745;
+}
+
+.field.invalid::after {
+    content: "✖";
+    color: #dc3545;
+}
+
+/* Error texto */
+.error-msg {
+    display: none;
+    font-size: 12px;
+    color: #dc3545;
+}
+
+.field.invalid .error-msg {
+    display: block;
+}
+
+/* ================= TELÉFONO ================= */
+.iti {
     width: 100%;
+}
+
+/* ================= VIDEO ================= */
+.video-box {
     height: 60px;
-    border: 2px dashed #ccc;
+    border: 2px dashed #aaa;
+    background: #ffffff;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    background-color: #fff;
-    position: relative;
-    overflow: hidden;
-    padding: 0 10px;
-    text-align: center;
-}
-
-.video-box video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
 }
 
 .video-box:hover {
-    border-color: #000;
-    background-color: #f9f9f9;
+    background: #f2f2f2;
 }
 
-.video-box span {
-    color: #666;
-    font-size: 16px;
-    word-break: break-all; /* para nombres largos */
+/* ================= BOTONES ================= */
+.buttons {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 12px;
 }
 
+/* Botón único centrado */
+.step-1 .buttons {
+    grid-column: 1 / -1;
+}
 
-/* Botones */
 .btn {
-    margin-top: 15px;
-    padding: 10px;
-    border-radius: 6px;
+    padding: 14px 32px;
     border: none;
+    font-size: 15px;
+    font-weight: 600;
     cursor: pointer;
-    text-decoration: none;
-    display: block;
-    color: #fff;
 }
 
-
+/* Botón principal */
 .primary {
-    background: #f30000;
+    background: #ff2a1a;
+    color: #fff;
 }
 
+/* Hover blanco */
+.primary:hover:not(:disabled) {
+    background: #ffffff;
+    color: #ff2a1a;
+    box-shadow: inset 0 0 0 2px #ff2a1a;
+}
 
-.login-link {
-    margin-top: 15px;
+/* Secundario */
+.secondary {
+    background: #6c757d;
     color: #fff;
+}
+
+/* Disabled */
+.btn:disabled {
+    background: #bdbdbd;
+    color: #666;
+    cursor: not-allowed;
+}
+
+/* ================= LOGIN ================= */
+.login-link {
+    text-align: center;
     font-size: 14px;
 }
 
-
 .login-link a {
-    color: #f30000;
+    color: #ff2a1a;
+    font-weight: 600;
     text-decoration: none;
-    font-weight: bold;
 }
 
-
-.login-link a:hover {
-    text-decoration: underline;
+textarea {
+    padding: 14px;
+    background: #f2f2f2;
+    border: none;
+    outline: none;
+    font-size: 15px;
+    resize: vertical;
+    min-height: 100px;
 }
 
+/* Validaciones textarea */
+.field.valid textarea {
+    background: #e9f7ee;
+}
 
-.btn:hover {
-    opacity: 0.85;
+.field.invalid textarea {
+    background: #fdeaea;
 }

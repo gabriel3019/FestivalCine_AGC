@@ -1,56 +1,95 @@
 <?php
-header('Content-Type: application/json');
 session_start();
-require "../BBDD/crear_tabla.php";
+header('Content-Type: application/json');
 require "../BBDD/conecta.php";
 
 $email = $_POST['email'] ?? '';
 $password = $_POST['password'] ?? '';
 
-if (empty($email) || empty($password)) {
+if (!$email || !$password) {
     echo json_encode([
         "success" => false,
-        "message" => "Completa todos los campos"
+        "message" => "Campos incompletos"
     ]);
     exit;
 }
 
-// Buscar usuario
-$stmt = $conn->prepare("SELECT id_usuario AS id, nombre, contrasena, rol FROM usuarios WHERE correo=?");
+/* =====================================================
+   1️⃣ INTENTAR LOGIN COMO USUARIO
+===================================================== */
+$stmt = $conn->prepare(
+    "SELECT id_usuario, nombre, contrasena 
+     FROM usuarios 
+     WHERE correo = ?"
+);
 $stmt->bind_param("s", $email);
 $stmt->execute();
-$result = $stmt->get_result();
+$res = $stmt->get_result();
 
-if ($result->num_rows === 0) {
-    // Buscar organizador
-    $stmt = $conn->prepare("SELECT id_organizador AS id, nombre, contrasena, 'organizador' AS rol FROM organizador WHERE correo=?");
-    $stmt->bind_param("s", $email);
-    $stmt->execute();
-    $result = $stmt->get_result();
+if ($res->num_rows === 1) {
+    $user = $res->fetch_assoc();
 
-    if ($result->num_rows === 0) {
-        echo json_encode(["success" => false, "message" => "Correo o contraseña incorrectos"]);
+    if (!password_verify($password, $user['contrasena'])) {
+        echo json_encode([
+            "success" => false,
+            "message" => "Contraseña incorrecta"
+        ]);
         exit;
     }
-}
 
-$user = $result->fetch_assoc();
+    $_SESSION['usuario'] = [
+        "id" => $user['id_usuario'],
+        "nombre" => $user['nombre'],
+        "tipo" => "usuario"
+    ];
 
-if (!password_verify($password, $user['contrasena'])) {
-    echo json_encode(["success" => false, "message" => "Correo o contraseña incorrectos"]);
+    echo json_encode([
+        "success" => true,
+        "tipo" => "usuario"
+    ]);
     exit;
 }
 
-$_SESSION['usuario'] = [
-    "id" => $user['id'],
-    "nombre" => $user['nombre'],
-    "rol" => strtolower($user['rol'])
-];
+/* =====================================================
+   2️⃣ INTENTAR LOGIN COMO ORGANIZADOR
+===================================================== */
+$stmt = $conn->prepare(
+    "SELECT id_organizador, nombre, contrasena 
+     FROM organizador 
+     WHERE correo = ?"
+);
+$stmt->bind_param("s", $email);
+$stmt->execute();
+$res = $stmt->get_result();
 
+if ($res->num_rows === 1) {
+    $org = $res->fetch_assoc();
+
+    if (!password_verify($password, $org['contrasena'])) {
+        echo json_encode([
+            "success" => false,
+            "message" => "Contraseña incorrecta"
+        ]);
+        exit;
+    }
+
+    $_SESSION['usuario'] = [
+        "id" => $org['id_organizador'],
+        "nombre" => $org['nombre'],
+        "tipo" => "organizador"
+    ];
+
+    echo json_encode([
+        "success" => true,
+        "tipo" => "organizador"
+    ]);
+    exit;
+}
+
+/* =====================================================
+   3️⃣ NO ENCONTRADO
+===================================================== */
 echo json_encode([
-    "success" => true,
-    "rol" => strtolower($user['rol'])
+    "success" => false,
+    "message" => "Usuario no encontrado"
 ]);
-
-$stmt->close();
-$conn->close();
