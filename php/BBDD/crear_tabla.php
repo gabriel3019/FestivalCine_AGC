@@ -12,7 +12,7 @@ if (!isset($conn)) {
 
 $tablas = [
 
-"usuarios" => "
+    "usuarios" => "
 CREATE TABLE IF NOT EXISTS usuarios (
     id_usuario INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(50) NOT NULL,
@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS usuarios (
     fecha_registro DATE NOT NULL
 ) ENGINE=InnoDB;",
 
-"organizador" => "
+    "organizador" => "
 CREATE TABLE IF NOT EXISTS organizador (
     id_organizador INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS organizador (
     contrasena VARCHAR(255) NOT NULL
 ) ENGINE=InnoDB;",
 
-"eventos" => "
+    "eventos" => "
 CREATE TABLE IF NOT EXISTS eventos (
     id_evento INT AUTO_INCREMENT PRIMARY KEY,
     id_organizador INT NOT NULL,
@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS eventos (
     FOREIGN KEY (id_organizador) REFERENCES organizador(id_organizador) ON DELETE CASCADE
 ) ENGINE=InnoDB;",
 
-"galas" => "
+    "galas" => "
 CREATE TABLE IF NOT EXISTS galas (
     id_gala INT AUTO_INCREMENT PRIMARY KEY,
     id_evento INT NOT NULL,
@@ -53,17 +53,18 @@ CREATE TABLE IF NOT EXISTS galas (
     lugar VARCHAR(100),
     imagen VARCHAR(255),
     estado VARCHAR(100),
+    resumen VARCHAR(10000),
     FOREIGN KEY (id_evento) REFERENCES eventos(id_evento) ON DELETE CASCADE
 ) ENGINE=InnoDB;",
 
-"patrocinadores" => "
+    "patrocinadores" => "
 CREATE TABLE IF NOT EXISTS patrocinadores (
     id_patrocinador INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
     logo VARCHAR(255) NOT NULL
 ) ENGINE=InnoDB;",
 
-"secciones" => "
+    "secciones" => "
 CREATE TABLE IF NOT EXISTS secciones (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100),
@@ -71,7 +72,7 @@ CREATE TABLE IF NOT EXISTS secciones (
     lugar VARCHAR(100)
 ) ENGINE=InnoDB;",
 
-"premios" => "
+    "premios" => "
 CREATE TABLE IF NOT EXISTS premios (
     id_premio INT AUTO_INCREMENT PRIMARY KEY,
     nombre_premio VARCHAR(100) NOT NULL,
@@ -79,7 +80,7 @@ CREATE TABLE IF NOT EXISTS premios (
     categoria VARCHAR(50)
 ) ENGINE=InnoDB;",
 
-"noticias" => "
+    "noticias" => "
 CREATE TABLE IF NOT EXISTS noticias (
     id_noticia INT AUTO_INCREMENT PRIMARY KEY,
     id_organizador INT NOT NULL,
@@ -91,7 +92,7 @@ CREATE TABLE IF NOT EXISTS noticias (
     FOREIGN KEY (id_organizador) REFERENCES organizador(id_organizador) ON DELETE CASCADE
 ) ENGINE=InnoDB;",
 
-"cortometrajes" => "
+    "cortometrajes" => "
 CREATE TABLE IF NOT EXISTS cortometrajes (
     id_corto INT AUTO_INCREMENT PRIMARY KEY,
     id_usuario INT NOT NULL,
@@ -105,7 +106,7 @@ CREATE TABLE IF NOT EXISTS cortometrajes (
     FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario) ON DELETE CASCADE
 ) ENGINE=InnoDB;",
 
-"candidaturas" => "
+    "candidaturas" => "
 CREATE TABLE IF NOT EXISTS candidaturas (
     id_candidatura INT AUTO_INCREMENT PRIMARY KEY,
     id_corto INT NOT NULL,
@@ -115,7 +116,7 @@ CREATE TABLE IF NOT EXISTS candidaturas (
     FOREIGN KEY (id_premio) REFERENCES premios(id_premio) ON DELETE CASCADE
 ) ENGINE=InnoDB;",
 
-"premios_otorgados" => "
+    "premios_otorgados" => "
 CREATE TABLE IF NOT EXISTS premios_otorgados (
     id_premio_otorgado INT AUTO_INCREMENT PRIMARY KEY,
     id_premio INT NOT NULL,
@@ -125,6 +126,14 @@ CREATE TABLE IF NOT EXISTS premios_otorgados (
     FOREIGN KEY (id_premio) REFERENCES premios(id_premio),
     FOREIGN KEY (id_corto) REFERENCES cortometrajes(id_corto),
     FOREIGN KEY (id_gala) REFERENCES galas(id_gala)
+) ENGINE=InnoDB;",
+
+    "ediciones anteriores" => "
+CREATE TABLE galasAnteriores(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100),
+    resumen TEXT,
+    imagen VARCHAR(255)
 ) ENGINE=InnoDB;"
 ];
 
@@ -170,8 +179,17 @@ if ($res->fetch_assoc()['total'] == 0) {
 $res = $conn->query("SELECT COUNT(*) AS total FROM galas");
 if ($res->fetch_assoc()['total'] == 0) {
     $conn->query("
-        INSERT INTO galas (id_evento, nombre, descripcion, fecha, lugar, imagen, estado) VALUES
-        (1,'Gala Inaugural','Inicio del festival','2026-06-15','Teatro Principal','gala.jpg', 'pre')
+        INSERT INTO galas (id_evento, nombre, descripcion, fecha, lugar, imagen, estado, resumen) VALUES
+        (1,'Gala Inaugural','Inicio del festival en el edificio E de la universidad europea en el campus de Villaviciosa','2026-06-15','Teatro Principal','gala.jpg', 'pre', 'La gala de la universidad fue un completo éxito y a todo el mundo le encantó')
+    ");
+}
+
+// Galas Anteriores
+$res = $conn->query("SELECT COUNT(*) AS total FROM galasAnteriores");
+if ($res->fetch_assoc()['total'] == 0) {
+    $conn->query("
+       INSERT INTO galasAnteriores (nombre, resumen, imagen)
+        VALUES ('Gala 2023','Una noche inolvidable llena de premios y emociones.','gala2023.jpg');
     ");
 }
 

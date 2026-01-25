@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Galaa anteriores del festibal</title>
-    <link rel="stylesheet" href="../css/galaUsr.css">
+    <title>Gala del festibal</title>
+    <link rel="stylesheet" href="../css/galasAnteriores.css">
     <link rel="stylesheet" href="../css/gala.css">
     <link rel="stylesheet" href="../css/home.css">
     <link rel="stylesheet" href="../css/loader.css">
@@ -40,18 +40,22 @@
 </header>
 
 <body>
+
     <div id="contenido">
-        <h2 id="nombre"></h2>
-        <div>
-            <h3>Día de inauguración de la gala:</h3>
-            <br>
-            <p id="fecha"></p>
-        </div>
-        <p id="texto"></p>
-        <br>
-        <div id="galeria"></div>
-        <br>
-        <button id="anteriores" class="boton"><a href="edicionesAnteriores.html">Ver ediciones anteriores</a></button>
+        <h1>Galas Anteriores</h1>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Imagen</th>
+                    <th>Resumen</th>
+                </tr>
+            </thead>
+            <tbody id="galas">
+                <!-- Aquí se cargan las galas -->
+            </tbody>
+        </table>
     </div>
 
 
@@ -122,7 +126,7 @@
         </div>
     </footer>
 
-    <script src="../js/galaUsr.js"></script>
+    <script src="../js/gaslasAnteriores.js"></script>
     <script src="../js/loader.js"></script>
 </body>
 

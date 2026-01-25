@@ -1,6 +1,6 @@
-document.addEventListener("DOMContentLoaded", mostrarGala);
+document.addEventListener("DOMContentLoaded", mostrarGalasAnteriores);
 
-function mostrarGala() {
+function mostrarGalasAnteriores() {
     const formData = new FormData();
     formData.append("funcion", "mostrarContenido");
 
@@ -8,22 +8,22 @@ function mostrarGala() {
         method: "POST",
         body: formData
     })
-    .then(res => res.json())
-    .then(data => {
-        if (data.length === 0) return;
+        .then(res => res.json())
+        .then(data => {
+            if (data.length === 0) return;
 
-        const gala = data[0];
+            const gala = data[0];
 
-        document.getElementById("nombre").textContent = gala.nombre;
-        document.getElementById("descripcion").textContent = gala.descripcion;
-        document.getElementById("fecha").textContent = gala.fecha;
+            document.getElementById("nombre").textContent = gala.nombre;
+            document.getElementById("texto").textContent = gala.texto;
+            document.getElementById("fecha").textContent = gala.fecha;
 
-        const galeria = document.getElementById("galeria");
-        galeria.innerHTML = "";
+            const galeria = document.getElementById("galeria");
+            galeria.innerHTML = "";
 
-        gala.imagenes.forEach(img => {
-            galeria.innerHTML += `<img src="../img/${img}" width="150">`;
-        });
-    })
-    .catch(err => console.error(err));
+            gala.imagenes.forEach(img => {
+                galeria.innerHTML += `<img src="../css/imagenes/${img}" width="150">`;
+            });
+        })
+        .catch(err => console.error(err));
 }

@@ -8,16 +8,23 @@ if (isset($_POST['funcion']) && $_POST['funcion'] === 'mostrarContenido') {
 
 function mostrarContenido($conn)
 {
-    $sql = "SELECT nombre, descripcion, fecha, imagen FROM galas";
+    $sql = "SELECT nombre, descripcion, fecha, imagen, resumen, estado FROM galas";
     $resultado = $conn->query($sql);
 
     $galas = [];
 
     while ($fila = $resultado->fetch_assoc()) {
+        if ($fila["estado"] == "pre") {
+            $texto = $fila["descripcion"];
+        } else {
+            $texto = $fila["resumen"];
+        }
+
+
         $galas[] = [
             "nombre" => $fila["nombre"],
-            "descripcion" => $fila["descripcion"],
             "fecha" => $fila["fecha"],
+            "texto" => $texto,
             "imagenes" => explode(",", $fila["imagen"])
         ];
     }
