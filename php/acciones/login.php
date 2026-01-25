@@ -1,6 +1,7 @@
 <?php
 session_start();
 header('Content-Type: application/json');
+require "../BBDD/crear_tabla.php";
 require "../BBDD/conecta.php";
 
 $email = $_POST['email'] ?? '';

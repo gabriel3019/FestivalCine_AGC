@@ -78,104 +78,262 @@ header nav a:focus::after {
     opacity: 1;
     transform: translateX(-50%) translateY(0); /* justo debajo del texto */
 }
-.icono_persona {
-    position: relative;
-    cursor: pointer;
+
+/* Usuario */
+.auth {
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
+#nombreUsuario {
+    font-weight: bold;
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+.icono_persona {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #333;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+    font-size: 18px;
+}
+
+/* Menú desplegable usuario */
 .menu {
     display: none;
     position: absolute;
     right: 0;
+    top: 50px;
     background: white;
-    border: 1px solid #ccc;
-    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    min-width: 140px;
+    overflow: hidden;
+    z-index: 10;
 }
 
-.icono_persona:hover .menu {
+.menu a {
     display: block;
+    padding: 10px;
+    color: #333;
 }
 
-/* MAIN */
+.menu a:hover {
+    background-color: #f0f0f0;
+}
+/* ===================== MAIN ===================== */
 main {
-    padding: 30px;
+    padding: 40px;
 }
 
-h2 {
-    margin-bottom: 20px;
+main h2 {
+    margin-bottom: 30px;
 }
 
-/* Candidaturas */
+section {
+    margin-bottom: 40px;
+}
+
+section h3 {
+    margin-bottom: 15px;
+    font-size: 18px;
+    font-weight: bold;
+    border-left: 4px solid #d50032; /* rojo UE */
+    padding-left: 10px;
+}
+
+/* ===================== CANDIDATURAS ===================== */
 .candidaturas-container {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
     gap: 20px;
 }
 
 .candidatura-card {
-    background: white;
+    background: #fff;
     padding: 20px;
-    border-radius: 6px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
 }
 
-.acciones {
-    margin-top: 15px;
+.candidatura-card h4 {
+    margin-bottom: 10px;
+    font-size: 16px;
 }
 
+.candidatura-card p {
+    font-size: 14px;
+    color: #555;
+}
+
+/* ===================== BOTONES UE ===================== */
 button {
-    padding: 8px 15px;
+    padding: 10px 18px;
     border: none;
-    border-radius: 4px;
+    border-radius: 0; /* SIN border radius */
     cursor: pointer;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 13px;
 }
 
 .btn-aceptar {
-    background-color: #28a745;
-    color: white;
-    margin-right: 10px;
+    background-color: #009639; /* verde UE */
+    color: #fff;
 }
 
 .btn-rechazar {
-    background-color: #dc3545;
-    color: white;
+    background-color: #d50032; /* rojo UE */
+    color: #fff;
 }
 
-/* Nominar y Rechazo */
-.nominar,
-.rechazo {
+button:hover {
+    filter: brightness(1.1);
+}
+
+/* ===================== HOVER BOTONES ===================== */
+.btn-aceptar:hover {
+    background-color: #007f2d; /* verde UE más oscuro */
+}
+
+.btn-rechazar:hover {
+    background-color: #b00028; /* rojo UE más oscuro */
+}
+
+button:focus {
+    outline: none;
+}
+
+
+/* Botón revisar (usa verde UE) */
+.revisar {
     margin-top: 15px;
-}
-
-.nominar select,
-.rechazo textarea {
     width: 100%;
-    margin-top: 5px;
-    padding: 5px;
 }
 
-.btn-guardar {
-    margin-top: 10px;
-    background-color: #007bff;
-    color: white;
+/* ===================== MODALES ===================== */
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.65);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
 }
 
-/* Utilidades */
+.modal .acciones {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.modal .acciones button {
+    width: 100%;
+}
+
+
+.modal-content {
+    background: #fff;
+    padding: 30px;
+    width: 600px;
+    max-width: 95%;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+}
+
+.modal-content h3 {
+    margin-bottom: 20px;
+    font-size: 18px;
+}
+
+.modal-content p {
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.modal-content video {
+    width: 100%;
+    margin: 15px 0;
+}
+
+.link-memoria {
+    display: inline-block;
+    margin-bottom: 20px;
+    color: #d50032;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.link-memoria:hover {
+    text-decoration: underline;
+}
+
+.modal .acciones {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+/* ===================== TEXTAREA RECHAZO ===================== */
+#motivo-rechazo {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    resize: none;
+    border: 1px solid #ccc;
+    font-family: inherit;
+}
+
+/* ===================== UTILIDADES ===================== */
 .oculto {
     display: none;
 }
 
-/* FOOTER */
-footer {
-    margin-top: 40px;
-    background: #222;
-    color: white;
-    display: flex;
-    justify-content: space-around;
-    padding: 15px;
+/* ===================== MODAL CONFIRMACIÓN ACEPTAR ===================== */
+#modal-aceptar .modal-content {
+    max-width: 450px;
+    text-align: center;
 }
 
-footer a {
-    color: white;
-    text-decoration: none;
+#modal-aceptar p {
+    font-size: 15px;
+    margin-bottom: 30px;
 }
+
+/* Botón cancelar en confirmación (menos peso visual) */
+#cancelar-aceptar {
+    background-color: #e0e0e0;
+    color: #111;
+}
+
+#cancelar-aceptar:hover {
+    background-color: #cfcfcf;
+}
+
+/* Asegurar jerarquía de acciones en modales */
+.modal .acciones {
+    margin-top: 20px;
+}
+
+/* ===================== TRANSICIÓN SUAVE MODALES ===================== */
+.modal {
+    animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+

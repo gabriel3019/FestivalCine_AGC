@@ -8,7 +8,7 @@ if (isset($_SESSION['usuario'])) {
         "usuario" => [
             "id" => $_SESSION['usuario']['id'],
             "nombre" => $_SESSION['usuario']['nombre'],
-            "tipo" => $_SESSION['usuario']['tipo']
+            "tipo" => $_SESSION['usuario']['tipo'] ?? null
         ]
     ]);
 } else {

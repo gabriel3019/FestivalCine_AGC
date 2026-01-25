@@ -115,14 +115,21 @@ CREATE TABLE IF NOT EXISTS cortometrajes (
 ) ENGINE=InnoDB;",
 
 /* ===================== CANDIDATURAS ===================== */
+/* ===================== CANDIDATURAS ===================== */
 "candidaturas" => "
 CREATE TABLE IF NOT EXISTS candidaturas (
     id_candidatura INT AUTO_INCREMENT PRIMARY KEY,
     id_corto INT NOT NULL,
     id_premio INT NULL,
     memoria_pdf VARCHAR(255) NOT NULL,
-    estado_candidatura VARCHAR(50) DEFAULT 'pendiente',
+
+    estado_candidatura ENUM('pendiente','aceptada','rechazada')
+        DEFAULT 'pendiente',
+
+    motivo_rechazo TEXT NULL,
     fecha_envio DATETIME DEFAULT CURRENT_TIMESTAMP,
+    fecha_resolucion DATETIME NULL,
+
     FOREIGN KEY (id_corto) REFERENCES cortometrajes(id_corto) ON DELETE CASCADE,
     FOREIGN KEY (id_premio) REFERENCES premios(id_premio) ON DELETE SET NULL
 ) ENGINE=InnoDB;",
@@ -245,13 +252,32 @@ if ($res->fetch_assoc()['total'] == 0) {
 }
 
 /* ===================== CANDIDATURAS ===================== */
+/* ===================== CANDIDATURAS ===================== */
 $res = $conn->query("SELECT COUNT(*) AS total FROM candidaturas");
 if ($res->fetch_assoc()['total'] == 0) {
     $conn->query("
         INSERT INTO candidaturas 
-        (id_corto, id_premio, memoria_pdf, estado_candidatura) VALUES
-        (1,1,'memoria_corto1.pdf','pendiente'),
-        (2,3,'memoria_corto2.pdf','pendiente')
+        (id_corto, id_premio, memoria_pdf, estado_candidatura, motivo_rechazo, fecha_envio, fecha_resolucion)
+        VALUES
+        (
+            1,
+            1,
+            'memoria_corto1.pdf',
+            'pendiente',
+            NULL,
+            NOW(),
+            NULL
+        ),
+        (
+            2,
+            3,
+            'memoria_corto2.pdf',
+            'pendiente',
+            NULL,
+            NOW(),
+            NULL
+        )
     ");
 }
+
 

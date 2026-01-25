@@ -1,7 +1,7 @@
 <?php
-ob_start();
 header('Content-Type: application/json');
 require "../BBDD/conecta.php";
+session_start();
 
 /* ===================== PASO 1: USUARIO ===================== */
 $nombre = $_POST['nombre'] ?? '';
@@ -12,7 +12,6 @@ $numero_expediente = $_POST['numero_expediente'] ?? '';
 $password = $_POST['password'] ?? '';
 
 if (!$nombre || !$apellidos || !$numero_expediente || !$password) {
-    ob_end_clean();
     echo json_encode([
         "success" => false,
         "message" => "Faltan datos obligatorios"
@@ -28,7 +27,6 @@ if ($correo) {
     $check->store_result();
 
     if ($check->num_rows > 0) {
-        ob_end_clean();
         echo json_encode([
             "success" => false,
             "message" => "El correo ya está registrado"
@@ -38,7 +36,7 @@ if ($correo) {
     $check->close();
 }
 
-/* Hash real de la contraseña */
+/* Hash de la contraseña */
 $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
 /* Insertar usuario */
@@ -59,7 +57,6 @@ $stmt->bind_param(
 );
 
 if (!$stmt->execute()) {
-    ob_end_clean();
     echo json_encode([
         "success" => false,
         "message" => "Error al crear el usuario"
@@ -70,14 +67,20 @@ if (!$stmt->execute()) {
 $id_usuario = $conn->insert_id;
 $stmt->close();
 
+/* ===================== CREAR SESIÓN (CLAVE) ===================== */
+$_SESSION['usuario'] = [
+    'id' => $id_usuario,
+    'nombre' => $nombre,
+    'apellidos' => $apellidos,
+    'correo' => $correo
+];
+
 /* ===================== PASO 2: CORTOMETRAJE ===================== */
 $categoria = $_POST['categoria'] ?? '';
 $titulo = $_POST['titulo'] ?? '';
 $descripcion = $_POST['descripcion'] ?? '';
 
-
 if (!in_array($categoria, ['alumno', 'alumni'])) {
-    ob_end_clean();
     echo json_encode([
         "success" => false,
         "message" => "Categoría no válida"
@@ -87,7 +90,6 @@ if (!in_array($categoria, ['alumno', 'alumni'])) {
 
 /* Portada */
 if (!isset($_FILES['portada']) || $_FILES['portada']['error'] !== 0) {
-    ob_end_clean();
     echo json_encode([
         "success" => false,
         "message" => "Debes subir una imagen de portada"
@@ -98,12 +100,10 @@ if (!isset($_FILES['portada']) || $_FILES['portada']['error'] !== 0) {
 $portadaNombre = uniqid("portada_") . "." . pathinfo($_FILES['portada']['name'], PATHINFO_EXTENSION);
 $rutaPortadaServidor = "../../uploads/portadas/" . $portadaNombre;
 $rutaPortadaBD = "uploads/portadas/" . $portadaNombre;
-
 move_uploaded_file($_FILES['portada']['tmp_name'], $rutaPortadaServidor);
 
 /* Vídeo */
 if (!isset($_FILES['video']) || $_FILES['video']['error'] !== 0) {
-    ob_end_clean();
     echo json_encode([
         "success" => false,
         "message" => "Debes subir el vídeo"
@@ -114,7 +114,6 @@ if (!isset($_FILES['video']) || $_FILES['video']['error'] !== 0) {
 $videoNombre = uniqid("video_") . "." . pathinfo($_FILES['video']['name'], PATHINFO_EXTENSION);
 $rutaVideoServidor = "../../uploads/videos/" . $videoNombre;
 $rutaVideoBD = "uploads/videos/" . $videoNombre;
-
 move_uploaded_file($_FILES['video']['tmp_name'], $rutaVideoServidor);
 
 /* Insert cortometraje */
@@ -140,7 +139,6 @@ $stmt->close();
 
 /* ===================== PASO 3: CANDIDATURA ===================== */
 if (!isset($_FILES['memoria_pdf']) || $_FILES['memoria_pdf']['error'] !== 0) {
-    ob_end_clean();
     echo json_encode([
         "success" => false,
         "message" => "Debes subir la memoria en PDF"
@@ -151,7 +149,6 @@ if (!isset($_FILES['memoria_pdf']) || $_FILES['memoria_pdf']['error'] !== 0) {
 $pdfNombre = uniqid("memoria_") . ".pdf";
 $rutaPdfServidor = "../../uploads/memorias/" . $pdfNombre;
 $rutaPdfBD = "uploads/memorias/" . $pdfNombre;
-
 move_uploaded_file($_FILES['memoria_pdf']['tmp_name'], $rutaPdfServidor);
 
 /* Insert candidatura */
@@ -163,11 +160,10 @@ $stmt = $conn->prepare("
 
 $stmt->bind_param("is", $id_corto, $rutaPdfBD);
 $stmt->execute();
-
 $stmt->close();
+
 $conn->close();
 
 /* ===================== RESPUESTA FINAL ===================== */
-ob_end_clean();
 echo json_encode(["success" => true]);
 exit;

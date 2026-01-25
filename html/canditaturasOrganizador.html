@@ -24,9 +24,9 @@
             <a href="canditaturasOrganizador.html">Candidatos</a>
         </nav>
 
-        <div class="auth">
+        <div class="auth" id="auth-user" style="display:none;">
             <span id="nombreUsuario"></span>
-            <!-- Icono perfil -->
+
             <div id="icono_persona" class="icono_persona">
                 👤
                 <div id="menu" class="menu">
@@ -36,48 +36,99 @@
                 </div>
             </div>
         </div>
+
     </header>
 
     <main>
         <h2>Candidaturas</h2>
 
-        <div class="candidaturas-container">
+        <!-- ===================== ALUMNOS ===================== -->
+        <section>
+            <h3>Alumnos</h3>
+            <div id="candidaturas-alumno" class="candidaturas-container">
+                <!-- JS insertará tarjetas aquí -->
+            </div>
+        </section>
 
-            <!-- CANDIDATURA -->
-            <div class="candidatura-card">
-                <h3>Título del corto</h3>
-                <p><strong>Autor:</strong> Juan Pérez</p>
-                <p><strong>Categoría:</strong> Cortometraje</p>
+        <!-- ===================== ALUMNI ===================== -->
+        <section>
+            <h3>Alumni</h3>
+            <div id="candidaturas-alumni" class="candidaturas-container">
+                <!-- JS insertará tarjetas aquí -->
+            </div>
+        </section>
 
-                <div class="acciones">
-                    <button class="btn-rechazar">Rechazar</button>
-                    <button class="btn-aceptar">Aceptar</button>
-                </div>
+        <!-- ===================== PREMIO CARRERA PROFESIONAL ===================== -->
+        <section>
+            <h3>Premio Carrera Profesional</h3>
+            <div id="candidaturas-honorifico" class="candidaturas-container">
+                <!-- JS insertará tarjetas aquí -->
+            </div>
+        </section>
+    </main>
 
-                <!-- Nominar premio -->
-                <div class="nominar oculto">
-                    <label for="premio">Nominar a premio:</label>
-                    <select>
-                        <option value="">Selecciona un premio</option>
-                        <option>Mejor Corto</option>
-                        <option>Mejor Dirección</option>
-                        <option>Mejor Guion</option>
-                    </select>
-                    <button class="btn-guardar">Guardar nominación</button>
-                </div>
+    <!-- ===================== MODAL REVISIÓN ===================== -->
+    <div id="modal-revision" class="modal oculto">
+        <div class="modal-content">
+            <h3 id="modal-titulo"></h3>
 
-                <!-- Mensaje rechazo -->
-                <div class="rechazo oculto">
-                    <label for="mensaje">Motivo del rechazo:</label>
-                    <textarea rows="3" placeholder="Escribe el motivo..."></textarea>
-                    <button class="btn-guardar">Guardar mensaje</button>
-                </div>
+            <p><strong>Autor:</strong> <span id="modal-autor"></span></p>
+            <p><strong>Nº Expediente:</strong> <span id="modal-expediente"></span></p>
+
+            <video id="modal-video" controls></video>
+
+            <a id="modal-memoria" target="_blank" class="link-memoria">
+                Ver memoria PDF
+            </a>
+
+            <div class="acciones">
+                <button id="btn-aceptar" class="btn-aceptar">Aceptar</button>
+                <button id="btn-rechazar" class="btn-rechazar">Rechazar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================== MODAL RECHAZO ===================== -->
+    <div id="modal-rechazo" class="modal oculto">
+        <div class="modal-content">
+            <h3>Motivo del rechazo</h3>
+
+            <textarea id="motivo-rechazo" rows="4" placeholder="Escribe el motivo del rechazo..."></textarea>
+
+            <div class="acciones">
+                <button id="volver-revision" class="btn-aceptar">
+                    Volver
+                </button>
+
+                <button id="confirmar-rechazo" class="btn-rechazar">
+                    Confirmar rechazo
+                </button>
             </div>
 
-            <!-- Puedes duplicar esta tarjeta para más candidaturas -->
-
         </div>
-    </main>
+    </div>
+
+    <!-- ===================== MODAL CONFIRMAR ACEPTACIÓN ===================== -->
+    <div id="modal-aceptar" class="modal oculto">
+        <div class="modal-content">
+            <h3>Confirmar aceptación</h3>
+
+            <p>¿Seguro que quieres aceptar esta candidatura?</p>
+
+            <div class="acciones">
+                <button id="cancelar-aceptar" class="btn-rechazar">
+                    Cancelar
+                </button>
+                <button id="confirmar-aceptar" class="btn-aceptar">
+                    Sí, aceptar
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="../js/canditaturasOrganizador.js"></script>
+
 
 </body>
 
