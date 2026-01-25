@@ -1,0 +1,448 @@
+/* Cargar fuente Hellix */
+@font-face {
+    font-family: 'Hellix';
+    src: url('../fonts/Hellix-Regular.woff2') format('woff2'),
+        url('../fonts/Hellix-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Hellix';
+    src: url('../fonts/Hellix-Bold.woff2') format('woff2'),
+        url('../fonts/Hellix-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Hellix', Arial, sans-serif;
+}
+
+body {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #f5f5f5;
+}
+
+/* ===================== HEADER ===================== */
+header {
+    padding: 16px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #f5f5f5;
+    border-bottom: 1px solid #ddd;
+}
+
+.logo img {
+    height: 80px;
+    width: auto;
+}
+
+header nav {
+    display: flex;
+    gap: 15px;
+}
+
+header nav a {
+    position: relative;
+    text-decoration: none;
+    color: #111;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 5px 0;
+}
+
+header nav a::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6px;
+    height: 6px;
+    background-color: red;
+    border-radius: 2px;
+    opacity: 0;
+    transition: opacity 0.2s, transform 0.2s;
+}
+
+header nav a:hover::after,
+header nav a:focus::after {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* ===================== AUTH ===================== */
+.auth-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.auth {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.auth button {
+    padding: 6px 14px;
+    border: 1px solid #111;
+    background: #fff;
+    cursor: pointer;
+}
+
+#login-btn {
+    background-color: #000;
+    color: #fff;
+}
+
+#login-btn:hover {
+    background-color: #fff;
+    color: #111;
+    border: 1px solid #111;
+    transition: all 0.3s ease;
+}
+
+.auth .primary {
+    background-color: #f30000;
+    color: #fff;
+    border: 1px solid #f30000;
+    transition: all 0.3s ease;
+}
+
+.auth .primary:hover {
+    background-color: #fff;
+    color: #f30000;
+    border: 1px solid #f30000;
+}
+
+#nombreUsuario {
+    font-weight: bold;
+    color: #333;
+    margin-right: 5px;
+}
+
+.icono_persona {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #333;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+    font-size: 18px;
+}
+
+.menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    min-width: 160px;
+    z-index: 100;
+}
+
+.menu a {
+    display: block;
+    padding: 10px;
+    color: #333;
+    text-decoration: none;
+}
+
+.menu a:hover {
+    background-color: #f0f0f0;
+}
+
+.menu.show {
+    display: block;
+}
+
+/* ===================== CALENDARIO ===================== */
+.calendar-container {
+    width: calc(100% - 80px); /* márgenes laterales */
+    min-height: calc(100vh - 200px);
+    max-width: 1600px; 
+    margin: 40px auto;
+    padding: 30px;
+    background: #fff;
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.5);
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.calendar-header h2 {
+    font-size: 26px;
+    font-weight: bold;
+    color: #333;
+    text-transform: capitalize;
+}
+
+.calendar-header button {
+    background: #f30000;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.calendar-header button:hover {
+    background: #d50000;
+    transform: scale(1.05);
+}
+
+/* Grid del calendario */
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 15px;
+}
+
+.day-header {
+    background: #333;
+    color: #fff;
+    text-align: center;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+/* Cada celda de día */
+.calendar-day {
+    min-height: 140px;
+    background: #fafafa;
+    border: 1px solid #e0e0e0;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.calendar-day:hover {
+    background: #f0f0f0;
+    border-color: #ccc;
+}
+
+.calendar-day.today {
+    border: 2px solid #ff0000;
+}
+
+
+.day-number {
+    font-weight: bold;
+    font-size: 16px;
+    color: #333;
+}
+
+/* Etiquetas de eventos */
+.event-tag {
+    background-color: #ff3b3b;
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border: none;
+}
+
+.event-tag:hover {
+    background: linear-gradient(135deg, #d50000, #f30000);
+    transform: scale(1.02);
+    box-shadow: 0 2px 8px rgba(243, 0, 0, 0.3);
+}
+
+/* ===================== MODAL ===================== */
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 10px 50px rgba(0, 0, 0, 0.3);
+    z-index: 1001;
+    max-width: 500px;
+    width: 90%;
+    max-height: 80vh;
+    overflow: hidden;
+    animation: modalAppear 0.3s ease;
+}
+
+@keyframes modalAppear {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.9);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+.modal.oculto {
+    display: none;
+}
+
+.modal-content {
+    position: relative;
+    padding: 30px;
+    overflow-y: auto;
+    max-height: 80vh;
+}
+
+.close-button {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 28px;
+    cursor: pointer;
+    color: #666;
+    transition: all 0.2s ease;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #f0f0f0;
+}
+
+.close-button:hover {
+    color: #f30000;
+    background: #ffe5e5;
+    transform: rotate(90deg);
+}
+
+/* Contenido del modal */
+#modalBody h3 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+    padding-right: 40px;
+    border-bottom: 3px solid #f30000;
+    padding-bottom: 10px;
+}
+
+#modalBody p {
+    font-size: 15px;
+    color: #555;
+    margin-bottom: 12px;
+    line-height: 1.6;
+}
+
+#modalBody p strong {
+    color: #333;
+    margin-right: 8px;
+}
+
+#modalBody img {
+    width: 100%;
+    border-radius: 12px;
+    margin-top: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* ===================== OVERLAY ===================== */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 1000;
+    backdrop-filter: blur(4px);
+    animation: overlayAppear 0.3s ease;
+}
+
+@keyframes overlayAppear {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.overlay.oculto {
+    display: none;
+}
+
+/* ===================== RESPONSIVE ===================== */
+@media (max-width: 768px) {
+    .calendar-container {
+        margin: 20px;
+        padding: 15px;
+    }
+
+    .calendar-header h2 {
+        font-size: 18px;
+    }
+
+    .calendar-header button {
+        padding: 8px 12px;
+        font-size: 14px;
+    }
+
+    .calendar-day {
+        min-height: 70px;
+        padding: 5px;
+    }
+
+    .day-number {
+        font-size: 12px;
+    }
+
+    .event-tag {
+        font-size: 9px;
+        padding: 2px 4px;
+    }
+
+    header {
+        flex-direction: column;
+        gap: 15px;
+        padding: 15px;
+    }
+
+    header nav {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .modal {
+        width: 95%;
+    }
+
+    .modal-content {
+        padding: 20px;
+    }
+}

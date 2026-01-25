@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const modalCancelar = document.getElementById("modal-cancelar");
     const modalTituloInput = document.getElementById("modal-titulo-input");
     const modalContenidoInput = document.getElementById("modal-contenido-input");
-    const modalImagenInput = document.getElementById("modal-imagen-input"); // opcional si agregas campo en HTML
+    const modalImagenInput = document.getElementById("modal-imagen-input"); 
 
     const modalEliminar = document.getElementById("modal-eliminar");
     const confirmarEliminar = document.getElementById("confirmar-eliminar");

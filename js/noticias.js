@@ -27,6 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
         try {
             const res = await fetch("../php/acciones/noticias.php");
             const data = await res.json();
+            
 
             if (data.success) {
                 contenedor.innerHTML = "";

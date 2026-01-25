@@ -1,401 +1,333 @@
 document.addEventListener("DOMContentLoaded", () => {
-    cargarEventos();
 
-    const contenedor = document.querySelector(".eventos-container");
-    const accionesGenerales = document.querySelector(".acciones-generales");
+    const contenedor = document.getElementById("eventos-container");
 
-    const btnAnadir = document.querySelector("#btnAnadir");
-    const formularioEvento = document.querySelector("#formulario-evento");
+    const btnAnadir = document.getElementById("btnAnadir");
+    const formulario = document.getElementById("formulario-evento");
+    const formEvento = document.getElementById("form-evento");
+    const cancelar = document.getElementById("cancelar");
+
     const overlay = document.getElementById("overlay");
-    const formEvento = document.querySelector("#form-evento");
-    const btnCancelar = document.querySelector("#cancelar");
 
     const nombre = document.getElementById("nombre");
     const descripcion = document.getElementById("descripcion");
     const fecha = document.getElementById("fecha");
     const lugar = document.getElementById("lugar");
+    const inicio = document.getElementById("inicio");
+    const fin = document.getElementById("fin");
     const tipo_evento = document.getElementById("tipo_evento");
-    const form = document.getElementById("form-evento");
+    const imagen = document.getElementById("imagen");
 
-    const inputFecha = document.getElementById("fecha");
+    // Modal editar 
+    const modalEditar = document.getElementById("modal-evento");
+    const modalForm = document.getElementById("modal-form");
+    const modalCancelar = document.getElementById("modal-cancelar");
 
-    console.log("btnAnadir:", btnAnadir);
-    console.log("formularioEvento:", formularioEvento);
+    //Modal eliminar
+    const modalEliminar = document.getElementById("modal-eliminar");
+    const confirmarEliminar = document.getElementById("confirmar-eliminar");
+    const cancelarEliminar = document.getElementById("cancelar-eliminar");
 
-    // Elementos de sesión
-    const profileIcon = document.getElementById("icono_persona");
-    const profileMenu = document.getElementById("menu");
-    const logoutBtn = document.getElementById("cerrar_sesion");
-    const volver_home = document.getElementById("volver_home");
-    const nombreUsuario = document.getElementById("nombreUsuario");
+    let eventoActualId = null;
 
-    // Comprobar sesión
+    // ===================== SESIÓN =====================
     fetch("../php/acciones/check-session.php", { method: "POST" })
         .then(res => res.json())
         .then(data => {
-            if (data.logged && data.usuario?.rol.toLowerCase() === "organizador") {
-                profileIcon.style.display = "flex";
-                nombreUsuario.textContent = data.usuario.nombre;
-            } else {
+            if (!data.logged || data.usuario.rol.toLowerCase() !== "organizador") {
                 window.location.href = "../html/login.html";
+            } else {
+                document.getElementById("nombreUsuario").textContent = data.usuario.nombre;
             }
         });
 
-    // Mostrar/Ocultar menú de perfil
-    profileIcon.addEventListener("click", function (event) {
-        event.stopPropagation();
-        profileMenu.style.display = profileMenu.style.display === "block" ? "none" : "block";
+    document.getElementById("icono_persona").addEventListener("click", e => {
+        e.stopPropagation();
+        const menu = document.getElementById("menu");
+        menu.style.display = menu.style.display === "block" ? "none" : "block";
     });
 
-    document.addEventListener("click", function () {
-        profileMenu.style.display = "none";
+    document.addEventListener("click", () => {
+        document.getElementById("menu").style.display = "none";
     });
 
-    // Volver a home
-    volver_home.addEventListener("click", function () {
+    document.getElementById("cerrar_sesion").addEventListener("click", () => {
+        fetch("../php/acciones/cerrar_sesion.php").then(() => {
+            window.location.href = "../html/login.html";
+        });
+    });
+
+    document.getElementById("volver_home").addEventListener("click", () => {
         window.location.href = "home_organizador.html";
     });
 
-    // Cerrar sesión
-    logoutBtn.addEventListener("click", function () {
-        fetch("../php/acciones/cerrar_sesion.php")
-            .then(() => {
-                window.location.href = "../html/login.html";
-            });
-    });
-
-    if (inputFecha) {
-        const hoy = new Date().toISOString().split("T")[0];
-        inputFecha.min = hoy;
-    }
-
-    async function enviarEvento(data) {
-        try {
-            const formData = new FormData();
-            for (const key in data) formData.append(key, data[key]);
-
-            const res = await fetch("../php/acciones/eventosOrganizador.php", {
-                method: "POST",
-                body: formData
-            });
-
-            const text = await res.text();
-            console.log("Respuesta del servidor:", text);
-            return JSON.parse(text);
-        } catch (error) {
-            console.error("Error en la petición:", error);
-            alert("Error en el servidor");
-        }
-    }
-
-    async function cargarEventos() {
+    // ===================== FUNCIONES API =====================
+    async function api(data) {
         const formData = new FormData();
-        formData.append("action", "listar");
+        for (let key in data) {
+            if (key === "imagen" && data[key] instanceof File) {
+                formData.append("imagen", data[key]);
+            } else {
+                formData.append(key, data[key]);
+            }
+        }
 
         const res = await fetch("../php/acciones/eventosOrganizador.php", {
             method: "POST",
             body: formData
         });
 
-        const data = await res.json();
-
+        return res.json();
+    }
+    // ===================== CARGAR EVENTOS =====================
+    async function cargarEventos() {
+        const data = await api({ action: "listar" });
         if (!data.success) return;
 
         contenedor.innerHTML = "";
-        contenedor.appendChild(accionesGenerales);
 
-        data.eventos.forEach(evento => {
+        data.eventos.forEach(ev => {
             const div = document.createElement("div");
-            div.classList.add("evento");
-            div.dataset.id = evento.id_evento;
+            div.className = "evento";
+            div.dataset.id = ev.id_evento;
+            div.dataset.raw = JSON.stringify(ev); // Guardamos datos para editar rápido
+
+            // Si no hay imagen, usamos la de fondo por defecto
+            const imgSrc = ev.imagen ? ev.imagen : "../css/imagenes/fondo.png";
 
             div.innerHTML = `
-            <div class="acciones">
-                <button class="btn-editar">✏️</button>
-                <button class="btn-eliminar">🗑️</button>
-            </div>
-            <img src="../css/imagenes/fondo.png">
-            <div class="contenido">
-                <h3 class="nombre">${evento.nombre}</h3>
-                <p class="descripcion">${evento.descripcion}</p>
-                <p class="fecha">${evento.fecha}</p>
-                <p class="lugar">${evento.lugar}</p>
-                <p class="tipo_evento">${evento.tipo_evento}</p>
-            </div>
-        `;
-
+                <img src="${imgSrc}" alt="Imagen evento">
+                <div class="contenido">
+                    <div class="meta-info">
+                        <span class="lugar"><img src="../css/iconos/icono_ubicacion.svg" class="icono-detalle" alt="Lugar"> ${ev.lugar}</span>
+                        <span class="fecha"><img src="../css/iconos/icono_calendario.svg" class="icono-detalle" alt="Fecha">  ${ev.fecha_formateada}</span>
+                    </div>
+                    <h3 class="nombre">${ev.nombre}</h3>
+                    <p class="descripcion">${ev.descripcion}</p>
+                    <p class="info-extra"><img src="../css/iconos/icono_relogArena.svg" class="icono-detalle" alt="Relog"> ${ev.hora_inicio_formateada} - ${ev.hora_fin_formateada} | <img src="../css/iconos/icono_pergamino.svg" class="icono-detalle" alt="Fecha"> ${ev.tipo_evento}</p>
+                    <div class="acciones">
+                        <button class="btn-editar"><img src="../css/iconos/icono_editar.svg" class="icono-detalle" alt="Fecha"></button>
+                        <button class="btn-eliminar"><img src="../css/iconos/icono_eliminar.svg" class="icono-detalle" alt="Fecha"></button>
+                    </div>
+                </div>
+            `;
             contenedor.appendChild(div);
         });
     }
 
+    cargarEventos();
 
-    // Mostrar formulario
+    // ===================== ABRIR/CERRAR MODALES =====================
+    function cerrarTodo() {
+        formulario.classList.add("oculto");
+        modalEditar.classList.add("oculto");
+        modalEliminar.classList.add("oculto");
+        overlay.classList.add("oculto");
+        eventoActualId = null;
+    }
+
+    function resetFormularioEvento() {
+        formEvento.reset();
+    }
+
     btnAnadir.addEventListener("click", () => {
-        formularioEvento.classList.remove("oculto");
+        resetFormularioEvento();
+        formulario.classList.remove("oculto");
         overlay.classList.remove("oculto");
     });
 
-    // Cancelar formulario
-    btnCancelar.addEventListener("click", () => {
-        formularioEvento.classList.add("oculto");
-        overlay.classList.add("oculto");
+    cancelar.addEventListener("click", () => {
+        resetFormularioEvento();
+        cerrarTodo();
     });
 
+    overlay.addEventListener("click", cerrarTodo);
+    modalCancelar.addEventListener("click", cerrarTodo);
+    cancelarEliminar.addEventListener("click", cerrarTodo);
 
-    //Cerrar si se pulsa fuera
-    overlay.addEventListener("click", () => {
-        formularioEvento.classList.add("oculto");
-        overlay.classList.add("oculto");
-    });
-
-    // Enviar formulario
-    formEvento.addEventListener("submit", async (e) => {
+    // ===================== AÑADIR EVENTO =====================
+    formEvento.addEventListener("submit", async e => {
         e.preventDefault();
 
-        const nombreInput = formEvento.nombre;
-        const descripcionTextarea = formEvento.descripcion;
-        const fechaInput = formEvento.fecha;
-        const lugarInput = formEvento.lugar;
-        const tipo_eventoInput = formEvento.tipo_evento;
+        let hayError = false;
 
-        const nombre = nombreInput.value.trim();
-        const descripcion = descripcionTextarea.value.trim();
-        const fecha = fechaInput.value.trim();
-        const lugar = lugarInput.value.trim();
-        const tipo_evento = tipo_eventoInput.value.trim();
-
-        let valido = true;
-
-        // Validación de error
-        if (!nombre) {
-            mostrarError(nombreInput, "Debes escribir un nombre");
-            valido = false;
-        } else {
-            quitarError(nombreInput);
-        }
-
-        if (!descripcion) {
-            mostrarError(descripcionTextarea, "Debes escribir una descripcion");
-            valido = false;
-        } else {
-            quitarError(descripcionTextarea);
-        }
-
-        if (!fecha) {
-            mostrarError(fechaInput, "Debes escribir una fecha");
-            valido = false;
-        } else {
-            quitarError(fechaInput);
-        }
-
-        if (!lugar) {
-            mostrarError(lugarInput, "Debes escribir un lugar");
-            valido = false;
-        } else {
-            quitarError(lugarInput);
-        }
-
-        if (!tipo_evento) {
-            mostrarError(tipo_eventoInput, "Debes escribir un tipo de evento");
-            valido = false;
-        } else {
-            quitarError(tipo_eventoInput);
-        }
-
-
-
-        if (!valido) return; // si hay errores, no continuamos
-
-        // Llamada al servidor
-        const data = await enviarEvento({
-            action: "anadir",
-            nombre,
-            descripcion,
-            fecha,
-            lugar,
-            tipo_evento
+        campos.forEach(({ input, error }) => {
+            if (
+                (input.type !== "file" && input.value.trim() === "") ||
+                (input.type === "file" && input.files.length === 0)
+            ) {
+                input.classList.add("input-error");
+                if (error) error.style.display = "block";
+                hayError = true;
+            }
         });
 
-        if (data.success) {
-            cargarEventos();
+        if (hayError) return;
 
-            formularioEvento.classList.add("oculto");
-            overlay.classList.add("oculto");
 
-            // Limpiar el formulario y errores
+        const data = {
+            action: "anadir",
+            nombre: formEvento.nombre.value.trim(),
+            descripcion: formEvento.descripcion.value.trim(),
+            fecha: formEvento.fecha.value.trim(),
+            hora_inicio: formEvento.hora_inicio.value.trim(),
+            hora_fin: formEvento.hora_fin.value.trim(),
+            lugar: formEvento.lugar.value.trim(),
+            tipo_evento: formEvento.tipo_evento.value.trim(),
+            imagen: formEvento.imagen.files[0]
+        };
+
+        if (!data.nombre || !data.imagen) {
+            alert("Faltan campos obligatorios");
+            return;
+        }
+
+        const res = await api(data);
+
+        if (res.success) {
             formEvento.reset();
-            quitarError(nombreInput);
-            quitarError(descripcionTextarea);
-            quitarError(fechaInput);
-            quitarError(lugarInput);
-            quitarError(tipo_eventoInput);
-
+            cerrarTodo();
+            cargarEventos();
         } else {
-            alert(data.message || "Error al añadir evento");
+            alert(res.message || "Error al añadir evento");
         }
     });
 
-    // Editar y borrar
-    contenedor.addEventListener("click", async (e) => {
-        const evento = e.target.closest(".evento");
-        if (!evento) return;
+    // ===================== EDITAR / ELIMINAR =====================
+    contenedor.addEventListener("click", e => {
+        const tarjeta = e.target.closest(".evento");
+        if (!tarjeta) return;
 
-        const id = evento.dataset.id;
-
-        if (e.target.classList.contains("btn-eliminar")) {
-            if (!confirm("¿Eliminar evento?")) return;
-
-            const data = await enviarEvento({ action: "borrar", id });
-            if (data.success) evento.remove();
-            else alert(data.message || "No se pudo borrar el evento");
-        }
+        const ev = JSON.parse(tarjeta.dataset.raw); // Usamos los datos crudos guardados
+        eventoActualId = ev.id_evento;
 
         if (e.target.classList.contains("btn-editar")) {
-            const nombre = evento.querySelector(".nombre").textContent;
-            const descripcion = evento.querySelector(".descripcion").textContent;
-            const fecha = evento.querySelector(".fecha").textContent;
-            const lugar = evento.querySelector(".lugar").textContent;
-            const tipo_evento = evento.querySelector(".tipo_evento").textContent;
+            // Rellenar el modal con los datos del objeto ev
+            document.getElementById("modal-nombre-input").value = ev.nombre;
+            document.getElementById("modal-descripcion-input").value = ev.descripcion;
+            document.getElementById("modal-fecha-input").value = ev.fecha;
+            document.getElementById("modal-lugar-input").value = ev.lugar;
+            document.getElementById("modal-inicio-input").value = ev.hora_inicio;
+            document.getElementById("modal-fin-input").value = ev.hora_fin;
+            document.getElementById("modal-tipo_evento-input").value = ev.tipo_evento;
 
-            const nuevoNombre = prompt("Nuevo nombre", nombre);
-            if (!nuevoNombre) return;
+            modalEditar.classList.remove("oculto");
+            overlay.classList.remove("oculto");
+        }
 
-            const nuevaDescripcion = prompt("Nueva descripción", descripcion);
-            if (!nuevaDescripcion) return;
+        if (e.target.classList.contains("btn-eliminar")) {
+            modalEliminar.classList.remove("oculto");
+            overlay.classList.remove("oculto");
+        }
+    });
 
-            const nuevaFecha = prompt("Nueva fecha", fecha);
-            if (!nuevaFecha) return;
+    // ===================== GUARDAR EDICIÓN =====================
+    modalForm.addEventListener("submit", async e => {
+        e.preventDefault();
 
-            const nuevoLugar = prompt("Nuevo lugar", lugar);
-            if (!nuevoLugar) return;
+        // 1. Definir las referencias que faltaban
+        const nombreInput = document.getElementById("modal-nombre-input");
+        const descripcionInput = document.getElementById("modal-descripcion-input");
+        const fechaInput = document.getElementById("modal-fecha-input");
+        const lugarInput = document.getElementById("modal-lugar-input");
+        const inicioInput = document.getElementById("modal-inicio-input");
+        const finInput = document.getElementById("modal-fin-input");
+        const tipoEventoInput = document.getElementById("modal-tipo_evento-input");
+        const imagenInput = document.getElementById("modal-imagen-input");
 
-            const nuevoTipo_evento = prompt("Nuevo tipo de evento", tipo_evento);
-            if (!nuevoTipo_evento) return;
+        // 2. Validar campos básicos
+        if (!nombreInput.value.trim() || !fechaInput.value) {
+            alert("El nombre y la fecha son obligatorios");
+            return;
+        }
 
-            const data = await enviarEvento({
-                action: "editar",
-                id,
-                nombre: nuevoNombre,
-                descripcion: nuevaDescripcion,
-                fecha: nuevaFecha,
-                lugar: nuevoLugar,
-                tipo_evento: nuevoTipo_evento
-            });
+        // 3. Construir el objeto de datos (id_evento debe coincidir con el PHP)
+        const data = {
+            action: "editar",
+            id_evento: eventoActualId, // Cambiado de 'id' a 'id_evento'
+            nombre: nombreInput.value.trim(),
+            descripcion: descripcionInput.value.trim(),
+            fecha: fechaInput.value,
+            hora_inicio: inicioInput.value,
+            hora_fin: finInput.value,
+            lugar: lugarInput.value.trim(),
+            tipo_evento: tipoEventoInput.value.trim()
+        };
 
-            if (data.success) {
-                evento.querySelector(".nombre").textContent = nuevoNombre;
-                evento.querySelector(".descripcion").textContent = nuevaDescripcion;
-                evento.querySelector(".fecha").textContent = nuevaFecha;
-                evento.querySelector(".lugar").textContent = nuevoLugar;
-                evento.querySelector(".tipo_evento").textContent = nuevoTipo_evento;
+        // 4. Si hay imagen nueva, la añadimos
+        if (imagenInput.files[0]) {
+            data.imagen = imagenInput.files[0];
+        }
+
+        try {
+            const res = await api(data);
+
+            if (res.success) {
+                cerrarTodo();
+                cargarEventos(); // Recargar la lista para ver los cambios
             } else {
-                alert(data.message || "Error al editar evento");
+                alert("Error al actualizar: " + (res.message || "Error desconocido"));
             }
+        } catch (error) {
+            console.error("Error en la petición:", error);
         }
     });
 
-    // Función para mostrar mensaje de error
-    function mostrarError(input, mensaje) {
-        // Elimina error anterior si existe
-        let error = input.nextElementSibling;
-        if (error && error.classList.contains("error")) {
-            error.textContent = mensaje;
-        } else {
-            error = document.createElement("div");
-            error.classList.add("error");
-            error.textContent = mensaje;
-            input.parentNode.insertBefore(error, input.nextSibling);
+    // ===================== CONFIRMAR ELIMINACIÓN =====================
+    confirmarEliminar.addEventListener("click", async () => {
+        const res = await api({ action: "borrar", id_evento: eventoActualId });
+        if (res.success) {
+            cerrarTodo();
+            cargarEventos();
         }
-        input.classList.add("input-error");
-    }
+    });
 
-    function quitarError(input) {
-        let error = input.nextElementSibling;
-        if (error && error.classList.contains("error")) {
-            error.remove();
-        }
+    const campos = [
+        { input: nombre, error: document.getElementById('add-nombreError') },
+        { input: descripcion, error: document.getElementById('add-descripcionError') },
+        { input: fecha, error: document.getElementById('add-fechaError') },
+        { input: inicio, error: document.getElementById('add-inicioError') },
+        { input: fin, error: document.getElementById('add-finError') },
+        { input: lugar, error: document.getElementById('add-lugarError') },
+        { input: tipo_evento, error: document.getElementById('add-tipo_eventoError') },
+        { input: imagen, error: document.getElementById('add-imagenError') }
+    ];
+
+    campos.forEach(({ input, error }) => {
         input.classList.remove("input-error");
-    }
-
-    // Validación cuando se sale del campo
-    nombre.addEventListener("blur", () => {
-        if (nombre.value.trim() === "") {
-            mostrarError(nombre, "Debes escribir un nombre");
-        } else {
-            quitarError(nombre);
-        }
+        if (error) error.style.display = "none";
     });
 
-    descripcion.addEventListener("blur", () => {
-        if (descripcion.value.trim() === "") {
-            mostrarError(descripcion, "Debes escribir una descripcion");
-        } else {
-            quitarError(descripcion);
-        }
+    campos.forEach(({ input, error }) => {
+
+        // Cuando sales del campo
+        input.addEventListener("blur", () => {
+            if (
+                (input.type !== "file" && input.value.trim() === "") ||
+                (input.type === "file" && input.files.length === 0)
+            ) {
+                input.classList.add("input-error");
+                if (error) error.style.display = "block";
+            }
+        });
+
+        // Cuando escribes
+        input.addEventListener("input", () => {
+            if (input.value.trim() !== "") {
+                input.classList.remove("input-error");
+                if (error) error.style.display = "none";
+            }
+        });
+
+        // Para input type="file"
+        input.addEventListener("change", () => {
+            if (input.files.length > 0) {
+                input.classList.remove("input-error");
+                if (error) error.style.display = "none";
+            }
+        });
     });
 
-    fecha.addEventListener("blur", () => {
-        if (fecha.value.trim() === "") {
-            mostrarError(fecha, "Debes escribir una fecha");
-        } else {
-            quitarError(fecha);
-        }
-    });
 
-    lugar.addEventListener("blur", () => {
-        if (lugar.value.trim() === "") {
-            mostrarError(lugar, "Debes escribir un lugar");
-        } else {
-            quitarError(lugar);
-        }
-    });
 
-    tipo_evento.addEventListener("blur", () => {
-        if (tipo_evento.value.trim() === "") {
-            mostrarError(tipo_evento, "Debes escribir un tipo de evento");
-        } else {
-            quitarError(tipo_evento);
-        }
-    });
-
-    // Validación al enviar el formulario
-    form.addEventListener("submit", (e) => {
-        let valido = true;
-
-        if (nombre.value.trim() === "") {
-            mostrarError(nombre, "Debes escribir un nombre");
-            valido = false;
-        } else {
-            quitarError(nombre);
-        }
-
-        if (descripcion.value.trim() === "") {
-            mostrarError(descripcion, "Debes escribir una descripcion");
-        } else {
-            quitarError(descripcion);
-        }
-
-        if (fecha.value.trim() === "") {
-            mostrarError(fecha, "Debes escribir una fecha");
-        } else {
-            quitarError(fecha);
-        }
-
-        if (lugar.value.trim() === "") {
-            mostrarError(lugar, "Debes escribir un lugar");
-        } else {
-            quitarError(lugar);
-        }
-
-        if (tipo_evento.value.trim() === "") {
-            mostrarError(tipo_evento, "Debes escribir un tipo de evento");
-        } else {
-            quitarError(tipo_evento);
-        }
-
-        if (!valido) {
-            e.preventDefault(); // Evita enviar si hay errores
-        }
-    });
 });
-
