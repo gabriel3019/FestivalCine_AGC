@@ -48,8 +48,11 @@ CREATE TABLE IF NOT EXISTS eventos (
     nombre VARCHAR(100) NOT NULL,
     descripcion TEXT,
     fecha DATE NOT NULL,
+    hora_inicio TIME NOT NULL, -- Columna añadida
+    hora_fin TIME NOT NULL,    -- Columna añadida
     lugar VARCHAR(100),
     tipo_evento VARCHAR(50),
+    imagen VARCHAR(255),
     FOREIGN KEY (id_organizador) REFERENCES organizador(id_organizador) ON DELETE CASCADE
 ) ENGINE=InnoDB;",
 
@@ -180,8 +183,9 @@ if ($res->fetch_assoc()['total'] == 0) {
 $res = $conn->query("SELECT COUNT(*) AS total FROM eventos");
 if ($res->fetch_assoc()['total'] == 0) {
     $conn->query("
-        INSERT INTO eventos (id_organizador, nombre, descripcion, fecha, lugar, tipo_evento) VALUES
-        (1,'Festival de Cine 2026','Evento principal','2026-06-15','Madrid','Festival')
+        INSERT INTO eventos (id_organizador, nombre, descripcion, fecha, hora_inicio, hora_fin, lugar, tipo_evento, imagen) VALUES
+       (1,'Gala de Apertura Festival 2026', 'Alfombra roja y ceremonia de inauguración del festival.', '2026-06-15', '18:00:00', '20:30:00', 'Palacio de la Prensa, Madrid', 'Gala', 'noticia_alumno.png'),
+       (1,'Proyección de Cortometrajes', 'Muestra de los mejores trabajos de los alumnos de este año.', '2026-06-15', '21:00:00', '23:00:00', 'Cine Callao, Madrid', 'Proyección', 'noticias.avif')
     ");
 }
 
@@ -242,8 +246,8 @@ $res = $conn->query("SELECT COUNT(*) AS total FROM noticias");
 if ($res->fetch_assoc()['total'] == 0) {
     $conn->query("
         INSERT INTO noticias (id_organizador, titulo, contenido, imagen, estado, fecha_publicacion) VALUES
-        (1,'Bienvenidos al Festival','Arranca el festival de cine','noticia1.jpg','publicada',NOW()),
-        (1,'Convocatoria abierta','Envía tu cortometraje','noticia2.jpg','publicada',NOW())
+        (1,'La Universidad Europea da la bienvenida a sus estudiantes de intercambio del segundo semestre','Organizado por la Oficina de Relaciones internacionales del Vicerrectorado de Estudiantes y Vida Universitaria ','noticia_alumno.png','publicada',NOW()),
+        (1,'La Escueñla de Arquitectura, Ingeniería, Ciecia y Computación celebra el Megajury de Proyectos Arquitectónicos en Creative Campus','Esta jornada que ha reunido a cientos de estudiantes ha promovido un encuentro colectivo que busca fomentar una reflexión crítica compartida sobre procesos de Proyección Contemporánea','noticia_arquitectura.png','publicada',NOW())
     ");
 }
 

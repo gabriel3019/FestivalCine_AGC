@@ -3,8 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Últimas Noticias</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eventos</title>
     <link rel="stylesheet" href="../css/eventos.css">
 </head>
 
@@ -18,45 +17,57 @@
         <nav>
             <a href="noticias.html">Noticias</a>
             <a href="eventos.html">Eventos</a>
-            <a href="catalogo.html">Catalogo</a>
+            <a href="calendario.html">Calendario</a>
             <a href="premios.html">Premios</a>
-            <a href="#">Patrocinadores</a>
+            <a href="patrocinadores.html">Patrocinadores</a>
             <a href="gala.html">Gala</a>
+            <a href="catalogo.html">Catálogo</a>
 
         </nav>
 
-        <div class="user-menu">
-            <button class="user-toggle">
-                <img src="../css/imagenes/emoticono-removebg-preview.png" alt="Usuario">
-                <span>▼</span>
-            </button>
-            <ul class="user-dropdown">
-                <li><a href="#" id="mi_perfil">Mi perfil</a></li>
-                <li><a href="#" id="mis_cortos">Mis cortos</a></li>
-                <li><a href="#" id="volver_home">Volver a home</a></li>
-                <li><a href="#" id="cerrar_sesion">Cerrar sesión</a></li>
-            </ul>
-        </div>
+        <div class="auth-container">
+            <div id="auth-visitante" class="auth">
+                <button id="login-btn">Iniciar sesión</button>
+                <button id="register-btn" class="primary">Regístrate</button>
+            </div>
 
-
-        <div class="auth">
-            <button id="login-btn">Iniciar sesión</button>
-            <button id="register-btn" class="primary">Regístrate</button>
+            <div id="auth-usuario" class="auth" style="display: none;">
+                <span id="nombreUsuario"></span>
+                <div id="icono_persona" class="icono_persona">
+                    👤
+                    <div id="menu" class="menu">
+                        <a href="#" id="mi_perfil">Mi perfil</a>
+                        <a href="#" id="mis_cortos">Mis cortos</a>
+                        <a href="#" id="volver_home">Volver a home</a>
+                        <a href="#" id="cerrar_sesion">Cerrar sesión</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </header>
 
+    <!-- EVENTOS -->
+    <section class="news-hero">
+        <div class="overlay"></div>
+
+        <div class="hero-content">
+            <h1>EVENTOS</h1>
+
+            <div class="breadcrumb">
+                <a href="home.html" class="home-link">
+                    <img src="../css/iconos/icono_casa.svg" alt="Home">
+                </a>
+                <span>&gt;</span>
+                <span>Eventos</span>
+            </div>
+        </div>
+    </section>
+
     <!-- TÍTULO -->
-    <main class="main">
-        <h1>ÚLTIMOS EVENTOS</h1>
 
-        <!-- EVENTOS -->
-        <section class="news-section">
-            <h2>EVENTOS</h2>
+    <!-- LISTADO DE EVENTOS -->
+    <div class="eventos-container" id="eventos-container"></div>
 
-            <div class="cards" id="eventos-container" ></div>
-        </section>
-
-    </main>
 
     <footer class="footer">
         <div class="footer-top">

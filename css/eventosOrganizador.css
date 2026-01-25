@@ -2,7 +2,7 @@
 @font-face {
     font-family: 'Hellix';
     src: url('../fonts/Hellix-Regular.woff2') format('woff2'),
-         url('../fonts/Hellix-Regular.ttf') format('truetype');
+        url('../fonts/Hellix-Regular.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }
@@ -10,7 +10,7 @@
 @font-face {
     font-family: 'Hellix';
     src: url('../fonts/Hellix-Bold.woff2') format('woff2'),
-         url('../fonts/Hellix-Bold.ttf') format('truetype');
+        url('../fonts/Hellix-Bold.ttf') format('truetype');
     font-weight: bold;
     font-style: normal;
 }
@@ -24,8 +24,11 @@
 }
 
 body {
-    background: #fff;
-    color: #111;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    /* Ocupa toda la pantalla */
 }
 
 header {
@@ -48,26 +51,33 @@ header nav {
 }
 
 header nav a {
-    position: relative; /* necesario para el pseudo-elemento */
+    position: relative;
+    /* necesario para el pseudo-elemento */
     text-decoration: none;
-    color: #111;       /* color fijo, no cambia al hover */
+    color: #111;
+    /* color fijo, no cambia al hover */
     font-size: 14px;
     font-weight: bold;
-    padding: 5px 0;    /* espacio para el cuadrado */
+    padding: 5px 0;
+    /* espacio para el cuadrado */
 }
 
 /* Pseudo-elemento: cuadrado rojo */
 header nav a::after {
     content: '';
     position: absolute;
-    bottom: -8px;      /* ajusta para que salga más abajo del texto */
+    bottom: -8px;
+    /* ajusta para que salga más abajo del texto */
     left: 50%;
     transform: translateX(-50%);
-    width: 6px;        /* tamaño del cuadrado */
+    width: 6px;
+    /* tamaño del cuadrado */
     height: 6px;
     background-color: red;
-    border-radius: 2px; /* opcional, bordes ligeramente redondeados */
-    opacity: 0;        /* invisible por defecto */
+    border-radius: 2px;
+    /* opcional, bordes ligeramente redondeados */
+    opacity: 0;
+    /* invisible por defecto */
     transition: opacity 0.2s, transform 0.2s;
 }
 
@@ -75,7 +85,82 @@ header nav a::after {
 header nav a:hover::after,
 header nav a:focus::after {
     opacity: 1;
-    transform: translateX(-50%) translateY(0); /* justo debajo del texto */
+    transform: translateX(-50%) translateY(0);
+    /* justo debajo del texto */
+}
+
+.news-hero {
+    position: relative;
+    height: 220px;
+    background-image: url("../css/imagenes/imagen_eventos.webp");
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+}
+
+/* Capa oscura */
+.news-hero .overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.33);
+    /* Un poco más oscuro ayuda a que el blanco resalte más */
+    z-index: 1;
+    /* Capa fondo */
+}
+
+/* Contenido encima del overlay */
+.hero-content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* centra EVENTOS vertical */
+    align-items: center;
+    /* centra EVENTOS horizontal */
+    z-index: 5;
+    /* Debe ser mayor que el overlay */
+}
+
+/* Título */
+.hero-content h1 {
+    font-size: 35px;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+}
+
+/* Breadcrumb */
+.breadcrumb {
+    position: absolute;
+    bottom: 20px;
+    /* pegado al filo inferior */
+    left: 50%;
+    transform: translateX(-50%);
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    font-size: 10px;
+    color: #fff;
+    z-index: 2;
+}
+
+/* Icono home */
+.home-link img {
+    width: 10px;
+    height: 10px;
+    filter: brightness(0) invert(1);
+    /* blanco */
+    cursor: pointer;
+}
+
+.home-link img:hover {
+    opacity: 0.8;
 }
 
 /* Usuario */
@@ -129,18 +214,18 @@ header nav a:focus::after {
     background-color: #f0f0f0;
 }
 
-/* Titulo */
+/* Título */
 h2 {
     text-align: center;
     margin: 25px 0;
 }
 
-/* Botón anadir noticia */
+/* Botón anadir evento */
 .acciones-generales {
     text-align: center;
-    margin-bottom: 25px;
+    margin: 40px 0 60px 0;
+    /* Más margen arriba y abajo */
 }
-
 
 .overlay {
     position: fixed;
@@ -193,18 +278,17 @@ h2 {
     min-height: 120px;
 }
 
-.formulario-evento .botones-form {
-    margin-top: 15px;
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-}
-
 /* Ocultar */
 .oculto {
     display: none;
 }
 
+.botones-form {
+    margin-top: 15px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
 
 .botones-form button {
     margin-right: 10px;
@@ -212,55 +296,174 @@ h2 {
 }
 
 .btn-anadir {
-    background-color: #116ba7;
+    background-color: #ff0000;
+    /* Fondo rojo inicial */
     color: white;
-    border: none;
+    /* Texto blanco inicial */
+    /* Ponemos el borde rojo desde el principio para reservar el espacio */
+    border: 2px solid #ff0000;
     padding: 10px 18px;
     font-size: 14px;
     border-radius: 6px;
     cursor: pointer;
+    /* Controla la suavidad de la animación */
+    transition: all 0.3s ease;
 }
 
 .btn-anadir:hover {
-    background-color: #3191d1;
+    background-color: white;
+    /* Fondo cambia a blanco */
+    color: #ff0000;
+    /* Texto cambia a rojo */
+    border: 2px solid #ff0000;
+    /* El borde se mantiene pero ahora se ve sobre el fondo blanco */
+}
+
+.icono-detalle {
+    width: 14px !important;   /* Forzamos el tamaño pequeño */
+    height: 14px !important;
+    display: inline-block;    /* Se comporta como una letra */
+    vertical-align: middle;   /* Lo alinea con el centro del texto */
+    margin-right: 4px;        /* Espacio con la palabra siguiente */
+    object-fit: contain;      /* Evita que el icono se deforme */
+    opacity: 0.7;             /* Para que no resalte más que el texto */
 }
 
 /* =========================
-   Noticias
+   Eventos
 ========================= */
-
 .eventos-container {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    padding: 0 40px 40px;
+    display: grid;
+    /* 1. Definimos el tamaño mínimo (300px) y máximo (1fr) de cada evento */
+    /* auto-fill hará que se creen tantas columnas como quepan */
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+
+    /* Espacio entre tarjetas */
+    gap: 40px;
+
+    /* 3. Centrado del contenedor */
+    /* Quitamos el padding asimétrico (25% a la izquierda) que tenías, 
+       usamos un padding uniforme y un max-width para centrar el bloque entero */
+    padding: 40px 5% 100px 5%;
+    max-width: 1400px;
+    margin: 0 auto;
+    /* Centra el contenedor en la pantalla */
+
+    background-color: #ffffff;
+    /* Un gris muy claro de fondo hace resaltar las tarjetas blancas */
 }
 
 .evento {
+
+    width: 100%;
+    justify-self: center;
+    background: #fff;
+    /* Esquinas más suaves */
+    overflow: hidden;
+
+    /* Sombra elegante: horizontal 0, vertical 10px, desenfoque 20px */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     display: flex;
-    gap: 20px;
-    align-items: flex-start;
-    position: relative;
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    flex-direction: column;
+
 }
 
 .evento img {
-    width: 90px;
-    height: 90px;
+    width: 100%;
+    height: 200px;
+    /* Imagen más alta para efecto vertical */
     object-fit: cover;
-    border-radius: 8px;
-    flex-shrink: 0;
+}
+
+.evento:hover {
+    transform: translateY(-5px);
+    /* Efecto visual al pasar el ratón */
+
+}
+
+.linea-superior {
+    display: flex;
+    flex-direction: column;
+    /* Cambiamos a columna si el título es muy largo */
+    align-items: flex-start;
+    gap: 5px;
+    margin-bottom: 10px;
+}
+
+.fecha {
+    font-size: 13px;
+    color: #666;
+    white-space: nowrap;
+    /* Evita que la fecha se rompa en dos líneas */
 }
 
 .contenido {
+    padding: 15px;
     display: flex;
     flex-direction: column;
-    width: 100%;
+    gap: 8px;
 }
 
+.titulo {
+    font-size: 18px;
+    margin: 0;
+    /* Quitamos márgenes por defecto */
+    flex: 1;
+    /* Permite que el título ocupe el espacio necesario */
+    padding-right: 10px;
+    /* Evita que el texto choque con la fecha */
+}
+
+/* Cuando el cursor esté sobre el evento, el título hijo cambia a rojo */
+.evento:hover .titulo {
+    color: #ff0000;
+    transition: color 0.2s ease;
+    /* Para que el cambio sea suave */
+}
+
+.descripcion {
+    font-size: 13px;
+    color: #666;
+    margin: 0;
+    /* Limita a 3 líneas de texto para que todos los rectángulos midan parecido */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Ajuste para los estados y botones en este nuevo diseño */
+.info {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #eee;
+}
+
+.meta-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.lugar,
+.fecha {
+    font-size: 13px;
+    color: #888;
+    font-weight: 500;
+}
+
+.acciones {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: auto;
+    /* Empuja los botones al fondo de la tarjeta */
+}
+
+/* Info: fecha + estado */
 .info {
     display: flex;
     justify-content: space-between;
@@ -269,36 +472,26 @@ h2 {
     font-size: 14px;
 }
 
+/* Estado abajo a la derecha */
 .estado {
-    padding: 5px 12px;
-    border-radius: 20px;
-    font-weight: bold;
-    font-size: 13px;
+    margin-left: auto;
 }
 
-.publicada {
-    background-color: #d1fae5;
-    color: #065f46;
-}
 
-.proceso {
-    background-color: #fef3c7;
-    color: #92400e;
-}
-
-/* Botones editar/borrar */
-.acciones {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-}
+/* Botones editar / borrar */
 
 .acciones button {
-    background: none;
-    border: none;
+    background: #f5f5f5;
+    /* Un fondo ligero para que resalten */
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 6px;
     font-size: 16px;
     cursor: pointer;
-    margin-left: 6px;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .btn-editar:hover {
@@ -321,29 +514,73 @@ h2 {
     font-size: 14px;
 }
 
+.info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+}
+
 .fecha {
     color: #6b7280;
+}
+
+/* Estados */
+.estado {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+.publicada {
+    background-color: #d1fae5;
+    color: #065f46;
+}
+
+.proceso {
+    background-color: #fef3c7;
+    color: #92400e;
 }
 
 /* Botones de error */
 
 .error {
-    color: red;
-    font-size: 0.9em;
-    margin-top: 4px;
-    margin-bottom: 10px;
-    line-height: 1.2;
-    padding-left: 2px;
-    /* pequeño indent */
+   color: #e74c3c;
+    font-size: 13px;
+    margin: 4px 0 10px 0;
+    font-weight: bold;
+    display: none;
 }
 
 .input-error {
     border: 1px solid red;
 }
 
-/* Footer */
+/* Modal específico para editar/eliminar evento */
+#modal-evento {
+    z-index: 102;
+    /* encima de otros formularios */
+}
+
+/* Botón eliminar rojo */
+#modal-eliminar {
+    background-color: #c0392b;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+#modal-eliminar:hover {
+    background-color: #e74c3c;
+}
+
+
 
 .footer {
+    margin-top: auto;
     background: #1c1c1c;
     color: #fff;
     position: relative;
@@ -454,4 +691,18 @@ h2 {
     height: 50px;
     background: #fff;
     padding: 10px;
+}
+
+.error {
+    color: #e74c3c;
+    font-size: 13px;
+    margin: 4px 0 10px 0;
+    font-weight: bold;
+    display: none;
+    /* Se oculta por defecto */
+}
+
+/* Opcional: clase para resaltar el input */
+.input-error {
+    border: 1.5px solid red !important;
 }
