@@ -9,6 +9,11 @@ $action = $_POST['action'] ?? '';
 $root = dirname(__DIR__, 2);
 $carpeta = $root . "/uploads/";
 
+// Crear la carpeta si no existe
+if (!file_exists($carpeta)) {
+    mkdir($carpeta, 0777, true);
+}
+
 try {
 
     switch ($action) {
@@ -38,28 +43,25 @@ try {
         case "anadir":
             $titulo = $_POST['titulo'] ?? '';
             $contenido = $_POST['contenido'] ?? '';
-            $imagenBD = null;
+            $nombreArchivo = null;
 
-            // ruta donde se guardara los archivos
-    
+            // Solo procesamos si realmente hay un archivo subido sin errores
+            if (isset($_FILES["imagen"]) && $_FILES["imagen"]["error"] === UPLOAD_ERR_OK) {
+                // Recomendación: Añade un timestamp al nombre para evitar duplicados
+                $nombreArchivo = time() . "_" . basename($_FILES["imagen"]["name"]);
+                $rutaCompleta = $carpeta . $nombreArchivo;
 
-            // nombre original del archivo
-            $nombreArchivo = basename($_FILES["imagen"]["name"]);
-            $rutaCompleta = $carpeta . $nombreArchivo;
-            $tipoArchivo = pathinfo($rutaCompleta, PATHINFO_EXTENSION);
+                if (!move_uploaded_file($_FILES["imagen"]["tmp_name"], $rutaCompleta)) {
+                    // Error al mover el archivo
+                    echo json_encode(["success" => false, "message" => "Error al guardar el archivo físico"]);
+                    exit;
+                }
+            }
 
-            // nombre temporal que php le asigna al archivo al ser subido
-            move_uploaded_file($_FILES["imagen"]["tmp_name"], $rutaCompleta);
-
-            $stmt = $conn->prepare(
-                "INSERT INTO noticias (id_organizador, titulo, contenido, fecha_publicacion, imagen)
-                 VALUES (?, ?, ?, NOW(), ?)"
-            );
-
+            $stmt = $conn->prepare("INSERT INTO noticias (id_organizador, titulo, contenido, fecha_publicacion, imagen) VALUES (?, ?, ?, NOW(), ?)");
             $stmt->bind_param("isss", $idOrganizador, $titulo, $contenido, $nombreArchivo);
-            // if ($imagenBD) $stmt->send_long_data(3, $nombreArchivo);
-
             $stmt->execute();
+
             echo json_encode(["success" => $stmt->affected_rows > 0]);
             break;
 
@@ -70,7 +72,7 @@ try {
 
             // Si hay una nueva imagen
             if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
-                
+
                 $nombreArchivo = basename($_FILES["imagen"]["name"]);
                 $rutaCompleta = $carpeta . $nombreArchivo;
 

@@ -5,149 +5,115 @@ session_start();
 require "../BBDD/conecta.php";
 
 $idOrganizador = $_SESSION['usuario']['id'];
-
 $action = $_POST['action'] ?? '';
+
+$root = dirname(__DIR__, 2);
+$carpeta = $root . "/uploads/";
+
+// Crear la carpeta si no existe
+if (!file_exists($carpeta)) {
+    mkdir($carpeta, 0777, true);
+}
+
 try {
     switch ($action) {
 
         case "listar":
             $result = $conn->query(
-                "SELECT id_evento, nombre, descripcion, fecha, lugar, tipo_evento
-         FROM eventos 
-         ORDER BY fecha DESC"
+                "SELECT id_evento, nombre, descripcion, fecha, hora_inicio, hora_fin, lugar, tipo_evento, imagen,
+            DATE_FORMAT(fecha, '%d %b %Y') as fecha_formateada,
+            DATE_FORMAT(hora_inicio, '%H:%i') as hora_inicio_formateada,
+            DATE_FORMAT(hora_fin, '%H:%i') as hora_fin_formateada
+            FROM eventos 
+            ORDER BY fecha ASC, hora_inicio ASC"
             );
 
             $eventos = [];
+            $rutaWeb = "../uploads/";
+
             while ($row = $result->fetch_assoc()) {
+                if ($row['imagen']) {
+                    $row['imagen'] =  $rutaWeb . $row['imagen'];
+                }
                 $eventos[] = $row;
             }
 
-            echo json_encode([
-                "success" => true,
-                "eventos" => $eventos
-            ]);
+            echo json_encode(["success" => true, "eventos" => $eventos]);
             break;
 
         case "anadir":
-
-            $idOrganizador = $_SESSION['usuario']['id'];
-            error_log("ID organizador en sesión: $idOrganizador");
-
-            $stmtCheck = $conn->prepare("SELECT COUNT(*) FROM organizador WHERE id_organizador = ?");
-            $stmtCheck->bind_param("i", $idOrganizador);
-            $stmtCheck->execute();
-            $stmtCheck->bind_result($count);
-            $stmtCheck->fetch();
-            $stmtCheck->close();
-
-            if ($count == 0) {
-                echo json_encode([
-                    "success" => false,
-                    "message" => "El organizador con ID $idOrganizador no existe en la base de datos."
-                ]);
-                exit;
-            }
-
             $nombre = $_POST['nombre'] ?? '';
             $descripcion = $_POST['descripcion'] ?? '';
             $fecha = $_POST['fecha'] ?? '';
+            $hora_inicio = $_POST['hora_inicio'] ?? '';
+            $hora_fin = $_POST['hora_fin'] ?? '';
             $lugar = $_POST['lugar'] ?? '';
             $tipo_evento = $_POST['tipo_evento'] ?? '';
 
-            // Validar fecha
-            if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $fecha)) {
-                $fecha = date('Y-m-d'); 
+
+            $nombreArchivo = null;
+            // Solo procesamos si realmente hay un archivo subido sin errores
+            if (isset($_FILES["imagen"]) && $_FILES["imagen"]["error"] === UPLOAD_ERR_OK) {
+                // Recomendación: Añade un timestamp al nombre para evitar duplicados
+                $nombreArchivo = time() . "_" . basename($_FILES["imagen"]["name"]);
+                $rutaCompleta = $carpeta . $nombreArchivo;
+
+                if (!move_uploaded_file($_FILES["imagen"]["tmp_name"], $rutaCompleta)) {
+                    // Error al mover el archivo
+                    echo json_encode(["success" => false, "message" => "Error al guardar el archivo físico"]);
+                    exit;
+                }
             }
 
-            $stmt = $conn->prepare(
-                "INSERT INTO eventos (id_organizador, nombre, descripcion, fecha, lugar, tipo_evento) 
-         VALUES (?, ?, ?, ?, ?, ?)"
-            );
+            $stmt = $conn->prepare("INSERT INTO eventos (id_organizador, nombre, descripcion, fecha, hora_inicio, hora_fin, lugar, tipo_evento, imagen) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            $stmt->bind_param("issssssss", $idOrganizador, $nombre, $descripcion, $fecha, $hora_inicio, $hora_fin, $lugar, $tipo_evento, $nombreArchivo);
+            $stmt->execute();
 
-            if (!$stmt) {
-                echo json_encode([
-                    "success" => false,
-                    "message" => $conn->error
-                ]);
-                exit;
-            }
-
-            $stmt->bind_param("isssss", $idOrganizador, $nombre, $descripcion, $fecha, $lugar, $tipo_evento);
-
-            if ($stmt->execute()) {
-                echo json_encode(["success" => true]);
-            } else {
-                echo json_encode([
-                    "success" => false,
-                    "message" => $stmt->error
-                ]);
-            }
+            echo json_encode(["success" => $stmt->affected_rows > 0]);
             break;
 
         case "editar":
-            $id =  intval($_POST['id'] ?? 0);
+            $id = intval($_POST['id_evento'] ?? 0);
             $nombre = $_POST['nombre'] ?? '';
             $descripcion = $_POST['descripcion'] ?? '';
             $fecha = $_POST['fecha'] ?? '';
+            $hora_inicio = $_POST['hora_inicio'] ?? '';
+            $hora_fin = $_POST['hora_fin'] ?? '';
             $lugar = $_POST['lugar'] ?? '';
             $tipo_evento = $_POST['tipo_evento'] ?? '';
 
-            if ($id <= 0) {
-                throw new Exception("ID inválido");
-            }
+            // Si hay una nueva imagen
+            if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
+                $nombreArchivo = time() . "_" . basename($_FILES["imagen"]["name"]);
+                $rutaCompleta = $carpeta . $nombreArchivo;
 
-            $stmt = $conn->prepare(
-                "UPDATE eventos 
-             SET nombre=?, descripcion=?, fecha=?, lugar=?, tipo_evento=?
-             WHERE id_evento=?"
-            );
+                // Movemos el archivo físico
+                move_uploaded_file($_FILES["imagen"]["tmp_name"], $rutaCompleta);
 
-            $stmt->bind_param("sssssi", $nombre, $descripcion, $fecha, $lugar, $tipo_evento, $id);
-
-
-            if ($stmt->execute()) {
-                echo json_encode(["success" => true]);
+                // Actualizamos incluyendo el nuevo nombre de la imagen
+                $stmt = $conn->prepare("UPDATE eventos SET nombre=?, descripcion=?, fecha=?, hora_inicio=?, hora_fin=?, lugar=?, tipo_evento=?, imagen=? WHERE id_evento=?");
+                $stmt->bind_param("ssssssssi", $nombre, $descripcion, $fecha, $hora_inicio, $hora_fin, $lugar, $tipo_evento, $nombreArchivo, $id);
             } else {
-                echo json_encode([
-                    "success" => false,
-                    "message" => $stmt->error
-                ]);
+                // CORRECCIÓN: 7 strings ("s") para los campos y 1 entero ("i") para el ID = "sssssssi"
+                $stmt = $conn->prepare("UPDATE eventos SET nombre=?, descripcion=?, fecha=?, hora_inicio=?, hora_fin=?, lugar=?, tipo_evento=? WHERE id_evento=?");
+                $stmt->bind_param("sssssssi", $nombre, $descripcion, $fecha, $hora_inicio, $hora_fin, $lugar, $tipo_evento, $id);
             }
+
+            $stmt->execute();
+            echo json_encode(["success" => $stmt->affected_rows >= 0]); // >= 0 porque si no cambias nada, affected_rows es 0
             break;
 
         case "borrar":
-            $id = intval($_POST['id'] ?? 0);
-
-            if ($id == 0) {
-                echo json_encode([
-                    "success" => false,
-                    "message" => "ID no recibido"
-                ]);
-                exit;
-            }
-
-            $sql = "DELETE FROM eventos WHERE id_evento = ?";
-            $stmt = $conn->prepare($sql);
+            $id = intval($_POST['id_evento'] ?? 0);
+            $stmt = $conn->prepare("DELETE FROM eventos WHERE id_evento=?");
             $stmt->bind_param("i", $id);
             $stmt->execute();
+            echo json_encode(["success" => $stmt->affected_rows > 0]);
+            break;
 
-            if ($stmt->affected_rows > 0) {
-                echo json_encode([
-                    "success" => true,
-                    "message" => "Evento eliminado correctamente"
-                ]);
-            } else {
-                echo json_encode([
-                    "success" => false,
-                    "message" => "No se pudo eliminar el evento"
-                ]);
-            }
-            exit;
+        default:
+            echo json_encode(["success" => false, "message" => "Acción no reconocida"]);
     }
 } catch (Throwable $e) {
-
-    echo json_encode([
-        "success" => false,
-        "message" => $e->getMessage()
-    ]);
+    echo json_encode(["success" => false, "message" => $e->getMessage()]);
 }
