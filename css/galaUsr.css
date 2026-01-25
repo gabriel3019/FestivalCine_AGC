@@ -1,0 +1,61 @@
+/* Contenedor principal */
+#contenido {
+    min-height: 100vh;
+    max-width: 1200px;
+    margin: auto;
+    padding: 2rem 1rem;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    text-align: center;
+}
+
+/* Título */
+#nombre {
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    margin-bottom: 1rem;
+}
+
+/* Descripción */
+#descripcion {
+    max-width: 700px;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+/* Fecha */
+#fecha {
+    font-size: 0.95rem;
+    opacity: 0.75;
+    margin-bottom: 2rem;
+}
+
+/* Galería */
+#galeria {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+/* Imágenes */
+#galeria img {
+    width: 30vw;          /* ~30% de la pantalla */
+    max-width: 320px;     /* límite en desktop */
+    min-width: 180px;     /* evita que se hagan muy pequeñas */
+    height: auto;
+
+    object-fit: cover;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover sutil */
+#galeria img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+}

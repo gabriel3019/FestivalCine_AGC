@@ -28,6 +28,9 @@ if (isset($_POST['funcion']) && $_POST['funcion'] == 'borrarSeccion') {
 if (isset($_POST['funcion']) && $_POST['funcion'] == 'nuevaSeccion') {
     nuevaSeccion();
 }
+if (isset($_POST['funcion']) && $_POST['funcion'] == 'cambiarFormato') {
+    cambiarFormato();
+}
 
 
 //Parte pre de la gala
@@ -119,4 +122,20 @@ function nuevoResumen()
 
     $sql = "INSERT INTO galas (descripcion) VALUES ($resumen)";
     $conexion->query($sql) or die("Error al comprobar los datos");
+}
+
+function cambiarFormato()
+{
+    global $conexion;
+
+    $formato = $_POST['formato'];
+
+    // Ejemplo: actualizar la última gala creada
+    $sql = "UPDATE galas SET estado = '$formato'";
+    $conexion->query($sql) or die("Error al cambiar el formato");
+
+    echo json_encode([
+        "status" => "ok",
+        "formato" => $formato
+    ]);
 }

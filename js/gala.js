@@ -1,17 +1,32 @@
 document.addEventListener("DOMContentLoaded", function () {
 
-    // Elementos de tablas
+    //Elementos importantes al cargar la página
     const eventos = document.getElementById("eventos");
     const premios = document.getElementById("premios");
-
-    // Elementos de sesión
     const profileIcon = document.getElementById("icono_persona");
     const profileMenu = document.getElementById("menu");
     const logoutBtn = document.getElementById("cerrar_sesion");
     const volver_home = document.getElementById("volver_home");
     const nombreUsuario = document.getElementById("nombreUsuario");
 
-    // Comprobar sesión
+    const preGala = document.getElementById("pre");
+    const posGala = document.getElementById("pos");
+    const btnCambio = document.getElementById("cambio");
+
+    const btnAnadir = document.getElementById("btnNuevaSeccion");
+    const formulario = document.getElementById("formulario-seccion");
+    const formSeccion = document.getElementById("form-seccion");
+    const cancelar = document.getElementById("cancelar");
+    const btnGuardarSeccion = document.getElementById("guardarSecciones");
+    const lista = document.getElementById("lista");
+
+    const resumen = document.getElementById("texto-resumen");
+    const btnEliminarResumen = document.getElementById("btn-eliminarR");
+
+    const inputImagen = document.getElementById("inputImagen");
+    const galeria = document.getElementById("galeria");
+
+    //Comprobamos que la sesion está iniciada
     fetch("../php/acciones/check-session.php", { method: "POST" })
         .then(res => res.json())
         .then(data => {
@@ -23,7 +38,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
 
-    // Mostrar/Ocultar menú de perfil
+    //Parte del menu del perfl
     profileIcon.addEventListener("click", function (event) {
         event.stopPropagation();
         profileMenu.style.display = profileMenu.style.display === "block" ? "none" : "block";
@@ -33,26 +48,22 @@ document.addEventListener("DOMContentLoaded", function () {
         profileMenu.style.display = "none";
     });
 
-    // Volver a home
     volver_home.addEventListener("click", function () {
         window.location.href = "home_organizador.html";
     });
 
-    // Cerrar sesión
     logoutBtn.addEventListener("click", function () {
-        fetch("../php/acciones/cerrar_sesion.php")
-            .then(() => {
-                window.location.href = "../html/login.html";
-            });
+        fetch("../php/acciones/cerrar_sesion.php").then(() => {
+            window.location.href = "../html/login.html";
+        });
     });
 
-    // Cargar datos desde PHP
+    //fetch para gargar las tablas de la página
     fetch("../php/acciones/home_organizador.php")
         .then(res => res.json())
         .then(data => {
-
             // EVENTOS
-            html = "<tr><th>Nombre</th><th>Fecha</th><th>Lugar</th></tr>";
+            let html = "<tr><th>Nombre</th><th>Fecha</th><th>Lugar</th></tr>";
             data.eventos.forEach(e => {
                 html += `<tr><td>${e.nombre}</td><td>${e.fecha}</td><td>${e.lugar}</td></tr>`;
             });
@@ -64,146 +75,138 @@ document.addEventListener("DOMContentLoaded", function () {
                 html += `<tr><td>${p.nombre_premio}</td><td>${p.categoria || ''}</td></tr>`;
             });
             premios.innerHTML = html;
-
         })
         .catch(err => console.error("Error al cargar datos:", err));
 
-});
+    //fecth para recorger en que formato está la gala
+    const formDataFormato = new FormData();
+    formDataFormato.append("funcion", "obtenerFormatoGala");
 
-
-// Recojo los dos divs que contienen la info de la pre y post gala
-preGala = document.getElementById("pre");
-posGala = document.getElementById("pos");
-
-// Una vez se pulse el boton si la pre es la opcion visibe se esconde y se muestra la pos y viceversa
-document.getElementById("cambio").addEventListener("click", () => {
-    if (preGala.style.display === "block") {
-        preGala.style.display = "none";
-        posGala.style.display = "block";
-    } else {
-        preGala.style.display = "block";
-        posGala.style.display = "none";
-    }
-});
-
-// Funciones pre gala
-function cargarSecciones() {
-    var formData = new FormData();
-
-    formData.append("funcion", "cargarSecciones");
     fetch("../php/acciones/gala.php", {
         method: "POST",
-        body: formData
+        body: formDataFormato
     })
-        .then(r => r.json())
+        .then(res => res.json())
         .then(data => {
-            lista.innerHTML = "<tr><th>Nombre</th><th>Hora</th><th>Lugar</th><th>Borrar/Editar</th></tr>";
-            data.forEach(elemnto => {
-                lista.innerHTML += `
-                <tr class="evento">
-                    <td>${elemnto.nombre}</td>
-                    <td>${elemnto.hora}</td>  
-                    <td>${elemnto.lugar}</td>
-                    <td><button class="eliminar"  onclick="borrar(${elemnto.id})">🗑️</button>
-                    <button class="editar" onclick="editar(${elemnto.id},'${elemnto.nombre}','${elemnto.hora}','${elemnto.lugar}')">✏️</button></td>
-                </tr>`;
-            });
+            if (data.formato === "pos") {
+                preGala.style.display = "none";
+                posGala.style.display = "block";
+            } else {
+                preGala.style.display = "block";
+                posGala.style.display = "none";
+            }
         });
-}
 
-function vacio() {
+    //boton para el cambio del formato de la gala
+    btnCambio.addEventListener("click", () => {
+        let nuevoFormato;
 
-}
+        if (preGala.style.display === "block") {
+            preGala.style.display = "none";
+            posGala.style.display = "block";
+            nuevoFormato = "pos";
+        } else {
+            preGala.style.display = "block";
+            posGala.style.display = "none";
+            nuevoFormato = "pre";
+        }
 
-function editar(i, n, h, l) {
-    id.value = i;
-    nombre.value = n;
-    hora.value = h;
-    lugar.value = l;
-}
+        // fetch para guardar en la base de datos
+        const formData = new FormData();
+        formData.append("funcion", "cambiarFormato");
+        formData.append("formato", nuevoFormato);
 
-$btnGuardarSeccion = document.getElementById("guardarSecciones");
-$btnGuardarSeccion.addEventListener("click", () => {
-    var formData = new FormData();
+        fetch("../php/acciones/gala.php", {
+            method: "POST",
+            body: formData
+        });
+    });
 
-    // Decidir función según si hay id
-    if (id.value) {
-        formData.append("funcion", "editarSeccion");
-        formData.append("id", id.value);
-    } else {
-        formData.append("funcion", "nuevaSeccion");
-    }
+    //Secciones de la pre-gala
+    btnAnadir.addEventListener("click", () => formulario.classList.remove("oculto"));
+    cancelar.addEventListener("click", () => {
+        limpiar();
+        formSeccion.reset();
+    });
 
-    // Datos del formulario
-    formData.append("nombre", nombre.value);
-    formData.append("hora", hora.value);
-    formData.append("lugar", lugar.value);
+    formSeccion.addEventListener("submit", async e => {
+        e.preventDefault();
+        const nombre = formSeccion.nombre.value.trim();
+        const contenido = formSeccion.contenido.value.trim();
 
-    // Enviar al PHP
-    fetch("../php/acciones/gala.php", {
-        method: "POST",
-        body: formData
-    })
-        .then(() => {
+        if (!nombre || !contenido) return;
+
+        const data = { action: "anadir", titulo: nombre, contenido };
+        const res = await api(data, true);
+        if (res.success) {
+            formSeccion.reset();
             limpiar();
             cargarSecciones();
-        });
-});
+        } else {
+            alert(res.message || "Error al añadir seccion");
+        }
+    });
 
-function borrar(id) {
-    var formData = new FormData();
-    formData.append("funcion", "borrarSeccion");
-    formData.append("id", id);
+    btnGuardarSeccion.addEventListener("click", () => {
+        const fd = new FormData();
+        if (id.value) {
+            fd.append("funcion", "editarSeccion");
+            fd.append("id", id.value);
+        } else {
+            fd.append("funcion", "nuevaSeccion");
+        }
+        fd.append("nombre", nombre.value);
+        fd.append("hora", hora.value);
+        fd.append("lugar", lugar.value);
 
-    fetch("../php/acciones/gala.php", {
-        method: "POST",
-        body: formData
-    })
-        .then(() => cargarSecciones());
-}
+        fetch("../php/acciones/gala.php", { method: "POST", body: fd })
+            .then(() => { limpiar(); cargarSecciones(); });
+    });
 
-function limpiar() {
-    id.value = "";
-    nombre.value = "";
-    hora.value = "";
-    lugar.value = "";
-}
+    function cargarSecciones() {
+        const fd = new FormData();
+        fd.append("funcion", "cargarSecciones");
+        fetch("../php/acciones/gala.php", { method: "POST", body: fd })
+            .then(r => r.json())
+            .then(data => {
+                lista.innerHTML = "<tr><th>Nombre</th><th>Hora</th><th>Lugar</th><th>Borrar/Editar</th></tr>";
+                data.forEach(elemnto => {
+                    lista.innerHTML += `
+                        <tr class="evento">
+                            <td>${elemnto.nombre}</td>
+                            <td>${elemnto.hora}</td>  
+                            <td>${elemnto.lugar}</td>
+                            <td>
+                                <button class="eliminar" onclick="borrar(${elemnto.id})">🗑️</button>
+                                <button class="editar" onclick="editar(${elemnto.id},'${elemnto.nombre}','${elemnto.hora}','${elemnto.lugar}')">✏️</button>
+                            </td>
+                        </tr>`;
+                });
+            });
+    }
 
-cargarSecciones();
+    function limpiar() {
+        id.value = "";
+        nombre.value = "";
+        hora.value = "";
+        lugar.value = "";
+        formulario.classList.add("oculto");
+    }
 
-// Funciones pos gala
-$resumen = document.getElementById("resumen");
-$Btnresumen = document.getElementById("btn-resumen").addEventListener("click", () => {
-    $resumen.style.display = "block";
-});
+    cargarSecciones();
 
-$eliminarResumen = document.getElementById("btn-eliminarR").addEventListener("click", () => {
-    $resumen.style.display = "none";
+    //Parte de la pos-gala
+    btnEliminarResumen.addEventListener("click", () => resumen.value = "");
 
-    SelectResumen = document.getElementById('#texto-resumen');
-});
+    inputImagen.addEventListener("change", function () {
+        const archivo = inputImagen.files[0];
+        if (!archivo) return;
 
-// Añadir las imagenes al html
-// Recogo el imput y la galeria de las imagenes
-const inputImagen = document.getElementById("inputImagen");
-const galeria = document.getElementById("galeria");
-
-// Detecta cuando un usuario selecciona una imagen
-inputImagen.addEventListener("change", function () {
-    const archivo = inputImagen.files[0];
-
-    if (archivo) {
-        // Crear una etiqueta <img>
         const img = document.createElement("img");
-
-        // Crear una URL temporal para la imagen
         img.src = URL.createObjectURL(archivo);
-
-        // Estilo simple
         img.style.width = "200px";
         img.style.margin = "10px";
-
-        // Añadir la imagen a la galería
         galeria.appendChild(img);
-    }
+    });
+
 });
