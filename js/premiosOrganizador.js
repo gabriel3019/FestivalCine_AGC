@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
     fetch("../php/acciones/check-session.php", { method: "POST" })
         .then(res => res.json())
         .then(data => {
-            if (data.logged && data.usuario?.rol.toLowerCase() === "organizador") {
+            if (data.logged && data.usuario?.tipo.toLowerCase() === "organizador") {
                 profileIcon.style.display = "flex";
                 nombreUsuario.textContent = data.usuario.nombre;
             } else {

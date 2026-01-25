@@ -18,25 +18,32 @@
         </a>
     </div>
     <nav>
-        <a href="noticias.html">Noticias</a>
-        <a href="eventos.html">Eventos</a>
-        <a href="premios.html">Premios</a>
-        <a href="galaUsr.html">Gala</a>
+            <a href="noticias.html">Noticias</a>
+            <a href="eventos.html">Eventos</a>
+            <a href="calendario.html">Calendario</a>
+            <a href="premios.html">Premios</a>
+            <a href="calendario.html">Calendario</a>
+            <a href="">Patrocinadores</a>
+            <a href="galaUsr.html">Gala</a>
     </nav>
 
 
-    <div class="auth">
-        <span id="nombreUsuario"></span>
-        <!-- Icono perfil -->
-        <div id="icono_persona" class="icono_persona">
-            👤
-            <div id="menu" class="menu">
-                <a href="#" id="crear_cuenta">Crear nueva cuenta</a>
-                <a href="#" id="volver_home">Volver a home</a>
-                <a href="#" id="cerrar_sesion">Cerrar sesión</a>
+      <div class="auth" id="auth-user" style="display:none;">
+            <span id="nombreUsuario" class="user-name"></span>
+
+            <div id="icono_persona" class="icono_persona">
+                👤
+                <div id="menu" class="menu">
+                    <a href="perfil.html">Ver perfil</a>
+                    <a href="#" id="cerrar_sesion">Cerrar sesión</a>
+                </div>
             </div>
         </div>
-    </div>
+
+        <div class="auth" id="auth-buttons">
+            <button id="login-btn">Iniciar sesión</button>
+            <button id="register-btn" class="primary">Regístrate</button>
+        </div>
 </header>
 
 <body>
