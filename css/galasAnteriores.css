@@ -2,6 +2,12 @@
 table {
     width: 100%;
     border-collapse: collapse;
+    table-layout: fixed; /* MUY IMPORTANTE */
+}
+
+/* Cabeceras */
+th {
+    background-color: #f2f2f2;
 }
 
 /* Celdas */
@@ -11,14 +17,31 @@ th, td {
     vertical-align: middle;
 }
 
-/* Columna imagen centrada */
+/* Ancho de columnas */
+th:nth-child(1),
+td:nth-child(1) {
+    width: 15%; /* Nombre */
+}
+
+th:nth-child(2),
+td:nth-child(2) {
+    width: 55%; /* Imagen */
+}
+
+th:nth-child(3),
+td:nth-child(3) {
+    width: 30%; /* Resumen */
+}
+
+/* Columna imagen */
 td.imagen {
     text-align: center;
 }
 
-/* Imagen ajustada */
+/* Imagen ajustada SIN márgenes grandes */
 td.imagen img {
-    max-width: 180px;   /* controla el tamaño */
+    width: 100%;      /* ocupa la columna */
+    max-width: 400px; /* límite razonable */
     height: auto;
     display: block;
     margin: 0 auto;
