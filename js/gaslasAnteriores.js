@@ -22,7 +22,7 @@ function mostrarGalasAnteriores() {
                 <tr>
                     <td>${gala.nombre}</td>
                     <td class="imagen">
-                        <img src="../css/${gala.imagen}" alt="${gala.nombre}">
+                        <img src="../css/imagenes/${gala.imagen}" alt="${gala.nombre}">
                     </td>
                     <td>${gala.resumen}</td>
                 </tr>
@@ -32,4 +32,30 @@ function mostrarGalasAnteriores() {
             tbody.innerHTML = html;
         })
         .catch(err => console.error(err));
+
+    // =================Botones de iniciar y cerrar sesion======================
+    document.getElementById("login-btn")?.addEventListener("click", () => {
+        window.location.href = "/FestivalCine_AGC/html/login.html";
+    });
+
+    document.getElementById("register-btn")?.addEventListener("click", () => {
+        window.location.href = "/FestivalCine_AGC/html/registro.html";
+    });
+
+    document.getElementById("icono_persona")?.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const menu = document.getElementById("menu");
+        menu.style.display = menu.style.display === "block" ? "none" : "block";
+    });
+
+    document.getElementById("cerrar_sesion")?.addEventListener("click", () => {
+        fetch("../php/acciones/cerrar_sesion.php").then(() => {
+            window.location.reload();
+        });
+    });
+
+    document.addEventListener("click", () => {
+        const menu = document.getElementById("menu");
+        if (menu) menu.style.display = "none";
+    });
 }
