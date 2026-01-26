@@ -1,0 +1,260 @@
+/* =========================
+   FUENTE
+========================= */
+@font-face {
+    font-family: 'Hellix';
+    src: url('../fonts/Hellix-Regular.woff2') format('woff2'),
+         url('../fonts/Hellix-Regular.ttf') format('truetype');
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: 'Hellix';
+    src: url('../fonts/Hellix-Bold.woff2') format('woff2'),
+         url('../fonts/Hellix-Bold.ttf') format('truetype');
+    font-weight: bold;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Hellix', Arial, sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* =========================
+   HEADER
+========================= */
+header {
+    padding: 16px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f5f5f5;
+    border-bottom: 1px solid #ddd;
+}
+
+.logo img {
+    height: 80px;
+}
+
+header nav {
+    display: flex;
+    gap: 15px;
+}
+
+header nav a {
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: bold;
+    color: #111;
+    position: relative;
+}
+
+header nav a::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6px;
+    height: 6px;
+    background: red;
+    opacity: 0;
+}
+
+header nav a:hover::after {
+    opacity: 1;
+}
+
+/* =========================
+   BOTONES AUTH
+========================= */
+.auth {
+    display: flex;
+    gap: 10px;
+}
+
+.auth button {
+    padding: 6px 14px;
+    cursor: pointer;
+}
+
+#login-btn {
+    background: #000;
+    color: #fff;
+}
+
+.auth .primary {
+    background: #f30000;
+    color: #fff;
+    border: none;
+}
+
+/* =========================
+   HERO PREMIOS
+========================= */
+.news-hero {
+    position: relative;
+    height: 230px;
+    background-image: url("../css/imagenes/premios.webp");
+    background-size: cover;
+    background-position: center;
+    color: #fff;
+}
+
+.news-hero .overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,.33);
+}
+
+.hero-content {
+    position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.hero-content h1 {
+    font-size: 35px;
+    letter-spacing: 2px;
+}
+
+.breadcrumb {
+    position: absolute;
+    bottom: 20px;
+    font-size: 10px;
+}
+
+/* =========================
+   GRID PREMIOS
+========================= */
+.eventos-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 40px;
+    padding: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.evento {
+    background: #fff;
+    box-shadow: 0 4px 10px rgba(0,0,0,.1);
+    transition: transform .3s;
+}
+
+.evento:hover {
+    transform: translateY(-5px);
+}
+
+.evento img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.contenido {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.titulo {
+    font-size: 18px;
+}
+
+.evento:hover .titulo {
+    color: red;
+}
+
+.fecha {
+    font-size: 13px;
+    color: #666;
+}
+
+.descripcion {
+    font-size: 13px;
+    color: #777;
+}
+
+.info {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+}
+
+.estado {
+    font-size: 14px;
+    font-weight: bold;
+    color: #f30000;
+}
+
+/* =========================
+   FOOTER (FIX DEFINITIVO)
+========================= */
+.footer {
+    position: relative;
+    margin-top: auto;
+    background: #1c1c1c;
+    color: #fff;
+}
+
+.footer-top {
+    display: flex;
+    justify-content: space-between;
+    padding: 50px 80px;
+}
+
+.footer-column {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.footer-column a {
+    color: #fff;
+    text-decoration: none;
+}
+
+/* ICONOS SOCIALES EN HORIZONTAL */
+.footer-social {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.footer-social img {
+    width: 20px;
+    height: 20px;
+    filter: invert(1);
+}
+
+/* LOGO UE FLOTANTE ABAJO DERECHA */
+.footer-logo {
+    position: absolute;
+    right: 80px;
+    bottom: 20px;
+    background: #fff;
+    padding: 15px;
+    height: 90px;
+    z-index: 10;
+}
+
+/* FRANJA ROJA */
+.footer-bottom {
+    background: #ff2b2b;
+    color: #000;
+    padding: 20px 80px 6px 80px;
+    font-size: 14px;
+}
