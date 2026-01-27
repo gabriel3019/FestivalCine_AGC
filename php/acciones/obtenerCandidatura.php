@@ -13,10 +13,12 @@ $idUsuario = $_SESSION['usuario']['id'];
 
 $sql = "
     SELECT 
+        c.id_candidatura,
         co.titulo,
         co.descripcion,
         co.archivo_video,
         c.estado_candidatura,
+        c.motivo_rechazo,
         c.fecha_envio
     FROM candidaturas c
     JOIN cortometrajes co ON c.id_corto = co.id_corto

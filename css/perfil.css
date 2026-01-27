@@ -205,6 +205,73 @@ input[type="submit"]:hover {
 }
 
 
+/* ===== CANDIDATURAS ===== */
+.candidatura-card {
+    background: #fff;
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin-bottom: 15px;
+}
+
+.estado {
+    display: inline-block;
+    padding: 4px 10px;
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.estado.pendiente {
+    background: #ffe08a;
+}
+
+.estado.aceptada {
+    background: #009639;
+    color: #fff;
+}
+
+.estado.rechazada {
+    background: #d50032;
+    color: #fff;
+}
+
+.rechazo-texto {
+    background: #fff3f3;
+    border-left: 4px solid #d50032;
+    padding: 10px;
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+
+/* ===== MODAL ===== */
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+}
+
+.modal-content {
+    background: #fff;
+    padding: 25px;
+    max-width: 500px;
+    width: 95%;
+}
+
+.oculto {
+    display: none;
+}
+
+textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+
+
 /* Responsive */
 @media (max-width: 700px) {
     .form-grid {

@@ -22,7 +22,6 @@ SELECT
 FROM candidaturas c
 JOIN cortometrajes co ON c.id_corto = co.id_corto
 JOIN usuarios u ON co.id_usuario = u.id_usuario
-WHERE c.estado_candidatura = 'pendiente'
 ORDER BY co.categoria, c.fecha_envio
 ";
 

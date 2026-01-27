@@ -124,13 +124,23 @@ CREATE TABLE IF NOT EXISTS candidaturas (
     id_corto INT NOT NULL,
     id_premio INT NULL,
     memoria_pdf VARCHAR(255) NOT NULL,
-    estado_candidatura ENUM('pendiente','aceptada','rechazada') DEFAULT 'pendiente',
+    estado_candidatura ENUM(
+        'pendiente',
+        'aceptada',
+        'rechazada'
+    ) DEFAULT 'pendiente',
     motivo_rechazo TEXT NULL,
+    mensaje_subsanacion TEXT NULL,
     fecha_envio DATETIME DEFAULT CURRENT_TIMESTAMP,
     fecha_resolucion DATETIME NULL,
-    FOREIGN KEY (id_corto) REFERENCES cortometrajes(id_corto) ON DELETE CASCADE,
-    FOREIGN KEY (id_premio) REFERENCES premios(id_premio) ON DELETE SET NULL
+    FOREIGN KEY (id_corto)
+        REFERENCES cortometrajes(id_corto)
+        ON DELETE CASCADE,
+    FOREIGN KEY (id_premio)
+        REFERENCES premios(id_premio)
+        ON DELETE SET NULL
 ) ENGINE=InnoDB;
+
 
 CREATE TABLE IF NOT EXISTS premios_otorgados (
     id_premio_otorgado INT AUTO_INCREMENT PRIMARY KEY,
@@ -278,7 +288,8 @@ SELECT 1,1,1,CURDATE()
 WHERE NOT EXISTS (SELECT 1 FROM premios_otorgados WHERE id_premio=1 AND id_corto=1);
 ";
 if ($conn->multi_query($sql)) {
-    while ($conn->next_result()) {;}
+    while ($conn->next_result()) {;
+    }
     // echo "Base de datos creada y actualizada correctamente.";
 } else {
     // echo "Error: {$conexion->error}";
