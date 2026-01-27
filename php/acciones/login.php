@@ -16,7 +16,7 @@ if (!$email || !$password) {
 }
 
 /* =====================================================
-   1️⃣ INTENTAR LOGIN COMO USUARIO
+   INTENTAR LOGIN COMO USUARIO
 ===================================================== */
 $stmt = $conn->prepare(
     "SELECT id_usuario, nombre, contrasena 
@@ -52,7 +52,7 @@ if ($res->num_rows === 1) {
 }
 
 /* =====================================================
-   2️⃣ INTENTAR LOGIN COMO ORGANIZADOR
+   INTENTAR LOGIN COMO ORGANIZADOR
 ===================================================== */
 $stmt = $conn->prepare(
     "SELECT id_organizador, nombre, contrasena 

@@ -1,7 +1,7 @@
 <?php
 session_start();
 header("Content-Type: application/json");
-require_once __DIR__ . "/../bbdd/conecta.php";
+require "../BBDD/conecta.php";
 
 if (!isset($_SESSION['usuario'])) {
     echo json_encode([]);

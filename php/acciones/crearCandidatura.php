@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once "../bbdd/conecta.php";
+require "../bbdd/conecta.php";
 header("Content-Type: application/json");
 
 if (!isset($_SESSION['usuario'])) {

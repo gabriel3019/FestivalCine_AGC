@@ -1,5 +1,4 @@
 <?php
-// ================= CONFIGURACIÓN =================
 
 // Cabecera JSON
 header('Content-Type: application/json');

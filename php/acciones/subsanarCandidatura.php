@@ -1,16 +1,9 @@
-
-
 <?php
-error_log(print_r($_POST, true));
+
 session_start();
 header("Content-Type: application/json");
-require_once __DIR__ . "/../bbdd/conecta.php";
+require "../BBDD/conecta.php";
 
-if (!isset($_SESSION['usuario'])) {
-    http_response_code(403);
-    echo json_encode(["success" => false]);
-    exit;
-}
 
 $idUsuario = $_SESSION['usuario']['id'];
 $idCandidatura = $_POST['id_candidatura'] ?? null;

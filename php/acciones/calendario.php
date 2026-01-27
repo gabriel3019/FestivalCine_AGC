@@ -1,6 +1,6 @@
 <?php
 header('Content-Type: application/json');
-require_once "../BBDD/conecta.php";
+require "../BBDD/conecta.php";
 
 // Consulta para obtener todos los eventos
 $sql = "SELECT id_evento, nombre, descripcion,
