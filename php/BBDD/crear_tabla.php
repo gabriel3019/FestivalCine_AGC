@@ -277,15 +277,11 @@ INSERT INTO premios_otorgados
 SELECT 1,1,1,CURDATE()
 WHERE NOT EXISTS (SELECT 1 FROM premios_otorgados WHERE id_premio=1 AND id_corto=1);
 ";
-
-if (!$conn->multi_query($sql)) {
-    die("Error en multi_query: " . $conn->error);
+if ($conn->multi_query($sql)) {
+    while ($conn->next_result()) {;}
+    // echo "Base de datos creada y actualizada correctamente.";
+} else {
+    // echo "Error: {$conexion->error}";
 }
-
-do {
-    if ($res = $conn->store_result()) {
-        $res->free();
-    }
-} while ($conn->next_result());
 
 $conn->close();

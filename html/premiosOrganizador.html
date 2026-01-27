@@ -90,42 +90,51 @@
 
         <!-- Formulario asignar ganadores -->
         <div class="form-ganadores">
+
+            <!-- ================= ALUMNOS ================= -->
             <h3>ASIGNAR GANADORES - ALUMNOS</h3>
-            <label>PRIMER PREMIO</label>
-            <select>
-                <option>Seleccionar participante</option>
-            </select>
-            <label>SEGUNDO PREMIO</label>
-            <select>
-                <option>Seleccionar participante</option>
-            </select>
-            <label>TERCER PREMIO</label>
-            <select>
-                <option>Seleccionar participante</option>
-            </select>
 
+            <div class="bloque-premio" data-categoria="alumno" data-premio="1">
+                <label>PRIMER PREMIO</label>
+                <button class="btn-asignar">ASIGNAR GANADOR</button>
+                <div class="ganador-seleccionado"></div>
+            </div>
+
+            <div class="bloque-premio" data-categoria="alumno" data-premio="2">
+                <label>SEGUNDO PREMIO</label>
+                <button class="btn-asignar">ASIGNAR GANADOR</button>
+                <div class="ganador-seleccionado"></div>
+            </div>
+
+            <div class="bloque-premio" data-categoria="alumno" data-premio="3">
+                <label>TERCER PREMIO</label>
+                <button class="btn-asignar">ASIGNAR GANADOR</button>
+                <div class="ganador-seleccionado"></div>
+            </div>
+
+            <!-- ================= ALUMNI ================= -->
             <h3>ASIGNAR GANADORES - ALUMNI</h3>
-            <label>PRIMER PREMIO</label>
-            <select>
-                <option>Seleccionar participante</option>
-            </select>
-            <label>SEGUNDO PREMIO</label>
-            <select>
-                <option>Seleccionar participante</option>
-            </select>
 
-            <h3>PREMIO A LA CARRERA PROFESIONAL</h3>
-            <label>NOMBRE Y APELLIDOS</label>
-            <input type="text" placeholder="Nombre y apellidos">
-            <label>CORREO ELECTRÓNICO</label>
-            <input type="email" placeholder="correo@ejemplo.com">
-            <label>TELEFONO DE CONTACTO</label>
-            <input type="text" placeholder="Teléfono">
-            <label>VÍDEO DE RECORRIDO PROFESIONAL (URL)</label>
-            <input type="url" placeholder="https://">
+            <div class="bloque-premio" data-categoria="alumni" data-premio="1">
+                <label>PRIMER PREMIO</label>
+                <button class="btn-asignar">ASIGNAR GANADOR</button>
+                <div class="ganador-seleccionado"></div>
+            </div>
 
-            <button>GUARDAR GANADOR</button>
+            <div class="bloque-premio" data-categoria="alumni" data-premio="2">
+                <label>SEGUNDO PREMIO</label>
+                <button class="btn-asignar">ASIGNAR GANADOR</button>
+                <div class="ganador-seleccionado"></div>
+            </div>
+
+            <div class="bloque-premio" data-categoria="alumni" data-premio="3">
+                <label>TERCER PREMIO</label>
+                <button class="btn-asignar">ASIGNAR GANADOR</button>
+                <div class="ganador-seleccionado"></div>
+            </div>
+
         </div>
+
 
     </div>
 
@@ -147,15 +156,59 @@
 
                 <label>Categoría</label>
                 <select id="modal_categoria" required>
-                    <option value="Alumnos">Alumnos</option>
-                    <option value="Alumni">Alumni</option>
-                    <option value="Carrera profesional">Carrera profesional</option>
+                    <option value="alumno">Alumnos</option>
+                    <option value="alumni">Alumni</option>
+                    <option value="honorifico">Carrera profesional</option>
                 </select>
+
 
                 <button type="submit" class="btn-principal">Guardar</button>
             </form>
         </div>
     </div>
+
+    <div id="modalCandidatos" class="modal">
+        <div class="modal-contenido modal-grande">
+
+            <span id="cerrarCandidatos" class="cerrar">&times;</span>
+
+            <h2>Seleccionar candidato</h2>
+
+            <input type="text" id="buscadorCandidatos" placeholder="Buscar por nombre o nº expediente">
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Expediente</th>
+                        <th>Cortometraje</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody id="listaCandidatos"></tbody>
+            </table>
+
+        </div>
+    </div>
+
+    <div id="modalConfirmarEliminar" class="modal">
+        <div class="modal-contenido modal-confirmacion">
+
+            <h3>¿Eliminar premio?</h3>
+            <p>Esta acción no se puede deshacer.</p>
+
+            <div class="acciones-confirmacion">
+                <button id="cancelarEliminar" class="btn-secundario">
+                    Cancelar
+                </button>
+                <button id="confirmarEliminar" class="btn-peligro">
+                    Eliminar
+                </button>
+            </div>
+
+        </div>
+    </div>
+
 
 
     <script src="../js/premiosOrganizador.js"></script>
