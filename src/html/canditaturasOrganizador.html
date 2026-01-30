@@ -41,7 +41,7 @@
 
     <main>
         <h2>Candidaturas</h2>
-        
+
         <div class="filtros">
             <button class="filtro activo" data-estado="todas">Todas</button>
             <button class="filtro" data-estado="pendiente">Pendientes</button>
@@ -75,26 +75,43 @@
         </section>
     </main>
 
+
     <!-- ===================== MODAL REVISIÓN ===================== -->
     <div id="modal-revision" class="modal oculto">
         <div class="modal-content">
+
+            <!-- ❌ CERRAR -->
+            <button class="modal-close" id="cerrar-modal">✕</button>
+
+            <!-- 🏷️ TÍTULO -->
             <h3 id="modal-titulo"></h3>
 
+            <!-- 📌 INFO -->
             <p><strong>Autor:</strong> <span id="modal-autor"></span></p>
             <p><strong>Nº Expediente:</strong> <span id="modal-expediente"></span></p>
 
+            <!-- 🖼️ PORTADA -->
+            <img id="modal-portada" class="modal-portada" alt="Portada del corto">
+
+            <!-- 📝 DESCRIPCIÓN -->
+            <p id="modal-descripcion" class="modal-descripcion"></p>
+
+            <!-- 🎬 VÍDEO -->
             <video id="modal-video" controls></video>
 
+            <!-- 📄 MEMORIA -->
             <a id="modal-memoria" target="_blank" class="link-memoria">
                 Ver memoria PDF
             </a>
 
+            <!-- ⚖️ ACCIONES -->
             <div class="acciones">
                 <button id="btn-aceptar" class="btn-aceptar">Aceptar</button>
                 <button id="btn-rechazar" class="btn-rechazar">Rechazar</button>
             </div>
         </div>
     </div>
+
 
     <!-- ===================== MODAL RECHAZO ===================== -->
     <div id="modal-rechazo" class="modal oculto">

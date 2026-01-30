@@ -3,14 +3,14 @@
 const loginBtn = document.getElementById("login-btn");
 if (loginBtn) {
     loginBtn.addEventListener("click", () => {
-        window.location.href = "/FestivalCine_AGC/html/login.html";
+        window.location.href = "/FestivalCine_AGC/src/html/login.html";
     });
 }
 
 const registerBtn = document.getElementById("register-btn");
 if (registerBtn) {
     registerBtn.addEventListener("click", () => {
-        window.location.href = "/FestivalCine_AGC/html/registro.html";
+        window.location.href = "/FestivalCine_AGC/src/html/registro.html";
     });
 }
 

@@ -13,12 +13,17 @@ SELECT
     c.id_candidatura,
     c.memoria_pdf,
     c.estado_candidatura,
+
     co.titulo,
+    co.descripcion,
+    co.imagen_portada,
     co.categoria,
     co.archivo_video,
+
     u.nombre,
     u.apellidos,
     u.numero_expediente
+
 FROM candidaturas c
 JOIN cortometrajes co ON c.id_corto = co.id_corto
 JOIN usuarios u ON co.id_usuario = u.id_usuario

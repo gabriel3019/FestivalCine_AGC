@@ -413,6 +413,27 @@ button:focus {
     animation: slideUp 0.2s ease-out;
 }
 
+.modal-content {
+    position: relative;
+}
+
+.modal-close {
+    position: absolute;
+    top: 12px;
+    right: 14px;
+    background: none;
+    border: none;
+    font-size: 22px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #333;
+}
+
+.modal-close:hover {
+    color: #c00;
+}
+
+
 @keyframes slideUp {
     from {
         transform: translateY(15px);
