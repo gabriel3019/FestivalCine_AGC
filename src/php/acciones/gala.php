@@ -70,27 +70,24 @@ function borrarSeccion()
 
 function nuevaSeccion()
 {
-    $nombre = $_POST['nombre'];
-    $hora = $_POST['hora'];
-    $lugar = $_POST['lugar'];
-
     global $conn;
-    if ($nombre == "" || $hora == "" || $lugar == "") {
-        echo json_encode([
-            "status"=> "error",
-            "message" => "Se deben rellenar todos los campos"
-        ]);
-        exit;
+
+    $nombre = $_POST['nombre'] ?? '';
+    $hora   = $_POST['hora'] ?? '';
+    $lugar  = $_POST['lugar'] ?? '';
+
+    if ($nombre === '' || $hora === '' || $lugar === '') {
+        echo json_encode(["status" => "error"]);
+        return;
+    }
+
+    $sql = "INSERT INTO secciones (nombre, hora, lugar)
+            VALUES ('$nombre', '$hora', '$lugar')";
+
+    if ($conn->query($sql)) {
+        echo json_encode(["status" => "ok"]);
     } else {
-        $sql = "INSERT INTO secciones (nombre, hora, lugar) VALUES ('$nombre', '$hora', '$lugar')";
-        $resultado = $conn->query($sql) or die("Error al crear nueva sección");
-        echo json_encode([
-            "status"=> "error",
-            "data" => $resultado
-        ]);
-        echo json_encode([
-            "resultado"=> $resultado
-        ]);
+        echo json_encode(["status" => "error"]);
     }
 }
 

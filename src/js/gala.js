@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    //fetch para gargar las tablas de la página
+    //fetch para cargar las tablas de la página
     fetch("../php/acciones/home_organizador.php")
         .then(res => res.json())
         .then(data => {
@@ -129,38 +129,40 @@ document.addEventListener("DOMContentLoaded", function () {
         formSeccion.reset();
     });
 
-    formSeccion.addEventListener("submit", async e => {
+    formSeccion.addEventListener("submit", e => {
         e.preventDefault();
-        const nombre = formSeccion.nombre.value.trim();
-        const contenido = formSeccion.contenido.value.trim();
 
-        if (!nombre || !contenido) return;
+        const nombre = document.getElementById("nombre-seccion").value.trim();
+        const hora = document.getElementById("contenido").value.trim();
+        const lugar = document.getElementById("lugar-modal").value.trim();
 
-        const data = { action: "anadir", titulo: nombre, contenido };
-        const res = await api(data, true);
-        if (res.success) {
-            formSeccion.reset();
-            limpiar();
-            cargarSecciones();
-        } else {
-            alert(res.message || "Error al añadir seccion");
+        if (!nombre || !hora || !lugar) {
+            alert("Rellena todos los campos");
+            return;
         }
-    });
 
-    btnGuardarSeccion.addEventListener("click", () => {
         const fd = new FormData();
-        if (id.value) {
-            fd.append("funcion", "editarSeccion");
-            fd.append("id", id.value);
-        } else {
-            fd.append("funcion", "nuevaSeccion");
-        }
-        fd.append("nombre", nombre.value);
-        fd.append("hora", hora.value);
-        fd.append("lugar", lugar.value);
 
-        fetch("../php/acciones/gala.php", { method: "POST", body: fd })
-            .then(() => { limpiar(); cargarSecciones(); });
+        fd.append("funcion", "nuevaSeccion");
+
+        fd.append("nombre", nombre);
+        fd.append("hora", hora);
+        fd.append("lugar", lugar);
+
+        fetch("../php/acciones/gala.php", {
+            method: "POST",
+            body: fd
+        })
+            .then(r => r.json())
+            .then(d => {
+                if (d.status === "ok") {
+                    cerrarModal();
+                    cargarSecciones();
+                } else {
+                    alert("Error al guardar la sección");
+                }
+            })
+            .catch(e => console.error("JSON roto:", e));
     });
 
     function cargarSecciones() {
@@ -209,4 +211,25 @@ document.addEventListener("DOMContentLoaded", function () {
         galeria.appendChild(img);
     });
 
+    // Funcion para que al presionar en cancelar o fuera del modal de añadir sección,
+    // vuelva la página a lo normal
+    const overlay = document.getElementById("overlay");
+
+    btnAnadir.addEventListener("click", () => {
+        formulario.classList.remove("oculto");
+        overlay.classList.remove("oculto");
+        document.body.classList.add("modal-abierto");
+    });
+
+    function cerrarModal() {
+        formulario.classList.add("oculto");
+        overlay.classList.add("oculto");
+        document.body.classList.remove("modal-abierto");
+        limpiar();
+        formSeccion.reset();
+    }
+    // Al hacer click fuera del modal se cierra
+    overlay.addEventListener("click", cerrarModal);
+    // Lo mismo al darle al boton de cancelar
+    cancelar.addEventListener("click", cerrarModal);
 });

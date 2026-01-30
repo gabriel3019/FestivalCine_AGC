@@ -46,18 +46,7 @@
         <button class="boton" id="cambio">Cambiar formato</button>
     </div>
     <div id="pre" style="display: block;">
-        <h1>Pre-Gala del Festival</h1>
-
-        <section>
-            <h2>Añadir / Editar sección</h2>
-            <input type="hidden" id="id">
-            <input id="nombre" placeholder="Nombre de la sección">
-            <input id="hora" type="time">
-            <input id="lugar" placeholder="Lugar">
-            <button class="boton" id="guardarSecciones">Guardar</button>
-        </section>
-
-        <button id="btnNuevaSeccion" class="boton">Añadir una seccion</button>
+        <h1>Pre-Gala del Festival</h1>       
 
         <div id="formulario-seccion" class="formulario-seccion oculto">
             <h3>Añadir seccion</h3>
@@ -69,8 +58,8 @@
                 <label for="contenido">Hora:</label>
                 <input type="time" id="contenido" name="contenido" rows="4" required></input>
 
-                <label for="lugar">Lugar:</label>
-                <input type="text" id="lugar" name="luSgar" required>
+                <label for="lugar-modal">Lugar:</label>
+                <input type="text" id="lugar-modal" required>
 
                 <div class="botones-form">
                     <button type="submit">Guardar</button>
@@ -81,6 +70,8 @@
 
         <section>
             <h2>Secciones del evento</h2>
+            <button id="btnNuevaSeccion" class="boton">Añadir una seccion</button>
+            <br>
             <table id="lista"></table>
         </section>
 
@@ -108,7 +99,10 @@
         <h2>Premios</h2>
         <table id="premios"></table>
         <button id="edicionAnterior">Añadir a ediciones anteriores</button>
-    </div> 
+    </div>
+
+    <!-- Overlay del modal -->
+    <div id="overlay" class="overlay oculto"></div>
 
     <script src="../js/gala.js"></script>
 </body>
